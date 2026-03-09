@@ -41,7 +41,10 @@ const TAG_OPTIONS = [
 ];
 
 export default config({
-  storage: { kind: 'local' },
+  storage: { kind: 'cloud' },
+  cloud: {
+    project: process.env.KEYSTATIC_CLOUD_PROJECT || 'REPLACE_WITH_KEYSTATIC_CLOUD_PROJECT',
+  },
   ui: {
     brand: { name: 'Dişçi Hukuk Bürosu' },
     navigation: { 'İçerik Yönetimi': ['blog', 'services'] },
