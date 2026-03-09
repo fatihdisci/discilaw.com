@@ -16,11 +16,31 @@
 - Blog kartları için yatay oran kullanın (16:9).
 - Kapak görselinde metin yoğunluğu düşük tutulmalı.
 - Her yazıda `alt` metni başlıkla uyumlu olmalı.
+- Dosya adı önerisi: `konu-yil-kisa-aciklama.jpg` (ör. `kira-hukuku-2026-tahliye-suresi.jpg`).
 
 ## Kategori / etiket kuralları
 - Kategori tek ve net olmalı.
 - Etiket en az 2 adet seçilmeli.
 - Aynı kavram için farklı yazımlar kullanılmamalı (örn: `iş hukuku` / `is-hukuku` karmaşası yok).
+- Etiketler sadece kontrollü slug sözlüğünden seçilir.
+
+## Güncel etiket sözlüğü (özet)
+`yargitay-karari`, `ceza-hukuku`, `is-hukuku`, `kira-hukuku`, `idare-hukuku`, `gayrimenkul-hukuku`, `miras-hukuku`, `ticaret-hukuku`, `hizmet-tespiti`, `tahliye-davasi`, `ihtiyac-nedeniyle-tahliye`, `tapu-iptali`, `zilyetlik`, `imar-plani`, `sgk`, `cezai-sart` vb.
+
+## Eski içerik tag migration notu
+- Eski içeriklerdeki serbest etiketler normalize edilmiştir.
+- Örnek dönüşümler:
+  - `Ceza Hukuku` → `ceza-hukuku`
+  - `iş hukuku` → `is-hukuku`
+  - `Yargıtay Kararları` → `yargitay-karari`
+- Amaç: related posts ve filtreleme mantığında tutarlı taksonomi.
+
+## Blog yayın öncesi minimum kalite kontrol
+1. Başlık ve açıklama birbiriyle uyumlu mu?
+2. Görsel oranı ve dosya boyutu uygun mu?
+3. Kategori doğru seçildi mi?
+4. En az 2 etiket seçildi mi?
+5. İçerikte en az bir mevzuat/karar referansı var mı?
 
 ## Hizmet sayfası içerik mantığı
 - İlk paragrafta hizmetin kapsamı ve kim için uygun olduğu net anlatılmalı.

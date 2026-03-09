@@ -12,19 +12,18 @@ export function getRelatedPosts(currentPost: BlogEntry, allPosts: BlogEntry[], l
   const currentCategory = normalize(currentPost.data.category || '');
   const currentTags = (currentPost.data.tags || []).map(normalizeTag);
 
-  const scored = allPosts
+  return allPosts
     .filter((post) => post.slug !== currentPost.slug)
     .map((post) => {
       const category = normalize(post.data.category || '');
       const tags = (post.data.tags || []).map(normalizeTag);
-      const categoryScore = category && currentCategory && category === currentCategory ? 3 : 0;
-      const tagScore = tags.filter((tag) => currentTags.includes(tag)).length;
-      return { post, score: categoryScore + tagScore };
+      const commonTags = tags.filter((tag) => currentTags.includes(tag)).length;
+      const categoryMatch = category && currentCategory && category === currentCategory;
+      const score = (categoryMatch ? 4 : 0) + commonTags;
+      return { post, score, commonTags, categoryMatch };
     })
-    .filter((entry) => entry.score > 0)
+    .filter(({ categoryMatch, commonTags }) => categoryMatch || commonTags >= 2)
     .sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
     .slice(0, limit)
     .map((entry) => entry.post);
-
-  return scored;
 }
