@@ -7,7 +7,7 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
 const services = await getCollection('services');
 ---
 
-<Layout title="Çalışma Alanlarımız | Dişçi Hukuk Bürosu" description="Ceza, Ticaret, İdare ve Gayrimenkul hukuku başta olmak üzere, Dişçi Hukuk Bürosu'nun sunduğu temel hukuki danışmanlık ve faaliyet alanları.">
+<Layout title="Çalışma Alanlarımız" description="Dişçi Hukuk Bürosu'nun ceza, aile, iş, gayrimenkul ve ticaret hukuku başta olmak üzere sunduğu çalışma alanlarını inceleyin." canonicalPath="/calisma-alanlarimiz" enableAOS={true}>
   <!-- Header -->
   <section class="py-20 bg-slate-900 border-b border-white/5">
     <div class="container mx-auto px-4 text-center">
@@ -25,7 +25,7 @@ const services = await getCollection('services');
         {services.map((service, index) => (
           <li class="relative h-full rounded-[1.25rem] border-[0.75px] border-slate-700/50 p-2 md:rounded-[1.5rem] md:p-3" data-aos="fade-up" data-aos-delay={index * 100}>
             <GlowingEffect
-              client:load
+              client:visible
               spread={40}
               glow={true}
               disabled={false}
@@ -40,7 +40,7 @@ const services = await getCollection('services');
               <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] border-slate-700 bg-slate-900 p-6 md:p-8 shadow-sm">
                 <div>
                   <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
-                    <ServiceIcon client:load slug={service.slug} size={28} className="text-gold-500" />
+                    <ServiceIcon client:visible slug={service.slug} size={28} className="text-gold-500" />
                   </div>
                   <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-serif group-hover:text-gold-500 transition-colors">
                     {service.data.title}

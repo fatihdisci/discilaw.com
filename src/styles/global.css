@@ -62,5 +62,10 @@
 @layer base {
   body {
     @apply bg-[#020617] text-slate-300;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  .font-serif {
+    font-family: "Playfair Display", Georgia, serif;
   }
 }

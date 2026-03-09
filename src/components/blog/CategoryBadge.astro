@@ -1,0 +1,12 @@
+---
+interface Props {
+  label: string;
+  interactive?: boolean;
+}
+
+const { label, interactive = false } = Astro.props;
+---
+
+<span class={`text-xs font-semibold px-2 py-1 rounded bg-gold-900/30 text-gold-500 border border-gold-900/50 ${interactive ? 'hover:bg-gold-500/20 transition-colors' : ''}`}>
+  {label}
+</span>

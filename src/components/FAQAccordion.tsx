@@ -18,25 +18,6 @@ export function FAQAccordion({ faqs }: FAQAccordionProps) {
 
     return (
         <div className="max-w-4xl mx-auto mt-12 mb-16">
-            {/* SEO Schema Markup */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'FAQPage',
-                        mainEntity: faqs.map((faq) => ({
-                            '@type': 'Question',
-                            name: faq.question,
-                            acceptedAnswer: {
-                                '@type': 'Answer',
-                                text: faq.answer,
-                            },
-                        })),
-                    }),
-                }}
-            />
-
             <div className="space-y-4">
                 {faqs.map((faq, index) => (
                     <div
