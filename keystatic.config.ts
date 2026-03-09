@@ -1,132 +1,113 @@
 import { config, fields, collection } from '@keystatic/core';
 
+const TAG_OPTIONS = [
+  'yargitay-karari',
+  'dava-sureci',
+  'ceza-hukuku',
+  'is-hukuku',
+  'aile-hukuku',
+  'miras-hukuku',
+  'ticaret-hukuku',
+  'kira-hukuku',
+  'idare-hukuku',
+  'icra-hukuku',
+  'gayrimenkul-hukuku',
+  'bilisim-hukuku',
+  'sozlesme-hukuku',
+  'izmir-avukat',
+  'hizmet-tespiti',
+  'sigortalilik',
+  'tahliye-davasi',
+  'ihtiyac-nedeniyle-tahliye',
+  'belirli-sureli-kira',
+  'tapu-iptali',
+  'tapu-tescil',
+  'zilyetlik',
+  'imar-plani',
+  'fiili-taksim',
+  'idari-para-cezasi',
+  'trafik-cezasi',
+  'radar-cezasi',
+  'hiz-siniri',
+  'cinsel-istismar',
+  'zincirleme-suc',
+  'tck-43',
+  'sgk',
+  'eczane',
+  'muaraza',
+  'cezai-sart',
+  'kasten-oldurmeye-tesebbus',
+  'ceza-indirimi',
+];
+
 export default config({
-    storage: {
-        kind: 'local',
-    },
-    ui: {
-        brand: {
-            name: 'Dişçi Hukuk Bürosu',
-        },
-        navigation: {
-            'İçerik Yönetimi': ['blog', 'services'],
-        },
-    },
-    collections: {
-        blog: collection({
-            label: 'Makaleler',
-            slugField: 'title',
-            path: 'src/content/blog/*',
-            format: { contentField: 'content' },
-            entryLayout: 'content',
-            columns: ['title', 'category', 'pubDate'],
-            schema: {
-                // ===== TEMEL BİLGİLER =====
-                title: fields.slug({
-                    name: {
-                        label: 'Makale Başlığı',
-                        description: 'SEO için optimize edilmiş bir başlık girin',
-                    }
-                }),
-                description: fields.text({
-                    label: 'Kısa Açıklama (SEO)',
-                    description: 'Google arama sonuçlarında görünecek 150-160 karakter açıklama',
-                    multiline: true,
-                    validation: { length: { min: 50, max: 200 } },
-                }),
-
-                // ===== YAYINLAMA BİLGİLERİ =====
-                pubDate: fields.date({
-                    label: 'Yayın Tarihi',
-                    defaultValue: { kind: 'today' },
-                }),
-                author: fields.text({
-                    label: 'Yazar',
-                    defaultValue: 'Av. Fatih Dişçi'
-                }),
-
-                // ===== KATEGORİ VE ETİKETLER =====
-                category: fields.select({
-                    label: 'Kategori',
-                    options: [
-                        { label: 'Kira Hukuku', value: 'Kira Hukuku' },
-                        { label: 'Ceza Hukuku', value: 'Ceza Hukuku' },
-                        { label: 'İş Hukuku', value: 'İş Hukuku' },
-                        { label: 'Aile Hukuku', value: 'Aile Hukuku' },
-                        { label: 'Miras Hukuku', value: 'Miras Hukuku' },
-                        { label: 'Gayrimenkul Hukuku', value: 'Gayrimenkul Hukuku' },
-                        { label: 'Ticaret Hukuku', value: 'Ticaret Hukuku' },
-                        { label: 'İdare Hukuku', value: 'İdare Hukuku' },
-                        { label: 'Bilişim Hukuku', value: 'Bilişim Hukuku' },
-                    ],
-                    defaultValue: 'Kira Hukuku'
-                }),
-                tags: fields.array(
-                    fields.text({ label: 'Etiket' }),
-                    {
-                        label: 'Etiketler (SEO Anahtar Kelimeler)',
-                        description: 'Virgülle ayrılmış anahtar kelimeler ekleyin',
-                        itemLabel: props => props.value || 'Yeni Etiket',
-                    }
-                ),
-
-                // ===== GÖRSEL =====
-                image: fields.image({
-                    label: 'Kapak Görseli',
-                    description: 'Blog kartlarında ve sosyal medyada görünecek görsel',
-                    directory: 'public/images/blog',
-                    publicPath: '/images/blog/',
-                }),
-
-                // ===== İÇERİK =====
-                content: fields.mdx({
-                    label: 'Makale İçeriği',
-                    options: {
-                        heading: [2, 3, 4],
-                        bold: true,
-                        italic: true,
-                        strikethrough: true,
-                        link: true,
-                        blockquote: true,
-                        orderedList: true,
-                        unorderedList: true,
-                        table: true,
-                        code: true,
-                        codeBlock: true,
-                        divider: true,
-                        image: {
-                            directory: 'public/images/blog',
-                            publicPath: '/images/blog/',
-                        },
-                    },
-                }),
-            },
+  storage: { kind: 'local' },
+  ui: {
+    brand: { name: 'Dişçi Hukuk Bürosu' },
+    navigation: { 'İçerik Yönetimi': ['blog', 'services'] },
+  },
+  collections: {
+    blog: collection({
+      label: 'Makaleler',
+      slugField: 'title',
+      path: 'src/content/blog/*',
+      format: { contentField: 'content' },
+      entryLayout: 'content',
+      columns: ['title', 'category', 'pubDate'],
+      schema: {
+        title: fields.slug({ name: { label: 'Makale Başlığı', description: 'SEO için optimize edilmiş bir başlık girin' } }),
+        description: fields.text({ label: 'Kısa Açıklama (SEO)', description: 'Google sonuçlarında görünür.', multiline: true, validation: { length: { min: 90, max: 200 } } }),
+        pubDate: fields.date({ label: 'Yayın Tarihi', defaultValue: { kind: 'today' } }),
+        author: fields.text({ label: 'Yazar', defaultValue: 'Av. Fatih Dişçi' }),
+        category: fields.select({
+          label: 'Kategori',
+          options: [
+            { label: 'Kira Hukuku', value: 'Kira Hukuku' },
+            { label: 'Ceza Hukuku', value: 'Ceza Hukuku' },
+            { label: 'İş Hukuku', value: 'İş Hukuku' },
+            { label: 'Aile Hukuku', value: 'Aile Hukuku' },
+            { label: 'Miras Hukuku', value: 'Miras Hukuku' },
+            { label: 'Gayrimenkul Hukuku', value: 'Gayrimenkul Hukuku' },
+            { label: 'Ticaret Hukuku', value: 'Ticaret Hukuku' },
+            { label: 'İdare Hukuku', value: 'İdare Hukuku' },
+            { label: 'Bilişim Hukuku', value: 'Bilişim Hukuku' },
+          ],
+          defaultValue: 'Kira Hukuku',
         }),
-        services: collection({
-            label: 'Çalışma Alanları',
-            slugField: 'title',
-            path: 'src/content/services/*',
-            format: { contentField: 'content' },
-            entryLayout: 'content',
-            columns: ['title', 'icon'],
-            schema: {
-                title: fields.slug({ name: { label: 'Başlık' } }),
-                description: fields.text({ label: 'Açıklama', multiline: true }),
-                icon: fields.text({ label: 'İkon (Emoji)' }),
-                faqs: fields.array(
-                    fields.object({
-                        question: fields.text({ label: 'Soru' }),
-                        answer: fields.text({ label: 'Cevap', multiline: true }),
-                    }),
-                    {
-                        label: 'Sıkça Sorulan Sorular (SSS)',
-                        itemLabel: (props) => props.fields.question.value || 'Yeni Soru',
-                    }
-                ),
-                content: fields.mdx({
-                    label: 'İçerik',
-                }),
-            },
+        tags: fields.multiselect({
+          label: 'Etiketler (SEO Anahtar Kelimeler)',
+          description: 'En az 2 etiket seçin. Tekrarlı ve farklı yazımlı etiket kullanımını önlemek için kontrollü listedir.',
+          options: TAG_OPTIONS.map((tag) => ({ label: tag.replace(/-/g, ' '), value: tag })),
+          defaultValue: ['yargitay-karari', 'dava-sureci'],
         }),
-    },
+        image: fields.image({ label: 'Kapak Görseli', description: 'Zorunlu: 1200x630 önerilir.', directory: 'public/images/blog', publicPath: '/images/blog/' }),
+        content: fields.mdx({
+          label: 'Makale İçeriği',
+          options: {
+            heading: [2, 3, 4], bold: true, italic: true, strikethrough: true, link: true, blockquote: true,
+            orderedList: true, unorderedList: true, table: true, code: true, codeBlock: true, divider: true,
+            image: { directory: 'public/images/blog', publicPath: '/images/blog/' },
+          },
+        }),
+      },
+    }),
+    services: collection({
+      label: 'Çalışma Alanları',
+      slugField: 'title',
+      path: 'src/content/services/*',
+      format: { contentField: 'content' },
+      entryLayout: 'content',
+      columns: ['title', 'icon'],
+      schema: {
+        title: fields.slug({ name: { label: 'Başlık' } }),
+        description: fields.text({ label: 'Açıklama', multiline: true, validation: { length: { min: 80, max: 260 } } }),
+        icon: fields.text({ label: 'İkon (Emoji)' }),
+        faqs: fields.array(
+          fields.object({ question: fields.text({ label: 'Soru' }), answer: fields.text({ label: 'Cevap', multiline: true }) }),
+          { label: 'Sıkça Sorulan Sorular (SSS)', itemLabel: (props) => props.fields.question.value || 'Yeni Soru' }
+        ),
+        content: fields.mdx({ label: 'İçerik' }),
+      },
+    }),
+  },
 });

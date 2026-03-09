@@ -3,153 +3,103 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { WhatsAppButton } from '../components/WhatsAppButton';
+import { buildSeoMeta, organizationSchema } from '../lib/seo';
 import '../styles/global.css';
 
-	interface Props {
-	title?: string;
-	description?: string;
-	image?: string;
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalPath?: string;
+  pageType?: 'website' | 'article';
+  breadcrumbItems?: { name: string; href: string }[];
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+  showBreadcrumbs?: boolean;
+  enableAOS?: boolean;
 }
 
-// SEO Title Logic - User requested "Dişçi Hukuk Bürosu" as the default title
-const { 
-	title = "Dişçi Hukuk Bürosu", 
-	description = "İzmir Barosu'na kayıtlı Av. Fatih Dişçi tarafından kurulan Dişçi Hukuk Bürosu; Ceza, Aile ve İş Hukuku alanlarında hukuki danışmanlık hizmeti sunmaktadır.",
-	image = "https://discilaw.com/social-share.jpg" // Fallback image if none provided
+const {
+  title,
+  description,
+  image,
+  canonicalPath,
+  pageType = 'website',
+  breadcrumbItems,
+  structuredData,
+  showBreadcrumbs = true,
+  enableAOS = false,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://discilaw.com");
+const seo = buildSeoMeta({ title, description, image, canonicalPath, type: pageType }, Astro.url.pathname, Astro.site);
+const baseSchema = organizationSchema(Astro.site);
+const pageSchemas = Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : [];
 ---
 
 <!doctype html>
 <html lang="tr" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href="/favicon.png" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="google-site-verification" content="GJ-zWmoDnXkoQ1G8DNUsCntcfR3ExIZjJaG9kyni2pE" />
-		
-		<!-- SEO Meta Tags -->
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<link rel="canonical" href={canonicalURL} />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="google-site-verification" content="GJ-zWmoDnXkoQ1G8DNUsCntcfR3ExIZjJaG9kyni2pE" />
 
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content={canonicalURL} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={image} />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={seo.canonical} />
 
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={canonicalURL} />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={image} />
+    <meta property="og:type" content={seo.type} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:image" content={seo.image} />
 
-		<!-- Google Analytics (GA4) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-E9QFS635LP"></script>
-		<script is:inline>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-			gtag('config', 'G-E9QFS635LP');
-		</script>
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={seo.canonical} />
+    <meta property="twitter:title" content={seo.title} />
+    <meta property="twitter:description" content={seo.description} />
+    <meta property="twitter:image" content={seo.image} />
 
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9QFS635LP"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E9QFS635LP');
+    </script>
 
-	<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" /></noscript>
 
-		<!-- Schema.org JSON-LD -->
-		<script type="application/ld+json">
-			{
-				"@context": "https://schema.org",
-				"@graph": [
-					{
-						"@type": "LegalService",
-						"@id": "https://discilaw.com/#organization",
-						"name": "Dişçi Hukuk Bürosu",
-						"url": "https://discilaw.com",
-						"telephone": "+905077247735",
-						"address": {
-							"@type": "PostalAddress",
-							"streetAddress": "Karşıyaka",
-							"addressLocality": "İzmir",
-							"addressRegion": "İzmir",
-							"postalCode": "35500",
-							"addressCountry": "TR"
-						},
-						"image": "https://discilaw.com/logo.png",
-						"priceRange": "$$",
-						"founder": {
-							"@type": "Person",
-							"name": "Av. Fatih Dişçi"
-						}
-					},
-					{
-						"@type": "Attorney",
-						"@id": "https://discilaw.com/#attorney",
-						"name": "Av. Fatih Dişçi",
-						"memberOf": {
-							"@id": "https://discilaw.com/#organization"
-						},
-						"description": "İzmir Barosu'na kayıtlı avukat Fatih Dişçi tarafından yönetilen hukuk bürosu.",
-						"url": "https://discilaw.com",
-						"address": {
-							"@type": "PostalAddress",
-							"addressLocality": "İzmir",
-							"addressCountry": "TR"
-						}
-					}
-				]
-			}
-		</script>
-	</head>
-	<body class="bg-slate-950 text-slate-300 selection:bg-gold-500/30 selection:text-gold-200 antialiased font-sans pt-32 md:pt-40 flex flex-col min-h-screen">
-		
-		<Navbar />
+    {enableAOS && <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />}
 
-		<main class="flex-grow">
-			<Breadcrumbs lastItemName={title} />
-			<slot />
-		</main>
+    <script type="application/ld+json" set:html={JSON.stringify(baseSchema)} />
+    {pageSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body class="bg-slate-950 text-slate-300 selection:bg-gold-500/30 selection:text-gold-200 antialiased font-sans pt-32 md:pt-40 flex flex-col min-h-screen">
+    <Navbar />
 
-		<Footer />
+    <main class="flex-grow">
+      {showBreadcrumbs && <Breadcrumbs title={title} items={breadcrumbItems} />}
+      <slot />
+    </main>
 
-		<WhatsAppButton client:load />
+    <Footer />
 
-		<script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
-		<script is:inline>
-			AOS.init({
-				duration: 800,
-				once: true,
-			});
-		</script>
+    <WhatsAppButton client:idle />
 
-		<style is:global>
-			/* Custom Scrollbar for Gold Theme */
-			::-webkit-scrollbar {
-				width: 8px;
-			}
-			::-webkit-scrollbar-track {
-				background: #020617;
-			}
-			::-webkit-scrollbar-thumb {
-				background: #ab934d;
-				border-radius: 10px;
-			}
-			::-webkit-scrollbar-thumb:hover {
-				background: #96793f;
-			}
-
-			/* Utility for Serif Headings */
-			.font-serif {
-				font-family: 'Playfair Display', serif;
-			}
-		</style>
-	</body>
+    {enableAOS && <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>}
+    {enableAOS && (
+      <script is:inline>
+        AOS.init({ duration: 800, once: true });
+      </script>
+    )}
+  </body>
 </html>
