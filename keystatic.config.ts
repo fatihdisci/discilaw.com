@@ -41,9 +41,9 @@ const TAG_OPTIONS = [
 ];
 
 export default config({
-  storage: { kind: 'cloud' },
-  cloud: {
-    project: process.env.KEYSTATIC_CLOUD_PROJECT || 'REPLACE_WITH_KEYSTATIC_CLOUD_PROJECT',
+  storage: {
+    kind: 'github',
+    repo: 'fatihdisci/discilaw.com',
   },
   ui: {
     brand: { name: 'Dişçi Hukuk Bürosu' },
