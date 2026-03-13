@@ -10,65 +10,73 @@ import {
 export const prerender = false;
 
 let hataMesaji = '';
-
-const supabase = createSupabaseServerClient();
+let sistemMesaji = '';
 
 if (Astro.request.method === 'POST') {
-  const formData = await Astro.request.formData();
-  const username = formData.get('username');
-  const password = formData.get('password');
+  try {
+    const formData = await Astro.request.formData();
+    const username = formData.get('username');
+    const password = formData.get('password');
 
-  if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
-    hataMesaji = 'Lutfen kullanici adi ve sifre alanlarini doldurun.';
-  } else {
-    const adminSupabase = createSupabaseAdminClient();
-    const normalizedUsername = username.trim().toLowerCase();
-
-    const { data: profile, error: profileError } = await adminSupabase
-      .from('profiles')
-      .select('id, role, username')
-      .eq('username', normalizedUsername)
-      .maybeSingle();
-
-    if (profileError || !profile) {
-      hataMesaji = 'Kullanici adi veya sifre hatali.';
+    if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
+      hataMesaji = 'Lutfen kullanici adi ve sifre alanlarini doldurun.';
     } else {
-      const { data: authUserData, error: authUserError } = await adminSupabase.auth.admin.getUserById(profile.id);
+      const adminSupabase = createSupabaseAdminClient();
+      const normalizedUsername = username.trim().toLowerCase();
 
-      const email = authUserData?.user?.email;
+      const { data: profile, error: profileError } = await adminSupabase
+        .from('profiles')
+        .select('id, role, username')
+        .eq('username', normalizedUsername)
+        .maybeSingle();
 
-      if (authUserError || !email) {
-        hataMesaji = 'Kullanici hesabi dogrulanamadi.';
+      if (profileError || !profile) {
+        hataMesaji = 'Kullanici adi veya sifre hatali.';
       } else {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { data: authUserData, error: authUserError } = await adminSupabase.auth.admin.getUserById(profile.id);
 
-        if (error || !data.session) {
-          hataMesaji = 'Kullanici adi veya sifre hatali.';
+        const email = authUserData?.user?.email;
+
+        if (authUserError || !email) {
+          hataMesaji = 'Kullanici hesabi dogrulanamadi.';
         } else {
-          Astro.cookies.set(PORTAL_ACCESS_COOKIE, data.session.access_token, {
-            httpOnly: true,
-            path: '/',
-            sameSite: 'lax',
-            secure: Astro.url.protocol === 'https:',
-            maxAge: data.session.expires_in,
+          const supabase = createSupabaseServerClient();
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
           });
 
-          Astro.cookies.set(PORTAL_REFRESH_COOKIE, data.session.refresh_token, {
-            httpOnly: true,
-            path: '/',
-            sameSite: 'lax',
-            secure: Astro.url.protocol === 'https:',
-            maxAge: 60 * 60 * 24 * 30,
-          });
+          if (error || !data.session) {
+            hataMesaji = 'Kullanici adi veya sifre hatali.';
+          } else {
+            Astro.cookies.set(PORTAL_ACCESS_COOKIE, data.session.access_token, {
+              httpOnly: true,
+              path: '/',
+              sameSite: 'lax',
+              secure: Astro.url.protocol === 'https:',
+              maxAge: data.session.expires_in,
+            });
 
-          return Astro.redirect(profile.role === 'admin' ? '/portal/admin' : '/portal/dashboard');
+            Astro.cookies.set(PORTAL_REFRESH_COOKIE, data.session.refresh_token, {
+              httpOnly: true,
+              path: '/',
+              sameSite: 'lax',
+              secure: Astro.url.protocol === 'https:',
+              maxAge: 60 * 60 * 24 * 30,
+            });
+
+            return Astro.redirect(profile.role === 'admin' ? '/portal/admin' : '/portal/dashboard');
+          }
         }
       }
     }
+  } catch {
+    hataMesaji = 'Portal girisi gecici olarak kullanilamiyor. Lutfen yonetici ile iletisime gecin.';
   }
+}
+
+if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANON_KEY) {
+  sistemMesaji = 'Portal gecici olarak kullanilamiyor. Lutfen daha sonra tekrar deneyin.';
 }
 ---
 
@@ -91,6 +99,11 @@ if (Astro.request.method === 'POST') {
         {hataMesaji && (
           <div class="mb-6 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
             {hataMesaji}
+          </div>
+        )}
+        {sistemMesaji && (
+          <div class="mb-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+            {sistemMesaji}
           </div>
         )}
 

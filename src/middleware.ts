@@ -25,10 +25,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect('/portal/login');
   }
 
-  const supabaseServer = createSupabaseServerClient(accessToken);
-  const {
-    data: { user },
-  } = await supabaseServer.auth.getUser(accessToken);
+  let user: { id: string; email?: string } | null = null;
+  let supabaseServer: ReturnType<typeof createSupabaseServerClient> | null = null;
+
+  try {
+    supabaseServer = createSupabaseServerClient(accessToken);
+    const {
+      data: { user: currentUser },
+    } = await supabaseServer.auth.getUser(accessToken);
+    user = currentUser;
+  } catch {
+    context.cookies.delete(PORTAL_ACCESS_COOKIE, { path: '/' });
+    context.cookies.delete(PORTAL_REFRESH_COOKIE, { path: '/' });
+
+    if (isPublicPortalPath) {
+      return next();
+    }
+
+    return context.redirect('/portal/login');
+  }
 
   if (!user) {
     context.cookies.delete(PORTAL_ACCESS_COOKIE, { path: '/' });
@@ -41,7 +56,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect('/portal/login');
   }
 
-  if (pathname === '/portal/login') {
+  if (pathname === '/portal/login' && supabaseServer) {
     const { data: profile } = await supabaseServer
       .from('profiles')
       .select('role')
