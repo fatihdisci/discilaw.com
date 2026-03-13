@@ -21,9 +21,44 @@ if (Astro.request.method === 'POST') {
     if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
       hataMesaji = 'Lütfen kullanıcı adı ve şifre alanlarını doldurun.';
     } else {
-      const adminSupabase = createSupabaseAdminClient();
       const normalizedUsername = username.trim().toLowerCase();
+      const emailDomain = import.meta.env.PORTAL_LOGIN_EMAIL_DOMAIN || 'portal.local';
+      const generatedEmail = `${normalizedUsername}@${emailDomain}`;
+      const supabase = createSupabaseServerClient();
 
+      const { data: directLoginData, error: directLoginError } = await supabase.auth.signInWithPassword({
+        email: generatedEmail,
+        password,
+      });
+
+      if (!directLoginError && directLoginData.session && directLoginData.user) {
+        const authSupabase = createSupabaseServerClient(directLoginData.session.access_token);
+        const { data: ownProfile } = await authSupabase
+          .from('profiles')
+          .select('role')
+          .eq('id', directLoginData.user.id)
+          .maybeSingle();
+
+        Astro.cookies.set(PORTAL_ACCESS_COOKIE, directLoginData.session.access_token, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'lax',
+          secure: Astro.url.protocol === 'https:',
+          maxAge: directLoginData.session.expires_in,
+        });
+
+        Astro.cookies.set(PORTAL_REFRESH_COOKIE, directLoginData.session.refresh_token, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'lax',
+          secure: Astro.url.protocol === 'https:',
+          maxAge: 60 * 60 * 24 * 30,
+        });
+
+        return Astro.redirect(ownProfile?.role === 'admin' ? '/portal/admin' : '/portal/dashboard');
+      }
+
+      const adminSupabase = createSupabaseAdminClient();
       const { data: profile, error: profileError } = await adminSupabase
         .from('profiles')
         .select('id, role, username')
@@ -34,13 +69,11 @@ if (Astro.request.method === 'POST') {
         hataMesaji = 'Kullanıcı adı veya şifre hatalı.';
       } else {
         const { data: authUserData, error: authUserError } = await adminSupabase.auth.admin.getUserById(profile.id);
-
         const email = authUserData?.user?.email;
 
         if (authUserError || !email) {
           hataMesaji = 'Kullanıcı hesabı doğrulanamadı.';
         } else {
-          const supabase = createSupabaseServerClient();
           const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
