@@ -1,0 +1,230 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import {
+  createSupabaseAdminClient,
+  createSupabaseServerClient,
+  PORTAL_ACCESS_COOKIE,
+  PORTAL_REFRESH_COOKIE,
+} from '../../../../lib/supabase';
+
+export const prerender = false;
+
+type FormState = {
+  type: 'success' | 'error';
+  message: string;
+} | null;
+
+const accessToken = Astro.cookies.get(PORTAL_ACCESS_COOKIE)?.value;
+
+if (!accessToken) {
+  return Astro.redirect('/portal/login');
+}
+
+const supabase = createSupabaseServerClient(accessToken);
+
+const {
+  data: { user },
+} = await supabase.auth.getUser(accessToken);
+
+if (!user) {
+  Astro.cookies.delete(PORTAL_ACCESS_COOKIE, { path: '/' });
+  Astro.cookies.delete(PORTAL_REFRESH_COOKIE, { path: '/' });
+  return Astro.redirect('/portal/login');
+}
+
+const { data: currentProfile } = await supabase
+  .from('profiles')
+  .select('id, role')
+  .eq('id', user.id)
+  .maybeSingle();
+
+if (!currentProfile || currentProfile.role !== 'admin') {
+  return Astro.redirect('/portal/dashboard');
+}
+
+let formState: FormState = null;
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const action = formData.get('action');
+
+  if (action === 'logout') {
+    await supabase.auth.signOut();
+    Astro.cookies.delete(PORTAL_ACCESS_COOKIE, { path: '/' });
+    Astro.cookies.delete(PORTAL_REFRESH_COOKIE, { path: '/' });
+    return Astro.redirect('/portal/login');
+  }
+
+  if (action === 'create-client') {
+    const companyName = formData.get('company_name');
+    const username = formData.get('username');
+    const password = formData.get('password');
+
+    if (
+      typeof companyName !== 'string' ||
+      typeof username !== 'string' ||
+      typeof password !== 'string' ||
+      !companyName.trim() ||
+      !username.trim() ||
+      !password.trim()
+    ) {
+      formState = { type: 'error', message: 'Tum alanlari doldurun.' };
+    } else {
+      const normalizedUsername = username.trim().toLowerCase();
+      const usernameRegex = /^[a-z0-9._-]{3,30}$/;
+
+      if (!usernameRegex.test(normalizedUsername)) {
+        formState = {
+          type: 'error',
+          message: 'Kullanici adi 3-30 karakter olmali ve sadece a-z, 0-9, nokta, tire, alt cizgi icermelidir.',
+        };
+      } else if (password.length < 8) {
+        formState = { type: 'error', message: 'Sifre en az 8 karakter olmalidir.' };
+      } else {
+        const adminSupabase = createSupabaseAdminClient();
+
+        const { data: existingProfile } = await adminSupabase
+          .from('profiles')
+          .select('id')
+          .eq('username', normalizedUsername)
+          .maybeSingle();
+
+        if (existingProfile) {
+          formState = { type: 'error', message: 'Bu kullanici adi zaten kullaniliyor.' };
+        } else {
+          const emailDomain = import.meta.env.PORTAL_LOGIN_EMAIL_DOMAIN || 'portal.local';
+          const email = `${normalizedUsername}@${emailDomain}`;
+
+          const { data: authData, error: authError } = await adminSupabase.auth.admin.createUser({
+            email,
+            password,
+            email_confirm: true,
+            user_metadata: {
+              username: normalizedUsername,
+              company_name: companyName.trim(),
+            },
+          });
+
+          if (authError || !authData.user) {
+            formState = {
+              type: 'error',
+              message: 'Kullanici hesabi olusturulamadi. Kullanici adi daha once kullanilmis olabilir.',
+            };
+          } else {
+            const { error: profileError } = await adminSupabase.from('profiles').insert({
+              id: authData.user.id,
+              role: 'client',
+              company_name: companyName.trim(),
+              username: normalizedUsername,
+            });
+
+            if (profileError) {
+              await adminSupabase.auth.admin.deleteUser(authData.user.id);
+              formState = { type: 'error', message: 'Muvekkil kaydi olusturulamadi.' };
+            } else {
+              return Astro.redirect(`/portal/admin/muvekkiller/${authData.user.id}?created=1`);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+---
+
+<Layout
+  title="Yeni Muvekkil"
+  description="Portal yeni muvekkil kaydi."
+  showBreadcrumbs={false}
+>
+  <section class="px-6 py-16 sm:px-8 lg:px-12">
+    <div class="mx-auto max-w-3xl space-y-8">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <h1 class="font-serif text-4xl text-white">Yeni muvekkil ekle</h1>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="/portal/admin"
+            class="rounded-2xl border border-white/10 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/5"
+          >
+            Yonetim paneli
+          </a>
+          <form method="POST">
+            <input type="hidden" name="action" value="logout" />
+            <button
+              type="submit"
+              class="rounded-2xl border border-gold-500/40 px-5 py-3 text-sm font-semibold text-gold-300 transition hover:border-gold-400 hover:bg-gold-500/10"
+            >
+              Cikis Yap
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="rounded-[1.75rem] border border-white/10 bg-white/5 p-5 text-sm leading-7 text-slate-300">
+        Bu form ile muvekkilin sisteme giris hesabi otomatik olusturulur. Ayrica Supabase Auth tarafinda manuel islem
+        yapmaniza gerek kalmaz.
+      </div>
+
+      {formState && (
+        <div
+          class:list={[
+            'rounded-[1.5rem] border px-5 py-4 text-sm',
+            formState.type === 'success'
+              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100'
+              : 'border-rose-500/30 bg-rose-500/10 text-rose-100',
+          ]}
+        >
+          {formState.message}
+        </div>
+      )}
+
+      <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+        <form method="POST" class="space-y-5">
+          <input type="hidden" name="action" value="create-client" />
+
+          <div>
+            <label for="company_name" class="mb-2 block text-sm font-medium text-slate-200">Muvekkil adi</label>
+            <input
+              id="company_name"
+              name="company_name"
+              required
+              class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              placeholder="Ornek Sirket A.S."
+            />
+          </div>
+
+          <div>
+            <label for="username" class="mb-2 block text-sm font-medium text-slate-200">Kullanici adi</label>
+            <input
+              id="username"
+              name="username"
+              required
+              class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              placeholder="ornek_sirket"
+            />
+          </div>
+
+          <div>
+            <label for="password" class="mb-2 block text-sm font-medium text-slate-200">Sifre</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minlength="8"
+              required
+              class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              placeholder="En az 8 karakter"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-gold-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400"
+          >
+            Muvekkili Olustur
+          </button>
+        </form>
+      </section>
+    </div>
+  </section>
+</Layout>

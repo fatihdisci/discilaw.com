@@ -1,0 +1,438 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import {
+  createSupabaseServerClient,
+  PORTAL_ACCESS_COOKIE,
+  PORTAL_REFRESH_COOKIE,
+} from '../../../../lib/supabase';
+
+export const prerender = false;
+
+type FormState = {
+  type: 'success' | 'error';
+  message: string;
+} | null;
+
+const clientId = Astro.params.id;
+
+if (!clientId) {
+  return Astro.redirect('/portal/admin');
+}
+
+const accessToken = Astro.cookies.get(PORTAL_ACCESS_COOKIE)?.value;
+
+if (!accessToken) {
+  return Astro.redirect('/portal/login');
+}
+
+const supabase = createSupabaseServerClient(accessToken);
+
+const {
+  data: { user },
+} = await supabase.auth.getUser(accessToken);
+
+if (!user) {
+  Astro.cookies.delete(PORTAL_ACCESS_COOKIE, { path: '/' });
+  Astro.cookies.delete(PORTAL_REFRESH_COOKIE, { path: '/' });
+  return Astro.redirect('/portal/login');
+}
+
+const { data: currentProfile } = await supabase
+  .from('profiles')
+  .select('id, role')
+  .eq('id', user.id)
+  .maybeSingle();
+
+if (!currentProfile || currentProfile.role !== 'admin') {
+  return Astro.redirect('/portal/dashboard');
+}
+
+let formState: FormState = null;
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const action = formData.get('action');
+
+  if (action === 'logout') {
+    await supabase.auth.signOut();
+    Astro.cookies.delete(PORTAL_ACCESS_COOKIE, { path: '/' });
+    Astro.cookies.delete(PORTAL_REFRESH_COOKIE, { path: '/' });
+    return Astro.redirect('/portal/login');
+  }
+
+  if (action === 'create-case') {
+    const title = formData.get('title');
+    const description = formData.get('description');
+    const status = formData.get('status');
+
+    if (typeof title !== 'string' || typeof status !== 'string' || !title.trim() || !status.trim()) {
+      formState = { type: 'error', message: 'Dosya kaydi icin zorunlu alanlari doldurun.' };
+    } else {
+      const { error } = await supabase.from('cases').insert({
+        client_id: clientId,
+        title: title.trim(),
+        description: typeof description === 'string' && description.trim() ? description.trim() : null,
+        status: status.trim(),
+      });
+
+      formState = error
+        ? { type: 'error', message: 'Dosya kaydi olusturulamadi.' }
+        : { type: 'success', message: 'Dosya kaydi olusturuldu.' };
+    }
+  }
+
+  if (action === 'create-expense') {
+    const caseId = formData.get('case_id');
+    const amount = formData.get('amount');
+    const description = formData.get('description');
+    const receiptUrl = formData.get('receipt_url');
+
+    if (
+      typeof caseId !== 'string' ||
+      typeof amount !== 'string' ||
+      !caseId ||
+      !amount ||
+      Number.isNaN(Number(amount))
+    ) {
+      formState = { type: 'error', message: 'Masraf kaydi icin gecerli alanlar girin.' };
+    } else {
+      const { error } = await supabase.from('expenses').insert({
+        case_id: caseId,
+        amount: Number(amount),
+        description: typeof description === 'string' && description.trim() ? description.trim() : null,
+        receipt_url: typeof receiptUrl === 'string' && receiptUrl.trim() ? receiptUrl.trim() : null,
+      });
+
+      formState = error
+        ? { type: 'error', message: 'Masraf kaydi olusturulamadi.' }
+        : { type: 'success', message: 'Masraf kaydi olusturuldu.' };
+    }
+  }
+
+  if (action === 'create-note') {
+    const caseId = formData.get('case_id');
+    const content = formData.get('content');
+
+    if (typeof caseId !== 'string' || typeof content !== 'string' || !caseId || !content.trim()) {
+      formState = { type: 'error', message: 'Not eklemek icin tum alanlari doldurun.' };
+    } else {
+      const { error } = await supabase.from('notes').insert({
+        case_id: caseId,
+        content: content.trim(),
+      });
+
+      formState = error
+        ? { type: 'error', message: 'Not kaydi olusturulamadi.' }
+        : { type: 'success', message: 'Not kaydi olusturuldu.' };
+    }
+  }
+}
+
+const { data: clientProfile } = await supabase
+  .from('profiles')
+  .select('id, username, company_name, role, created_at')
+  .eq('id', clientId)
+  .maybeSingle();
+
+if (!clientProfile || clientProfile.role !== 'client') {
+  return Astro.redirect('/portal/admin');
+}
+
+const { data: cases } = await supabase
+  .from('cases')
+  .select('id, title, description, status, created_at')
+  .eq('client_id', clientId)
+  .order('created_at', { ascending: false });
+
+const caseIds = (cases ?? []).map((item) => item.id);
+
+const { data: expenses } =
+  caseIds.length > 0
+    ? await supabase
+        .from('expenses')
+        .select('id, amount, description, receipt_url, created_at, case_id, cases(title)')
+        .in('case_id', caseIds)
+        .order('created_at', { ascending: false })
+    : { data: [] };
+
+const { data: notes } =
+  caseIds.length > 0
+    ? await supabase
+        .from('notes')
+        .select('id, content, created_at, case_id, cases(title)')
+        .in('case_id', caseIds)
+        .order('created_at', { ascending: false })
+    : { data: [] };
+
+const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ?? 0), 0) ?? 0;
+---
+
+<Layout
+  title="Muvekkil Detayi"
+  description="Muvekkil bazli yonetim ekrani."
+  showBreadcrumbs={false}
+>
+  <section class="px-6 py-16 sm:px-8 lg:px-12">
+    <div class="mx-auto max-w-7xl space-y-8">
+      <div class="flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-slate-900/70 p-8 shadow-2xl shadow-black/20 backdrop-blur lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-400">Muvekkil Detayi</p>
+          <h1 class="mt-3 font-serif text-4xl text-white">{clientProfile.company_name ?? 'Muvekkil'}</h1>
+          <p class="mt-3 text-sm text-slate-300">Kullanici adi: {clientProfile.username ?? '-'}</p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="/portal/admin"
+            class="rounded-2xl border border-white/10 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/5"
+          >
+            Muvekkil listesi
+          </a>
+          <form method="POST">
+            <input type="hidden" name="action" value="logout" />
+            <button
+              type="submit"
+              class="rounded-2xl border border-gold-500/40 px-5 py-3 text-sm font-semibold text-gold-300 transition hover:border-gold-400 hover:bg-gold-500/10"
+            >
+              Cikis Yap
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {Astro.url.searchParams.get('created') === '1' && (
+        <div class="rounded-[1.5rem] border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 text-sm text-emerald-100">
+          Muvekkil ve giris hesabi basariyla olusturuldu.
+        </div>
+      )}
+
+      {formState && (
+        <div
+          class:list={[
+            'rounded-[1.5rem] border px-5 py-4 text-sm',
+            formState.type === 'success'
+              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100'
+              : 'border-rose-500/30 bg-rose-500/10 text-rose-100',
+          ]}
+        >
+          {formState.message}
+        </div>
+      )}
+
+      <div class="grid gap-4 md:grid-cols-3">
+        <article class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
+          <p class="text-sm text-slate-400">Toplam dosya</p>
+          <p class="mt-3 text-3xl font-semibold text-white">{cases?.length ?? 0}</p>
+        </article>
+        <article class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
+          <p class="text-sm text-slate-400">Toplam masraf</p>
+          <p class="mt-3 text-3xl font-semibold text-white">{toplamMasraf.toLocaleString('tr-TR')} TL</p>
+        </article>
+        <article class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
+          <p class="text-sm text-slate-400">Toplam not</p>
+          <p class="mt-3 text-3xl font-semibold text-white">{notes?.length ?? 0}</p>
+        </article>
+      </div>
+
+      <div class="grid gap-6 xl:grid-cols-3">
+        <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+          <h2 class="text-lg font-semibold text-white">Dosya ekle</h2>
+          <form method="POST" class="mt-5 space-y-4">
+            <input type="hidden" name="action" value="create-case" />
+            <div>
+              <label for="title" class="mb-2 block text-sm font-medium text-slate-200">Dosya basligi</label>
+              <input
+                id="title"
+                name="title"
+                required
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+                placeholder="Hukuki surec basligi"
+              />
+            </div>
+            <div>
+              <label for="status" class="mb-2 block text-sm font-medium text-slate-200">Durum</label>
+              <select
+                id="status"
+                name="status"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              >
+                <option value="Acik">Acik</option>
+                <option value="Devam ediyor">Devam ediyor</option>
+                <option value="Beklemede">Beklemede</option>
+                <option value="Kapandi">Kapandi</option>
+              </select>
+            </div>
+            <div>
+              <label for="description" class="mb-2 block text-sm font-medium text-slate-200">Aciklama</label>
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="w-full rounded-2xl bg-gold-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400"
+            >
+              Dosya Kaydet
+            </button>
+          </form>
+        </section>
+
+        <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+          <h2 class="text-lg font-semibold text-white">Masraf ekle</h2>
+          <form method="POST" class="mt-5 space-y-4">
+            <input type="hidden" name="action" value="create-expense" />
+            <div>
+              <label for="expense_case_id" class="mb-2 block text-sm font-medium text-slate-200">Dosya</label>
+              <select
+                id="expense_case_id"
+                name="case_id"
+                required
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              >
+                <option value="">Seciniz</option>
+                {(cases ?? []).map((item) => (
+                  <option value={item.id}>{item.title}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label for="amount" class="mb-2 block text-sm font-medium text-slate-200">Tutar</label>
+              <input
+                id="amount"
+                name="amount"
+                type="number"
+                min="0"
+                step="0.01"
+                required
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              />
+            </div>
+            <div>
+              <label for="expense_description" class="mb-2 block text-sm font-medium text-slate-200">Aciklama</label>
+              <textarea
+                id="expense_description"
+                name="description"
+                rows="3"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              ></textarea>
+            </div>
+            <div>
+              <label for="receipt_url" class="mb-2 block text-sm font-medium text-slate-200">Belge baglantisi</label>
+              <input
+                id="receipt_url"
+                name="receipt_url"
+                type="url"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+                placeholder="https://..."
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full rounded-2xl bg-gold-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400"
+            >
+              Masraf Kaydet
+            </button>
+          </form>
+        </section>
+
+        <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+          <h2 class="text-lg font-semibold text-white">Not ekle</h2>
+          <form method="POST" class="mt-5 space-y-4">
+            <input type="hidden" name="action" value="create-note" />
+            <div>
+              <label for="note_case_id" class="mb-2 block text-sm font-medium text-slate-200">Dosya</label>
+              <select
+                id="note_case_id"
+                name="case_id"
+                required
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              >
+                <option value="">Seciniz</option>
+                {(cases ?? []).map((item) => (
+                  <option value={item.id}>{item.title}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label for="content" class="mb-2 block text-sm font-medium text-slate-200">Not</label>
+              <textarea
+                id="content"
+                name="content"
+                rows="5"
+                required
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="w-full rounded-2xl bg-gold-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400"
+            >
+              Not Kaydet
+            </button>
+          </form>
+        </section>
+      </div>
+
+      <div class="grid gap-6 xl:grid-cols-3">
+        <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+          <h2 class="text-lg font-semibold text-white">Dosyalar</h2>
+          <div class="mt-5 space-y-4">
+            {(cases ?? []).length > 0 ? (
+              cases?.map((item) => (
+                <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <h3 class="text-sm font-semibold text-white">{item.title}</h3>
+                  <p class="mt-2 text-sm text-slate-400">{item.description || 'Aciklama girilmedi.'}</p>
+                  <p class="mt-2 text-sm text-gold-300">{item.status}</p>
+                </article>
+              ))
+            ) : (
+              <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
+                Henuz dosya kaydi bulunmuyor.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+          <h2 class="text-lg font-semibold text-white">Masraflar</h2>
+          <div class="mt-5 space-y-4">
+            {(expenses ?? []).length > 0 ? (
+              expenses?.map((item) => (
+                <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <h3 class="text-sm font-semibold text-white">{item.cases?.title ?? 'Dosya'}</h3>
+                  <p class="mt-2 text-sm text-slate-400">{item.description || 'Aciklama girilmedi.'}</p>
+                  <p class="mt-2 text-sm text-gold-300">{Number(item.amount ?? 0).toLocaleString('tr-TR')} TL</p>
+                </article>
+              ))
+            ) : (
+              <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
+                Henuz masraf kaydi bulunmuyor.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
+          <h2 class="text-lg font-semibold text-white">Notlar</h2>
+          <div class="mt-5 space-y-4">
+            {(notes ?? []).length > 0 ? (
+              notes?.map((item) => (
+                <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <h3 class="text-sm font-semibold text-white">{item.cases?.title ?? 'Dosya notu'}</h3>
+                  <p class="mt-2 text-sm text-slate-400">{item.content}</p>
+                </article>
+              ))
+            ) : (
+              <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
+                Henuz not kaydi bulunmuyor.
+              </p>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</Layout>

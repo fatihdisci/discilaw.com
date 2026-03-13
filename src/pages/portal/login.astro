@@ -1,0 +1,134 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {
+  createSupabaseAdminClient,
+  createSupabaseServerClient,
+  PORTAL_ACCESS_COOKIE,
+  PORTAL_REFRESH_COOKIE,
+} from '../../lib/supabase';
+
+export const prerender = false;
+
+let hataMesaji = '';
+
+const supabase = createSupabaseServerClient();
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const username = formData.get('username');
+  const password = formData.get('password');
+
+  if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
+    hataMesaji = 'Lutfen kullanici adi ve sifre alanlarini doldurun.';
+  } else {
+    const adminSupabase = createSupabaseAdminClient();
+    const normalizedUsername = username.trim().toLowerCase();
+
+    const { data: profile, error: profileError } = await adminSupabase
+      .from('profiles')
+      .select('id, role, username')
+      .eq('username', normalizedUsername)
+      .maybeSingle();
+
+    if (profileError || !profile) {
+      hataMesaji = 'Kullanici adi veya sifre hatali.';
+    } else {
+      const { data: authUserData, error: authUserError } = await adminSupabase.auth.admin.getUserById(profile.id);
+
+      const email = authUserData?.user?.email;
+
+      if (authUserError || !email) {
+        hataMesaji = 'Kullanici hesabi dogrulanamadi.';
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error || !data.session) {
+          hataMesaji = 'Kullanici adi veya sifre hatali.';
+        } else {
+          Astro.cookies.set(PORTAL_ACCESS_COOKIE, data.session.access_token, {
+            httpOnly: true,
+            path: '/',
+            sameSite: 'lax',
+            secure: Astro.url.protocol === 'https:',
+            maxAge: data.session.expires_in,
+          });
+
+          Astro.cookies.set(PORTAL_REFRESH_COOKIE, data.session.refresh_token, {
+            httpOnly: true,
+            path: '/',
+            sameSite: 'lax',
+            secure: Astro.url.protocol === 'https:',
+            maxAge: 60 * 60 * 24 * 30,
+          });
+
+          return Astro.redirect(profile.role === 'admin' ? '/portal/admin' : '/portal/dashboard');
+        }
+      }
+    }
+  }
+}
+---
+
+<Layout
+  title="Portal Giris"
+  description="Portal giris sayfasi."
+  showBreadcrumbs={false}
+>
+  <section class="relative isolate overflow-hidden px-6 py-20 sm:px-8 lg:px-12">
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,_rgba(15,23,42,0.96),_rgba(2,6,23,1))]"></div>
+    <div class="relative mx-auto max-w-md">
+      <div class="rounded-[2rem] border border-white/10 bg-slate-900/85 p-8 shadow-2xl shadow-black/30 backdrop-blur">
+        <div class="mb-8">
+          <h1 class="font-serif text-3xl text-white">Portal Girisi</h1>
+          <p class="mt-3 text-sm leading-6 text-slate-400">
+            Kullanici adiniz ve sifreniz ile giris yapin.
+          </p>
+        </div>
+
+        {hataMesaji && (
+          <div class="mb-6 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {hataMesaji}
+          </div>
+        )}
+
+        <form method="POST" class="space-y-5">
+          <div>
+            <label for="username" class="mb-2 block text-sm font-medium text-slate-200">Kullanici adi</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autocomplete="username"
+              required
+              class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              placeholder="musteri_kullanici_adi"
+            />
+          </div>
+
+          <div>
+            <label for="password" class="mb-2 block text-sm font-medium text-slate-200">Sifre</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
+              placeholder="Sifrenizi girin"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-gold-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 focus:ring-offset-2 focus:ring-offset-slate-900"
+          >
+            Giris Yap
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Layout>
