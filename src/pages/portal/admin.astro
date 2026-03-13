@@ -59,21 +59,21 @@ const toplamDosya = clients?.reduce((sum, item) => sum + (item.cases?.length ?? 
 ---
 
 <Layout
-  title="Portal Yonetimi"
-  description="Portal yonetim paneli."
+  title="Portal Yönetimi"
+  description="Portal yönetim paneli."
   showBreadcrumbs={false}
 >
   <section class="px-6 py-16 sm:px-8 lg:px-12">
     <div class="mx-auto max-w-7xl space-y-8">
       <div class="flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-slate-900/70 p-8 shadow-2xl shadow-black/20 backdrop-blur lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-400">Yonetim Paneli</p>
-          <h1 class="mt-3 font-serif text-4xl text-white">Muvekkil yonetimi</h1>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-400">Yönetim Paneli</p>
+          <h1 class="mt-3 font-serif text-4xl text-white">Müvekkil yönetimi</h1>
           <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-            Muvekkilleri buradan yonetin. Her muvekkil kartina tiklayarak o kisiye ait dosya, masraf ve not kayitlarini
-            ayri bir ekranda yonetebilirsiniz.
+            Müvekkilleri buradan yönetin. Her müvekkil kartına tıklayarak o kişiye ait dosya, masraf ve not kayıtlarını
+            ayrı bir ekranda yönetebilirsiniz.
           </p>
-          <p class="mt-2 text-sm text-slate-400">Giris yapan hesap: {user.email}</p>
+          <p class="mt-2 text-sm text-slate-400">Giriş yapan hesap: {user.email}</p>
         </div>
 
         <div class="flex flex-wrap gap-3">
@@ -81,7 +81,7 @@ const toplamDosya = clients?.reduce((sum, item) => sum + (item.cases?.length ?? 
             href="/portal/admin/muvekkiller/yeni"
             class="rounded-2xl bg-gold-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400"
           >
-            Yeni Muvekkil Ekle
+            Yeni Müvekkil Ekle
           </a>
           <a
             href="/portal/dashboard"
@@ -95,7 +95,7 @@ const toplamDosya = clients?.reduce((sum, item) => sum + (item.cases?.length ?? 
               type="submit"
               class="rounded-2xl border border-gold-500/40 px-5 py-3 text-sm font-semibold text-gold-300 transition hover:border-gold-400 hover:bg-gold-500/10"
             >
-              Cikis Yap
+              Çıkış Yap
             </button>
           </form>
         </div>
@@ -103,7 +103,7 @@ const toplamDosya = clients?.reduce((sum, item) => sum + (item.cases?.length ?? 
 
       <div class="grid gap-4 md:grid-cols-3">
         <article class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
-          <p class="text-sm text-slate-400">Toplam muvekkil</p>
+          <p class="text-sm text-slate-400">Toplam müvekkil</p>
           <p class="mt-3 text-3xl font-semibold text-white">{toplamMuvekkil}</p>
         </article>
         <article class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
@@ -112,14 +112,14 @@ const toplamDosya = clients?.reduce((sum, item) => sum + (item.cases?.length ?? 
         </article>
         <article class="rounded-[1.75rem] border border-white/10 bg-white/5 p-6">
           <p class="text-sm text-slate-400">Aktif rol</p>
-          <p class="mt-3 text-3xl font-semibold text-white">Yonetici</p>
+          <p class="mt-3 text-3xl font-semibold text-white">Yönetici</p>
         </article>
       </div>
 
       <section class="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6">
         <div class="mb-5 flex items-center justify-between">
-          <h2 class="text-lg font-semibold text-white">Muvekkil listesi</h2>
-          <span class="text-xs uppercase tracking-[0.2em] text-slate-500">Detay icin tiklayin</span>
+          <h2 class="text-lg font-semibold text-white">Müvekkil listesi</h2>
+          <span class="text-xs uppercase tracking-[0.2em] text-slate-500">Detay için tıklayın</span>
         </div>
 
         {(clients ?? []).length > 0 ? (
@@ -130,14 +130,14 @@ const toplamDosya = clients?.reduce((sum, item) => sum + (item.cases?.length ?? 
                 class="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-gold-500/40 hover:bg-white/10"
               >
                 <p class="text-base font-semibold text-white">{item.company_name ?? 'Muvekkil'}</p>
-                <p class="mt-2 text-sm text-slate-400">Kullanici adi: {item.username ?? '-'}</p>
-                <p class="mt-2 text-sm text-slate-400">Dosya sayisi: {item.cases?.length ?? 0}</p>
+                <p class="mt-2 text-sm text-slate-400">Kullanıcı adı: {item.username ?? '-'}</p>
+                <p class="mt-2 text-sm text-slate-400">Dosya sayısı: {item.cases?.length ?? 0}</p>
               </a>
             ))}
           </div>
         ) : (
           <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
-            Henuz muvekkil kaydi bulunmuyor.
+            Henüz müvekkil kaydı bulunmuyor.
           </p>
         )}
       </section>

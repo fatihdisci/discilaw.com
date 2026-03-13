@@ -66,7 +66,7 @@ if (Astro.request.method === 'POST') {
     const status = formData.get('status');
 
     if (typeof title !== 'string' || typeof status !== 'string' || !title.trim() || !status.trim()) {
-      formState = { type: 'error', message: 'Dosya kaydi icin zorunlu alanlari doldurun.' };
+      formState = { type: 'error', message: 'Dosya kaydı için zorunlu alanları doldurun.' };
     } else {
       const { error } = await supabase.from('cases').insert({
         client_id: clientId,
@@ -76,8 +76,8 @@ if (Astro.request.method === 'POST') {
       });
 
       formState = error
-        ? { type: 'error', message: 'Dosya kaydi olusturulamadi.' }
-        : { type: 'success', message: 'Dosya kaydi olusturuldu.' };
+        ? { type: 'error', message: 'Dosya kaydı oluşturulamadı.' }
+        : { type: 'success', message: 'Dosya kaydı oluşturuldu.' };
     }
   }
 
@@ -94,7 +94,7 @@ if (Astro.request.method === 'POST') {
       !amount ||
       Number.isNaN(Number(amount))
     ) {
-      formState = { type: 'error', message: 'Masraf kaydi icin gecerli alanlar girin.' };
+      formState = { type: 'error', message: 'Masraf kaydı için geçerli alanlar girin.' };
     } else {
       const { error } = await supabase.from('expenses').insert({
         case_id: caseId,
@@ -104,8 +104,8 @@ if (Astro.request.method === 'POST') {
       });
 
       formState = error
-        ? { type: 'error', message: 'Masraf kaydi olusturulamadi.' }
-        : { type: 'success', message: 'Masraf kaydi olusturuldu.' };
+        ? { type: 'error', message: 'Masraf kaydı oluşturulamadı.' }
+        : { type: 'success', message: 'Masraf kaydı oluşturuldu.' };
     }
   }
 
@@ -114,7 +114,7 @@ if (Astro.request.method === 'POST') {
     const content = formData.get('content');
 
     if (typeof caseId !== 'string' || typeof content !== 'string' || !caseId || !content.trim()) {
-      formState = { type: 'error', message: 'Not eklemek icin tum alanlari doldurun.' };
+      formState = { type: 'error', message: 'Not eklemek için tüm alanları doldurun.' };
     } else {
       const { error } = await supabase.from('notes').insert({
         case_id: caseId,
@@ -122,8 +122,8 @@ if (Astro.request.method === 'POST') {
       });
 
       formState = error
-        ? { type: 'error', message: 'Not kaydi olusturulamadi.' }
-        : { type: 'success', message: 'Not kaydi olusturuldu.' };
+        ? { type: 'error', message: 'Not kaydı oluşturulamadı.' }
+        : { type: 'success', message: 'Not kaydı oluşturuldu.' };
     }
   }
 }
@@ -168,17 +168,17 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
 ---
 
 <Layout
-  title="Muvekkil Detayi"
-  description="Muvekkil bazli yonetim ekrani."
+  title="Müvekkil Detayı"
+  description="Müvekkil bazlı yönetim ekranı."
   showBreadcrumbs={false}
 >
   <section class="px-6 py-16 sm:px-8 lg:px-12">
     <div class="mx-auto max-w-7xl space-y-8">
       <div class="flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-slate-900/70 p-8 shadow-2xl shadow-black/20 backdrop-blur lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-400">Muvekkil Detayi</p>
-          <h1 class="mt-3 font-serif text-4xl text-white">{clientProfile.company_name ?? 'Muvekkil'}</h1>
-          <p class="mt-3 text-sm text-slate-300">Kullanici adi: {clientProfile.username ?? '-'}</p>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-400">Müvekkil Detayı</p>
+          <h1 class="mt-3 font-serif text-4xl text-white">{clientProfile.company_name ?? 'Müvekkil'}</h1>
+          <p class="mt-3 text-sm text-slate-300">Kullanıcı adı: {clientProfile.username ?? '-'}</p>
         </div>
 
         <div class="flex flex-wrap gap-3">
@@ -186,7 +186,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
             href="/portal/admin"
             class="rounded-2xl border border-white/10 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/5"
           >
-            Muvekkil listesi
+            Müvekkil listesi
           </a>
           <form method="POST">
             <input type="hidden" name="action" value="logout" />
@@ -194,7 +194,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
               type="submit"
               class="rounded-2xl border border-gold-500/40 px-5 py-3 text-sm font-semibold text-gold-300 transition hover:border-gold-400 hover:bg-gold-500/10"
             >
-              Cikis Yap
+              Çıkış Yap
             </button>
           </form>
         </div>
@@ -202,7 +202,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
 
       {Astro.url.searchParams.get('created') === '1' && (
         <div class="rounded-[1.5rem] border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 text-sm text-emerald-100">
-          Muvekkil ve giris hesabi basariyla olusturuldu.
+          Müvekkil ve giriş hesabı başarıyla oluşturuldu.
         </div>
       )}
 
@@ -240,13 +240,13 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
           <form method="POST" class="mt-5 space-y-4">
             <input type="hidden" name="action" value="create-case" />
             <div>
-              <label for="title" class="mb-2 block text-sm font-medium text-slate-200">Dosya basligi</label>
+              <label for="title" class="mb-2 block text-sm font-medium text-slate-200">Dosya başlığı</label>
               <input
                 id="title"
                 name="title"
                 required
                 class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
-                placeholder="Hukuki surec basligi"
+                placeholder="Hukuki süreç başlığı"
               />
             </div>
             <div>
@@ -256,14 +256,14 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
                 name="status"
                 class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
               >
-                <option value="Acik">Acik</option>
+                <option value="Açık">Açık</option>
                 <option value="Devam ediyor">Devam ediyor</option>
                 <option value="Beklemede">Beklemede</option>
-                <option value="Kapandi">Kapandi</option>
+                <option value="Kapandı">Kapandı</option>
               </select>
             </div>
             <div>
-              <label for="description" class="mb-2 block text-sm font-medium text-slate-200">Aciklama</label>
+              <label for="description" class="mb-2 block text-sm font-medium text-slate-200">Açıklama</label>
               <textarea
                 id="description"
                 name="description"
@@ -292,7 +292,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
                 required
                 class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
               >
-                <option value="">Seciniz</option>
+                <option value="">Seçiniz</option>
                 {(cases ?? []).map((item) => (
                   <option value={item.id}>{item.title}</option>
                 ))}
@@ -311,7 +311,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
               />
             </div>
             <div>
-              <label for="expense_description" class="mb-2 block text-sm font-medium text-slate-200">Aciklama</label>
+              <label for="expense_description" class="mb-2 block text-sm font-medium text-slate-200">Açıklama</label>
               <textarea
                 id="expense_description"
                 name="description"
@@ -320,7 +320,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
               ></textarea>
             </div>
             <div>
-              <label for="receipt_url" class="mb-2 block text-sm font-medium text-slate-200">Belge baglantisi</label>
+              <label for="receipt_url" class="mb-2 block text-sm font-medium text-slate-200">Belge bağlantısı</label>
               <input
                 id="receipt_url"
                 name="receipt_url"
@@ -350,7 +350,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
                 required
                 class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
               >
-                <option value="">Seciniz</option>
+                <option value="">Seçiniz</option>
                 {(cases ?? []).map((item) => (
                   <option value={item.id}>{item.title}</option>
                 ))}
@@ -384,13 +384,13 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
               cases?.map((item) => (
                 <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <h3 class="text-sm font-semibold text-white">{item.title}</h3>
-                  <p class="mt-2 text-sm text-slate-400">{item.description || 'Aciklama girilmedi.'}</p>
+                  <p class="mt-2 text-sm text-slate-400">{item.description || 'Açıklama girilmedi.'}</p>
                   <p class="mt-2 text-sm text-gold-300">{item.status}</p>
                 </article>
               ))
             ) : (
               <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
-                Henuz dosya kaydi bulunmuyor.
+                Henüz dosya kaydı bulunmuyor.
               </p>
             )}
           </div>
@@ -403,13 +403,13 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
               expenses?.map((item) => (
                 <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <h3 class="text-sm font-semibold text-white">{item.cases?.title ?? 'Dosya'}</h3>
-                  <p class="mt-2 text-sm text-slate-400">{item.description || 'Aciklama girilmedi.'}</p>
+                  <p class="mt-2 text-sm text-slate-400">{item.description || 'Açıklama girilmedi.'}</p>
                   <p class="mt-2 text-sm text-gold-300">{Number(item.amount ?? 0).toLocaleString('tr-TR')} TL</p>
                 </article>
               ))
             ) : (
               <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
-                Henuz masraf kaydi bulunmuyor.
+                Henüz masraf kaydı bulunmuyor.
               </p>
             )}
           </div>
@@ -427,7 +427,7 @@ const toplamMasraf = expenses?.reduce((sum, item) => sum + Number(item.amount ??
               ))
             ) : (
               <p class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
-                Henuz not kaydi bulunmuyor.
+                Henüz not kaydı bulunmuyor.
               </p>
             )}
           </div>

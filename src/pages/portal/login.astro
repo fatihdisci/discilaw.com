@@ -19,7 +19,7 @@ if (Astro.request.method === 'POST') {
     const password = formData.get('password');
 
     if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
-      hataMesaji = 'Lutfen kullanici adi ve sifre alanlarini doldurun.';
+      hataMesaji = 'Lütfen kullanıcı adı ve şifre alanlarını doldurun.';
     } else {
       const adminSupabase = createSupabaseAdminClient();
       const normalizedUsername = username.trim().toLowerCase();
@@ -31,14 +31,14 @@ if (Astro.request.method === 'POST') {
         .maybeSingle();
 
       if (profileError || !profile) {
-        hataMesaji = 'Kullanici adi veya sifre hatali.';
+        hataMesaji = 'Kullanıcı adı veya şifre hatalı.';
       } else {
         const { data: authUserData, error: authUserError } = await adminSupabase.auth.admin.getUserById(profile.id);
 
         const email = authUserData?.user?.email;
 
         if (authUserError || !email) {
-          hataMesaji = 'Kullanici hesabi dogrulanamadi.';
+          hataMesaji = 'Kullanıcı hesabı doğrulanamadı.';
         } else {
           const supabase = createSupabaseServerClient();
           const { data, error } = await supabase.auth.signInWithPassword({
@@ -47,7 +47,7 @@ if (Astro.request.method === 'POST') {
           });
 
           if (error || !data.session) {
-            hataMesaji = 'Kullanici adi veya sifre hatali.';
+            hataMesaji = 'Kullanıcı adı veya şifre hatalı.';
           } else {
             Astro.cookies.set(PORTAL_ACCESS_COOKIE, data.session.access_token, {
               httpOnly: true,
@@ -71,18 +71,18 @@ if (Astro.request.method === 'POST') {
       }
     }
   } catch {
-    hataMesaji = 'Portal girisi gecici olarak kullanilamiyor. Lutfen yonetici ile iletisime gecin.';
+    hataMesaji = 'Portal girişi geçici olarak kullanılamıyor. Lütfen yönetici ile iletişime geçin.';
   }
 }
 
 if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANON_KEY) {
-  sistemMesaji = 'Portal gecici olarak kullanilamiyor. Lutfen daha sonra tekrar deneyin.';
+  sistemMesaji = 'Portal geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.';
 }
 ---
 
 <Layout
-  title="Portal Giris"
-  description="Portal giris sayfasi."
+  title="Portal Giriş"
+  description="Portal giriş sayfası."
   showBreadcrumbs={false}
 >
   <section class="relative isolate overflow-hidden px-6 py-20 sm:px-8 lg:px-12">
@@ -90,9 +90,9 @@ if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANO
     <div class="relative mx-auto max-w-md">
       <div class="rounded-[2rem] border border-white/10 bg-slate-900/85 p-8 shadow-2xl shadow-black/30 backdrop-blur">
         <div class="mb-8">
-          <h1 class="font-serif text-3xl text-white">Portal Girisi</h1>
+          <h1 class="font-serif text-3xl text-white">Portal Girişi</h1>
           <p class="mt-3 text-sm leading-6 text-slate-400">
-            Kullanici adiniz ve sifreniz ile giris yapin.
+            Kullanıcı adınız ve şifreniz ile giriş yapın.
           </p>
         </div>
 
@@ -109,7 +109,7 @@ if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANO
 
         <form method="POST" class="space-y-5">
           <div>
-            <label for="username" class="mb-2 block text-sm font-medium text-slate-200">Kullanici adi</label>
+            <label for="username" class="mb-2 block text-sm font-medium text-slate-200">Kullanıcı adı</label>
             <input
               id="username"
               name="username"
@@ -122,7 +122,7 @@ if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANO
           </div>
 
           <div>
-            <label for="password" class="mb-2 block text-sm font-medium text-slate-200">Sifre</label>
+            <label for="password" class="mb-2 block text-sm font-medium text-slate-200">Şifre</label>
             <input
               id="password"
               name="password"
@@ -130,7 +130,7 @@ if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANO
               autocomplete="current-password"
               required
               class="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30"
-              placeholder="Sifrenizi girin"
+              placeholder="Şifrenizi girin"
             />
           </div>
 
@@ -138,7 +138,7 @@ if (!import.meta.env.PUBLIC_SUPABASE_URL || !import.meta.env.PUBLIC_SUPABASE_ANO
             type="submit"
             class="w-full rounded-2xl bg-gold-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 focus:ring-offset-2 focus:ring-offset-slate-900"
           >
-            Giris Yap
+            Giriş Yap
           </button>
         </form>
       </div>
