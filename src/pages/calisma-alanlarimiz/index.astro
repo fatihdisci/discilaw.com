@@ -9,21 +9,21 @@ const services = await getCollection('services');
 
 <Layout title="Çalışma Alanlarımız" description="Dişçi Hukuk Bürosu'nun ceza, aile, iş, gayrimenkul ve ticaret hukuku başta olmak üzere sunduğu çalışma alanlarını inceleyin." canonicalPath="/calisma-alanlarimiz" enableAOS={true}>
   <!-- Header -->
-  <section class="py-20 bg-slate-900 border-b border-white/5">
+  <section class="py-20 border-b" style="background: var(--bg-2); border-color: var(--border);">
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-serif" data-aos="fade-up">Çalışma Alanlarımız</h1>
-      <p class="text-slate-400 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+      <h1 class="text-4xl md:text-5xl font-light mb-4 font-display" style="color: var(--text);" data-aos="fade-up">Çalışma Alanlarımız</h1>
+      <p class="max-w-2xl mx-auto" style="color: var(--text-2);" data-aos="fade-up" data-aos-delay="100">
         Büromuz bünyesinde takip edilen temel hukuk dalları ve faaliyet alanları.
       </p>
     </div>
   </section>
 
   <!-- Services Grid -->
-  <section class="py-24 bg-slate-950">
+  <section class="py-24" style="background: var(--bg);">
     <div class="container mx-auto px-4">
       <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 list-none p-0 m-0">
         {services.map((service, index) => (
-          <li class="relative h-full rounded-[1.25rem] border-[0.75px] border-slate-700/50 p-2 md:rounded-[1.5rem] md:p-3" data-aos="fade-up" data-aos-delay={index * 100}>
+          <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay={index * 100}>
             <GlowingEffect
               client:visible
               spread={40}
@@ -33,19 +33,19 @@ const services = await getCollection('services');
               inactiveZone={0.01}
               borderWidth={2}
             />
-            <a 
+            <a
               href={`/calisma-alanlarimiz/${service.slug}`}
               class="group block h-full"
             >
-              <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] border-slate-700 bg-slate-900 p-6 md:p-8 shadow-sm">
+              <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
                 <div>
                   <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
                     <ServiceIcon client:visible slug={service.slug} size={28} className="text-gold-500" />
                   </div>
-                  <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-serif group-hover:text-gold-500 transition-colors">
+                  <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
                     {service.data.title}
                   </h2>
-                  <p class="text-slate-400 text-sm leading-relaxed">
+                  <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
                     {service.data.description}
                   </p>
                 </div>

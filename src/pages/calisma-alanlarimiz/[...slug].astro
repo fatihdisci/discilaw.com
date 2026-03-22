@@ -57,18 +57,18 @@ const faqSchema = entry.data.faqs?.length
   breadcrumbItems={[{ name: 'Çalışma Alanlarımız', href: '/calisma-alanlarimiz' }, { name: entry.data.title, href: canonicalPath }]}
   structuredData={faqSchema ? [serviceSchema, faqSchema] : serviceSchema}
 >
-  <article class="py-24 bg-slate-950 min-h-screen">
+  <article class="py-24 min-h-screen" style="background: var(--bg);">
     <div class="container mx-auto px-4 max-w-4xl mb-12 text-center" data-aos="fade-up">
       <div class="mb-6 flex justify-center"><ServiceIcon client:visible slug={entry.slug} size={64} className="text-gold-500" /></div>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight font-serif">{entry.data.title}</h1>
-      <p class="text-xl text-slate-400 max-w-2xl mx-auto">{entry.data.description}</p>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight font-display" style="color: var(--text);">{entry.data.title}</h1>
+      <p class="text-xl max-w-2xl mx-auto" style="color: var(--text-2);">{entry.data.description}</p>
     </div>
     <div class="container mx-auto px-6 max-w-4xl">
       <div class="prose prose-invert prose-lg mx-auto max-w-4xl py-12 service-content" data-aos="fade-up" data-aos-delay="200" lang="tr">
         <Content />
         {entry.data.faqs?.length > 0 && (
           <div class="mt-12 not-prose">
-            <h2 class="text-3xl font-serif text-gold-500 mb-6">Sıkça Sorulan Sorular</h2>
+            <h2 class="text-3xl font-display text-gold-500 mb-6">Sıkça Sorulan Sorular</h2>
             <FAQAccordion client:visible faqs={entry.data.faqs} />
           </div>
         )}
@@ -76,14 +76,14 @@ const faqSchema = entry.data.faqs?.length
     </div>
 
     {relatedPosts.length > 0 && (
-      <div class="container mx-auto px-4 max-w-4xl mt-20 pt-10 border-t border-white/10">
-        <h3 class="text-2xl font-serif text-gold-500 mb-8">{entry.data.title} Hakkında Güncel Makaleler</h3>
+      <div class="container mx-auto px-4 max-w-4xl mt-20 pt-10 border-t" style="border-color: var(--border);">
+        <h3 class="text-2xl font-display text-gold-500 mb-8">{entry.data.title} Hakkında Güncel Makaleler</h3>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {relatedPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="group block bg-slate-900/50 border border-slate-800 rounded-xl p-5 hover:border-gold-500/30 transition-all hover:bg-slate-900 duration-300">
-              <time class="text-xs text-slate-500">{post.data.pubDate.toLocaleDateString('tr-TR')}</time>
-              <h4 class="text-md font-bold text-slate-200 group-hover:text-gold-400 mb-2 font-serif line-clamp-2">{post.data.title}</h4>
-              <p class="text-xs text-slate-400 line-clamp-2">{post.data.description}</p>
+            <a href={`/blog/${post.slug}`} class="group block border rounded-xl p-5 hover:border-gold-500/30 transition-all duration-300" style="background: var(--card-bg); border-color: var(--border);">
+              <time class="text-xs" style="color: var(--text-3);">{post.data.pubDate.toLocaleDateString('tr-TR')}</time>
+              <h4 class="text-md font-bold group-hover:text-gold-400 mb-2 font-display line-clamp-2" style="color: var(--text);">{post.data.title}</h4>
+              <p class="text-xs line-clamp-2" style="color: var(--text-2);">{post.data.description}</p>
             </a>
           ))}
         </div>
