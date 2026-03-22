@@ -13,43 +13,54 @@ const hesaplamaAraclari = [
 ];
 ---
 
-<nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-slate-950/80 backdrop-blur-md">
+<nav class="fixed w-full z-50 top-0 start-0 border-b backdrop-blur-md transition-colors"
+     style="background: var(--nav-bg); border-color: var(--border);">
   <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between py-6 px-4 md:py-8">
     <a href="/" class="flex items-center gap-3 group">
       <img src="/logo.png" alt="Dişçi Hukuk Bürosu" class="h-20 md:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
     </a>
-    <button id="mobile-menu-toggle" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-slate-400 rounded-lg md:hidden hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-600" aria-controls="navbar-default" aria-expanded="false">
-      <span class="sr-only">Open main menu</span>
+    <button id="mobile-menu-toggle" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 transition-colors" style="color: var(--text-3);" aria-controls="navbar-default" aria-expanded="false">
+      <span class="sr-only">Menüyü Aç</span>
       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
       </svg>
     </button>
     <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-      <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-800 rounded-lg bg-slate-900 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent">
+      <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent" style="border-color: var(--border); background: var(--bg-2);" class:list={["md:!bg-transparent"]}>
         {links.slice(0, 3).map((link) => (
           <li>
-            <a href={link.href} class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-gold-500 md:p-0 transition-colors duration-200">{link.name}</a>
+            <a href={link.href}
+               class="block py-2 px-3 rounded md:hover:bg-transparent md:border-0 md:p-0 transition-colors duration-200"
+               style="color: var(--text-2);"
+               onmouseover="this.style.color='var(--text)'"
+               onmouseout="this.style.color='var(--text-2)'">{link.name}</a>
           </li>
         ))}
 
         <li class="relative group/dropdown">
-          <a href="/hesaplama-araclari" class="flex items-center gap-1 py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-gold-500 md:p-0 transition-colors duration-200">
+          <a href="/hesaplama-araclari"
+             class="flex items-center gap-1 py-2 px-3 rounded md:hover:bg-transparent md:border-0 md:p-0 transition-colors duration-200"
+             style="color: var(--text-2);"
+             onmouseover="this.style.color='var(--text)'"
+             onmouseout="this.style.color='var(--text-2)'">
             Hesaplama Araçları
             <svg class="w-3 h-3 ml-1 transition-transform duration-200 group-hover/dropdown:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </a>
           <div class="md:absolute md:left-1/2 md:-translate-x-1/2 md:top-full md:pt-2 md:opacity-0 md:invisible group-hover/dropdown:md:opacity-100 group-hover/dropdown:md:visible transition-all duration-200">
-            <ul class="md:bg-slate-900 md:border md:border-slate-700 md:rounded-xl md:shadow-xl md:shadow-black/20 md:py-2 md:min-w-[260px] mt-2 md:mt-0 pl-4 md:pl-0">
+            <ul class="md:border md:rounded-xl md:shadow-xl md:py-2 md:min-w-[260px] mt-2 md:mt-0 pl-4 md:pl-0" style="background: var(--card-bg); border-color: var(--border);">
               {hesaplamaAraclari.map((tool) => (
                 <li>
-                  <a href={tool.href} class="block py-2 px-4 text-slate-300 hover:bg-slate-800 hover:text-gold-500 transition-colors duration-200 text-sm md:text-base">
+                  <a href={tool.href}
+                     class="block py-2 px-4 hover:text-gold-500 transition-colors duration-200 text-sm md:text-base"
+                     style="color: var(--text-2);">
                     {tool.name}
                   </a>
                 </li>
               ))}
-              <li class="border-t border-slate-700 mt-2 pt-2">
-                <a href="/hesaplama-araclari" class="block py-2 px-4 text-gold-500 hover:bg-slate-800 transition-colors duration-200 text-sm font-medium">
+              <li class="border-t mt-2 pt-2" style="border-color: var(--border);">
+                <a href="/hesaplama-araclari" class="block py-2 px-4 text-gold-500 transition-colors duration-200 text-sm font-medium">
                   Tüm Araçları Gör →
                 </a>
               </li>
@@ -59,15 +70,38 @@ const hesaplamaAraclari = [
 
         {links.slice(3).map((link) => (
           <li>
-            <a href={link.href} class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-gold-500 md:p-0 transition-colors duration-200">{link.name}</a>
+            <a href={link.href}
+               class="block py-2 px-3 rounded md:hover:bg-transparent md:border-0 md:p-0 transition-colors duration-200"
+               style="color: var(--text-2);"
+               onmouseover="this.style.color='var(--text)'"
+               onmouseout="this.style.color='var(--text-2)'">{link.name}</a>
           </li>
         ))}
-        <li>
+        <li class="flex items-center gap-2">
+          <button id="theme-toggle"
+            class="w-9 h-9 rounded-lg border flex items-center justify-center cursor-pointer transition-colors"
+            style="background: var(--bg-2); border-color: var(--border);"
+            aria-label="Temayı değiştir">
+            <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" style="fill: var(--text-2);">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+            <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" class="hidden" style="fill: var(--gold);">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/>
+              <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/>
+              <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/>
+              <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
           <a
             href="/portal/login"
             class="inline-flex items-center justify-center py-2 px-3 text-sm font-medium text-gold-300 rounded-lg border border-gold-500/40 bg-gold-500/10 hover:bg-gold-500/20 hover:text-gold-200 transition-colors duration-200 md:py-1 md:px-3"
           >
-            Giriş
+            Müvekkil Girişi
           </a>
         </li>
       </ul>
@@ -84,4 +118,20 @@ const hesaplamaAraclari = [
       navbarDefault.classList.toggle('hidden');
     });
   }
+
+  const btn = document.getElementById('theme-toggle');
+  const moon = document.getElementById('icon-moon');
+  const sun = document.getElementById('icon-sun');
+  function syncIcons() {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    moon?.classList.toggle('hidden', dark);
+    sun?.classList.toggle('hidden', !dark);
+  }
+  syncIcons();
+  btn?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    syncIcons();
+  });
 </script>

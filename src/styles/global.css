@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold-50: #fbf7ef;
+  /* Mevcut gold — koru */
+  --color-gold-50:  #fbf7ef;
   --color-gold-100: #f5edd8;
   --color-gold-200: #ead9b0;
   --color-gold-300: #dec084;
@@ -12,60 +13,75 @@
   --color-gold-800: #654f2e;
   --color-gold-900: #544129;
   --color-gold-950: #2e2315;
+
+  /* YENİ fontlar */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Outfit', 'Inter', sans-serif;
+  --font-sans:    'Outfit', 'Inter', sans-serif;  /* Tailwind default override */
+  --font-serif:   'Cormorant Garamond', Georgia, serif;
+}
+
+/* Dark mode variant — v4 syntax */
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* CSS değişkenleri — light/dark tema */
+@layer base {
+  :root {
+    --bg:        #FFFFFF;
+    --bg-2:      #F8F7F4;
+    --bg-3:      #F0EDE6;
+    --border:    #E4E0D8;
+    --text:      #0D0C0A;
+    --text-2:    #4A4845;
+    --text-3:    #8C8A86;
+    --navy:      #1B3550;
+    --card-bg:   #FFFFFF;
+    --nav-bg:    rgba(255,255,255,0.92);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  [data-theme="dark"] {
+    --bg:        #0C0B09;
+    --bg-2:      #131210;
+    --bg-3:      #1A1916;
+    --border:    #2A2925;
+    --text:      #F2EFE8;
+    --text-2:    #B0ADA6;
+    --text-3:    #6B6864;
+    --navy:      #4A90C4;
+    --card-bg:   #131210;
+    --nav-bg:    rgba(12,11,9,0.92);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', 'Inter', sans-serif;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+/* Blog prose override — güncelle */
+@layer components {
+  .prose h2 { @apply text-gold-500 font-bold mt-10 mb-6 text-2xl; font-family: var(--font-display); }
+  .prose h3 { @apply text-gold-500 font-bold mt-8 mb-4 text-xl; font-family: var(--font-display); }
+  .prose p  { @apply mb-6 leading-relaxed; }
+  .prose strong { @apply font-bold; color: var(--text); }
+  .prose a  { @apply text-gold-500 hover:text-gold-400 no-underline hover:underline; }
+  .prose blockquote { @apply border-l-4 border-gold-500 pl-4 italic my-6; color: var(--text-2); }
+  .prose ul { @apply mb-6 pl-5 list-disc marker:text-gold-500; }
+  .prose ol { @apply mb-6 pl-5 list-decimal marker:text-gold-500; }
+  .prose li { @apply mb-2 pl-2; }
 }
 
 @layer utilities {
-  .text-shadow {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-}
-
-/* Typography Overrides for Blog Content */
-@layer components {
-  .prose h2 {
-    @apply text-gold-500 font-bold font-serif mt-10 mb-6 text-2xl;
-  }
-
-  .prose h3 {
-    @apply text-gold-500 font-bold font-serif mt-8 mb-4 text-xl;
-  }
-
-  .prose p {
-    @apply mb-6 leading-relaxed;
-  }
-
-  .prose strong {
-    @apply text-slate-200 font-bold;
-  }
-
-  .prose a {
-    @apply text-gold-500 hover:text-gold-400 no-underline hover:underline;
-  }
-
-  .prose blockquote {
-    @apply border-l-4 border-gold-500 pl-4 italic text-slate-300 my-6;
-  }
-
-  .prose ul {
-    @apply mb-6 pl-5 list-disc marker:text-gold-500;
-  }
-
-  .prose ol {
-    @apply mb-6 pl-5 list-decimal marker:text-gold-500;
-  }
-
-  .prose li {
-    @apply mb-2 pl-2;
-  }
-}
-
-@layer base {
-  body {
-    @apply bg-[#020617] text-slate-300;
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
-  }
-
-  .font-serif {
-    font-family: "Playfair Display", Georgia, serif;
-  }
+  .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 }
