@@ -17,8 +17,8 @@ const hesaplamaAraclari = [
      style="background: var(--nav-bg); border-color: var(--border);">
   <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between py-4 px-4 sm:py-6 md:py-8">
     <a href="/" class="flex items-center gap-3 group">
-      <img src="/logo.png" alt="Dişçi Hukuk Bürosu" class="nav-logo nav-logo-dark h-20 sm:h-24 md:h-32 w-auto object-contain transition-transform group-hover:scale-105" />
-      <img src="/logodark.png" alt="Dişçi Hukuk Bürosu" class="nav-logo nav-logo-light h-20 sm:h-24 md:h-32 w-auto object-contain transition-transform group-hover:scale-105" />
+      <img src="/logo.png" alt="Dişçi Hukuk Bürosu" class="nav-logo-dark h-24 sm:h-28 md:h-36 w-auto object-contain transition-transform group-hover:scale-105" />
+      <img src="/logodark.png" alt="Dişçi Hukuk Bürosu" class="nav-logo-light h-24 sm:h-28 md:h-36 w-auto object-contain transition-transform group-hover:scale-105" />
     </a>
     <button id="mobile-menu-toggle" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 transition-colors" style="color: var(--text-3);" aria-controls="navbar-default" aria-expanded="false">
       <span class="sr-only">Menüyü Aç</span>
@@ -105,11 +105,11 @@ const hesaplamaAraclari = [
   </div>
 </nav>
 
-<style>
-  /* Light mode: show logodark, hide logo */
-  :root .nav-logo-dark { display: none; }
-  :root .nav-logo-light { display: block; }
-  /* Dark mode: show logo, hide logodark */
+<style is:global>
+  /* Açık mod: logodark.png göster, logo.png gizle */
+  .nav-logo-dark { display: none; }
+  .nav-logo-light { display: block; }
+  /* Koyu mod: logo.png göster, logodark.png gizle */
   [data-theme="dark"] .nav-logo-dark { display: block; }
   [data-theme="dark"] .nav-logo-light { display: none; }
 </style>

@@ -8,12 +8,12 @@ const year = new Date().getFullYear();
             <!-- Brand Column -->
             <div class="flex flex-col justify-center">
                 <a href="/" class="inline-block">
-                    <img src="/logo.png" alt="Hukuki Danışmanlık" class="footer-logo footer-logo-dark h-28 md:h-36 w-auto opacity-100" />
-                    <img src="/logodark.png" alt="Hukuki Danışmanlık" class="footer-logo footer-logo-light h-28 md:h-36 w-auto opacity-100" />
+                    <img src="/logo.png" alt="Hukuki Danışmanlık" class="footer-logo-dark h-32 md:h-40 w-auto" />
+                    <img src="/logodark.png" alt="Hukuki Danışmanlık" class="footer-logo-light h-32 md:h-40 w-auto" />
                 </a>
-                <style>
-                  :root .footer-logo-dark { display: none; }
-                  :root .footer-logo-light { display: block; }
+                <style is:global>
+                  .footer-logo-dark { display: none; }
+                  .footer-logo-light { display: block; }
                   [data-theme="dark"] .footer-logo-dark { display: block; }
                   [data-theme="dark"] .footer-logo-light { display: none; }
                 </style>
