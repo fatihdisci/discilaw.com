@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-// Notice period rules based on tenure (Turkish Labor Law)
 function getNoticePeriod(tenureYears) {
     if (tenureYears < 0.5) return { weeks: 2, label: '2 Hafta' };
     if (tenureYears < 1.5) return { weeks: 4, label: '4 Hafta' };
@@ -8,40 +7,22 @@ function getNoticePeriod(tenureYears) {
     return { weeks: 8, label: '8 Hafta' };
 }
 
-// Calculate tenure in years
 function calculateTenure(startDate, endDate) {
     const start = new Date(startDate);
     const end = new Date(endDate);
-
     let years = end.getFullYear() - start.getFullYear();
     let months = end.getMonth() - start.getMonth();
     let days = end.getDate() - start.getDate();
-
-    if (days < 0) {
-        months--;
-        const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
-        days += prevMonth.getDate();
-    }
-
-    if (months < 0) {
-        years--;
-        months += 12;
-    }
-
+    if (days < 0) { months--; const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0); days += prevMonth.getDate(); }
+    if (months < 0) { years--; months += 12; }
     const totalYears = years + (months / 12) + (days / 365);
     return { years, months, days, totalYears };
 }
 
-// Format currency
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('tr-TR', {
-        style: 'currency',
-        currency: 'TRY',
-        minimumFractionDigits: 2
-    }).format(amount);
+    return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 2 }).format(amount);
 }
 
-// Tax rate options
 const TAX_RATES = [
     { value: 15, label: '%15 (Varsayılan)' },
     { value: 20, label: '%20' },
@@ -62,215 +43,98 @@ export default function NoticePayCalculator() {
         e.preventDefault();
         setError('');
         setResult(null);
-
-        // Validations
-        if (!startDate || !endDate || !grossSalary) {
-            setError('Lütfen tüm alanları doldurunuz.');
-            return;
-        }
-
+        if (!startDate || !endDate || !grossSalary) { setError('Lütfen tüm alanları doldurunuz.'); return; }
         const start = new Date(startDate);
         const end = new Date(endDate);
         const salary = parseFloat(grossSalary);
-
-        if (end <= start) {
-            setError('İşten çıkış tarihi, işe giriş tarihinden sonra olmalıdır.');
-            return;
-        }
-
-        if (salary <= 0) {
-            setError('Geçerli bir brüt ücret giriniz.');
-            return;
-        }
-
-        // Calculate tenure
+        if (end <= start) { setError('İşten çıkış tarihi, işe giriş tarihinden sonra olmalıdır.'); return; }
+        if (salary <= 0) { setError('Geçerli bir brüt ücret giriniz.'); return; }
         const tenure = calculateTenure(startDate, endDate);
-
-        // Get notice period
         const noticePeriod = getNoticePeriod(tenure.totalYears);
-
-        // Calculate daily gross
         const dailyGross = salary / 30;
-
-        // Calculate gross notice pay
         const noticeDays = noticePeriod.weeks * 7;
         const grossNoticePay = dailyGross * noticeDays;
-
-        // Calculate deductions
         const incomeTax = grossNoticePay * (taxRate / 100);
         const stampTax = grossNoticePay * 0.00759;
         const totalDeductions = incomeTax + stampTax;
-
-        // Calculate net
         const netNoticePay = grossNoticePay - totalDeductions;
-
-        setResult({
-            tenure,
-            noticePeriod,
-            noticeDays,
-            dailyGross,
-            grossNoticePay,
-            incomeTax,
-            stampTax,
-            totalDeductions,
-            netNoticePay,
-            appliedTaxRate: taxRate
-        });
+        setResult({ tenure, noticePeriod, noticeDays, dailyGross, grossNoticePay, incomeTax, stampTax, totalDeductions, netNoticePay, appliedTaxRate: taxRate });
     };
 
+    const inputStyle = { background: 'var(--bg)', borderColor: 'var(--border)', color: 'var(--text)' };
+    const labelStyle = { color: 'var(--text-2)' };
+
     return (
-        <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 md:p-10">
+        <div className="rounded-2xl p-5 sm:p-6 md:p-10 border" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
             <form onSubmit={handleCalculate} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Start Date */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                        <label htmlFor="startDate" className="block text-sm font-medium text-slate-400 mb-2">
-                            İşe Giriş Tarihi
-                        </label>
-                        <input
-                            type="date"
-                            id="startDate"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all"
-                            style={{ colorScheme: 'dark' }}
-                            required
-                        />
+                        <label htmlFor="startDate" className="block text-sm font-medium mb-2" style={labelStyle}>İşe Giriş Tarihi</label>
+                        <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle} required />
                     </div>
-
-                    {/* End Date */}
                     <div>
-                        <label htmlFor="endDate" className="block text-sm font-medium text-slate-400 mb-2">
-                            İşten Çıkış Tarihi
-                        </label>
-                        <input
-                            type="date"
-                            id="endDate"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all"
-                            style={{ colorScheme: 'dark' }}
-                            required
-                        />
+                        <label htmlFor="endDate" className="block text-sm font-medium mb-2" style={labelStyle}>İşten Çıkış Tarihi</label>
+                        <input type="date" id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle} required />
                     </div>
                 </div>
-
-                {/* Gross Salary */}
                 <div>
-                    <label htmlFor="grossSalary" className="block text-sm font-medium text-slate-400 mb-2">
-                        Brüt Ücret (TL)
-                    </label>
-                    <input
-                        type="number"
-                        id="grossSalary"
-                        value={grossSalary}
-                        onChange={(e) => setGrossSalary(e.target.value)}
-                        placeholder="Örn: 50000"
-                        min="0"
-                        step="0.01"
-                        className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all"
-                        required
-                    />
+                    <label htmlFor="grossSalary" className="block text-sm font-medium mb-2" style={labelStyle}>Brüt Ücret (TL)</label>
+                    <input type="number" id="grossSalary" value={grossSalary} onChange={(e) => setGrossSalary(e.target.value)} placeholder="Örn: 50000" min="0" step="0.01" className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle} required />
                 </div>
-
-                {/* Tax Rate Selector */}
                 <div>
-                    <label htmlFor="taxRate" className="block text-sm font-medium text-slate-400 mb-2">
-                        Gelir Vergisi Oranı (%)
-                    </label>
-                    <select
-                        id="taxRate"
-                        value={taxRate}
-                        onChange={(e) => setTaxRate(parseInt(e.target.value))}
-                        className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all"
-                    >
-                        {TAX_RATES.map((rate) => (
-                            <option key={rate.value} value={rate.value}>
-                                {rate.label}
-                            </option>
-                        ))}
+                    <label htmlFor="taxRate" className="block text-sm font-medium mb-2" style={labelStyle}>Gelir Vergisi Oranı (%)</label>
+                    <select id="taxRate" value={taxRate} onChange={(e) => setTaxRate(parseInt(e.target.value))} className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle}>
+                        {TAX_RATES.map((rate) => (<option key={rate.value} value={rate.value}>{rate.label}</option>))}
                     </select>
-                    <p className="text-slate-500 text-xs mt-2">
-                        Varsayılan %15'tir. Vergi diliminizi biliyorsanız değiştirebilirsiniz.
-                    </p>
+                    <p className="text-xs mt-2" style={{ color: 'var(--text-3)' }}>Varsayılan %15'tir. Vergi diliminizi biliyorsanız değiştirebilirsiniz.</p>
                 </div>
-
-                {/* Error Message */}
-                {error && (
-                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-400 text-sm">
-                        {error}
-                    </div>
-                )}
-
-                {/* Calculate Button */}
-                <button
-                    type="submit"
-                    className="w-full py-4 bg-gold-500 hover:bg-gold-600 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-gold-500/20 active:scale-[0.98]"
-                >
-                    HESAPLA
-                </button>
+                {error && <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-400 text-sm">{error}</div>}
+                <button type="submit" className="w-full py-4 bg-gold-500 hover:bg-gold-600 font-bold rounded-lg transition-all shadow-lg shadow-gold-500/20 active:scale-[0.98]" style={{ color: 'var(--bg)' }}>HESAPLA</button>
             </form>
 
-            {/* Results */}
             {result && (
                 <div className="mt-8 space-y-6">
-                    <div className="border-t border-slate-800 pt-8">
-                        <h3 className="text-xl font-bold text-white mb-6 font-serif">Hesaplama Sonucu</h3>
-
-                        {/* Tenure & Notice Period */}
+                    <div className="border-t pt-8" style={{ borderColor: 'var(--border)' }}>
+                        <h3 className="text-xl font-bold mb-6 font-display" style={{ color: 'var(--text)' }}>Hesaplama Sonucu</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div className="bg-slate-800/50 rounded-lg p-4">
-                                <p className="text-slate-400 text-sm mb-1">Hizmet Süresi</p>
-                                <p className="text-white text-lg font-semibold">
-                                    {result.tenure.years} Yıl, {result.tenure.months} Ay, {result.tenure.days} Gün
-                                </p>
+                            <div className="rounded-lg p-4" style={{ background: 'var(--bg-3)' }}>
+                                <p className="text-sm mb-1" style={{ color: 'var(--text-3)' }}>Hizmet Süresi</p>
+                                <p className="text-lg font-semibold" style={{ color: 'var(--text)' }}>{result.tenure.years} Yıl, {result.tenure.months} Ay, {result.tenure.days} Gün</p>
                             </div>
-                            <div className="bg-slate-800/50 rounded-lg p-4">
-                                <p className="text-slate-400 text-sm mb-1">İhbar Süresi</p>
-                                <p className="text-gold-500 text-lg font-semibold">
-                                    {result.noticePeriod.label} ({result.noticeDays} Gün)
-                                </p>
+                            <div className="rounded-lg p-4" style={{ background: 'var(--bg-3)' }}>
+                                <p className="text-sm mb-1" style={{ color: 'var(--text-3)' }}>İhbar Süresi</p>
+                                <p className="text-gold-500 text-lg font-semibold">{result.noticePeriod.label} ({result.noticeDays} Gün)</p>
                             </div>
                         </div>
-
-                        {/* Breakdown */}
                         <div className="space-y-3 mb-6">
-                            <div className="flex justify-between items-center py-2 border-b border-slate-800">
-                                <span className="text-slate-400">Günlük Brüt Ücret</span>
-                                <span className="text-white font-medium">{formatCurrency(result.dailyGross)}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-2 border-b border-slate-800">
-                                <span className="text-slate-400">Brüt İhbar Tazminatı</span>
-                                <span className="text-white font-medium">{formatCurrency(result.grossNoticePay)}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-2 border-b border-slate-800">
-                                <span className="text-slate-400">Gelir Vergisi (%{result.appliedTaxRate})</span>
+                            {[
+                                ['Günlük Brüt Ücret', formatCurrency(result.dailyGross)],
+                                ['Brüt İhbar Tazminatı', formatCurrency(result.grossNoticePay)],
+                            ].map(([label, value]) => (
+                                <div key={label} className="flex justify-between items-center py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+                                    <span style={{ color: 'var(--text-2)' }}>{label}</span>
+                                    <span className="font-medium" style={{ color: 'var(--text)' }}>{value}</span>
+                                </div>
+                            ))}
+                            <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+                                <span style={{ color: 'var(--text-2)' }}>Gelir Vergisi (%{result.appliedTaxRate})</span>
                                 <span className="text-red-400 font-medium">- {formatCurrency(result.incomeTax)}</span>
                             </div>
-                            <div className="flex justify-between items-center py-2 border-b border-slate-800">
-                                <span className="text-slate-400">Damga Vergisi (%0,759)</span>
+                            <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+                                <span style={{ color: 'var(--text-2)' }}>Damga Vergisi (%0,759)</span>
                                 <span className="text-red-400 font-medium">- {formatCurrency(result.stampTax)}</span>
                             </div>
-                            <div className="flex justify-between items-center py-2 border-b border-slate-800">
-                                <span className="text-slate-400 font-semibold">Kesintiler Toplamı</span>
+                            <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+                                <span className="font-semibold" style={{ color: 'var(--text-2)' }}>Kesintiler Toplamı</span>
                                 <span className="text-red-400 font-semibold">{formatCurrency(result.totalDeductions)}</span>
                             </div>
                         </div>
-
-                        {/* Net Result */}
                         <div className="bg-gradient-to-r from-gold-500/20 to-gold-600/10 border border-gold-500/30 rounded-xl p-6 text-center">
-                            <p className="text-slate-300 text-sm mb-2">NET İHBAR TAZMİNATI</p>
+                            <p className="text-sm mb-2" style={{ color: 'var(--text-2)' }}>NET İHBAR TAZMİNATI</p>
                             <p className="text-3xl md:text-4xl font-bold text-gold-500">{formatCurrency(result.netNoticePay)}</p>
                         </div>
-
-                        {/* Cross-link to Severance Calculator */}
                         <div className="mt-6 text-center">
-                            <a
-                                href="/hesaplama-araclari/kidem-tazminati"
-                                className="inline-flex items-center px-6 py-3 border border-gold-500/50 text-gold-500 hover:bg-gold-500/10 rounded-lg transition-all font-medium"
-                            >
-                                Kıdem Tazminatınızı da Hesaplayın 👉
-                            </a>
+                            <a href="/hesaplama-araclari/kidem-tazminati" className="inline-flex items-center px-6 py-3 border border-gold-500/50 text-gold-500 hover:bg-gold-500/10 rounded-lg transition-all font-medium">Kıdem Tazminatınızı da Hesaplayın →</a>
                         </div>
                     </div>
                 </div>

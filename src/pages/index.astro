@@ -26,7 +26,7 @@ const mobileImage = "/ana-resim.jpg";
                 <img
                     src={desktopImage}
                     alt="Legal Architecture Background"
-                    class="w-full h-full object-cover opacity-30 grayscale"
+                    class="w-full h-full object-cover hero-image grayscale"
                 />
             </picture>
             <div class="absolute inset-0 hero-overlay"></div>
@@ -66,10 +66,24 @@ const mobileImage = "/ana-resim.jpg";
 </Layout>
 
 <style>
+    .hero-image {
+        opacity: 0.45;
+    }
+    :global([data-theme="dark"]) .hero-image {
+        opacity: 0.25;
+    }
+
     .hero-overlay {
         background: linear-gradient(to bottom,
-            color-mix(in srgb, var(--bg) 95%, transparent),
-            color-mix(in srgb, var(--bg) 80%, transparent),
+            color-mix(in srgb, var(--bg) 70%, transparent),
+            color-mix(in srgb, var(--bg) 55%, transparent),
+            var(--bg)
+        );
+    }
+    :global([data-theme="dark"]) .hero-overlay {
+        background: linear-gradient(to bottom,
+            color-mix(in srgb, var(--bg) 90%, transparent),
+            color-mix(in srgb, var(--bg) 75%, transparent),
             var(--bg)
         );
     }

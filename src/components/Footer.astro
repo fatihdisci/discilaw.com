@@ -8,8 +8,15 @@ const year = new Date().getFullYear();
             <!-- Brand Column -->
             <div class="flex flex-col justify-center">
                 <a href="/" class="inline-block">
-                    <img src="/logo.png" alt="Hukuki Danışmanlık" class="h-24 md:h-28 w-auto opacity-100" />
+                    <img src="/logo.png" alt="Hukuki Danışmanlık" class="footer-logo footer-logo-dark h-24 md:h-28 w-auto opacity-100" />
+                    <img src="/logodark.png" alt="Hukuki Danışmanlık" class="footer-logo footer-logo-light h-24 md:h-28 w-auto opacity-100" />
                 </a>
+                <style>
+                  :root .footer-logo-dark { display: none; }
+                  :root .footer-logo-light { display: block; }
+                  [data-theme="dark"] .footer-logo-dark { display: block; }
+                  [data-theme="dark"] .footer-logo-light { display: none; }
+                </style>
             </div>
 
             <!-- Links Column -->
