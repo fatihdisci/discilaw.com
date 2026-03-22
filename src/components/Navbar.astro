@@ -127,17 +127,9 @@ const hesaplamaAraclari = [
     moon?.classList.toggle('hidden', dark);
     sun?.classList.toggle('hidden', !dark);
     if (label) label.textContent = dark ? 'Açık Mod' : 'Koyu Mod';
-    // Koyu mod: logo.png (1000x400), Açık mod: logodark.PNG (959x384)
-    if (navLogo) {
-      navLogo.src = dark ? '/logo.png' : '/logodark.PNG';
-      navLogo.style.transform = dark ? '' : 'scale(1.06)';
-      navLogo.style.transformOrigin = 'left center';
-    }
-    if (footerLogo) {
-      footerLogo.src = dark ? '/logo.png' : '/logodark.PNG';
-      footerLogo.style.transform = dark ? '' : 'scale(1.06)';
-      footerLogo.style.transformOrigin = 'left center';
-    }
+    // Koyu mod: logo.png, Açık mod: logodark.PNG
+    if (navLogo) navLogo.src = dark ? '/logo.png' : '/logodark.png';
+    if (footerLogo) footerLogo.src = dark ? '/logo.png' : '/logodark.png';
   }
   syncThemeUI();
   btn?.addEventListener('click', () => {
