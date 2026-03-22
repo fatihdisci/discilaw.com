@@ -115,18 +115,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     return (
         <div className="relative w-full h-full">
             <div
-                className={`relative bg-slate-900 overflow-hidden h-full ${!isExpanded ? 'cursor-pointer' : ''}`}
+                className={`relative overflow-hidden h-full ${!isExpanded ? 'cursor-pointer' : ''}`}
+                style={{ background: 'var(--bg-3)' }}
                 onClick={!isExpanded ? handleCardClick : undefined}
             >
                 {/* Header */}
-                <div className="relative z-10 flex items-center justify-between px-4 py-3 bg-slate-900/90 backdrop-blur-sm border-b border-slate-800">
+                <div className="relative z-10 flex items-center justify-between px-4 py-3 backdrop-blur-sm border-b" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-lg bg-[#ab934d]/20 flex items-center justify-center">
                             <MapPin className="w-4 h-4 text-[#ab934d]" />
                         </div>
                         <div>
-                            <p className="text-sm font-semibold text-white">{address}</p>
-                            <p className="text-xs text-slate-400">Konum</p>
+                            <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{address}</p>
+                            <p className="text-xs" style={{ color: 'var(--text-3)' }}>Konum</p>
                         </div>
                     </div>
 
@@ -135,11 +136,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                             <motion.button
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
+                                className="p-1.5 rounded-lg transition-colors"
+                                style={{ background: 'var(--bg-3)' }}
                                 onClick={handleCloseClick}
                                 type="button"
                             >
-                                <X className="w-4 h-4 text-slate-400" />
+                                <X className="w-4 h-4" style={{ color: 'var(--text-3)' }} />
                             </motion.button>
                         )}
                     </div>
@@ -155,25 +157,24 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     <AnimatePresence>
                         {!isExpanded && (
                             <motion.div
-                                className="absolute inset-0 bg-slate-950"
+                                className="absolute inset-0"
+                                style={{ background: 'var(--bg-3)' }}
                                 initial={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3 }}
                             >
                                 <AbstractMapSVG />
 
-                                {/* Overlay gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
-
                                 {/* Click hint */}
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <motion.div
-                                        className="flex items-center gap-2 px-4 py-2 bg-slate-900/80 backdrop-blur-sm rounded-full border border-slate-700"
+                                        className="flex items-center gap-2 px-4 py-2 backdrop-blur-sm rounded-full border"
+                                        style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}
                                         animate={{ y: [0, -5, 0] }}
                                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                                     >
                                         <Navigation className="w-4 h-4 text-[#ab934d]" />
-                                        <span className="text-sm text-slate-300">Haritayı açmak için tıklayın</span>
+                                        <span className="text-sm" style={{ color: 'var(--text-2)' }}>Haritayı açmak için tıklayın</span>
                                     </motion.div>
                                 </div>
                             </motion.div>
@@ -206,12 +207,13 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 </motion.div>
 
                 {/* Footer */}
-                <div className="relative z-10 flex items-center justify-between px-4 py-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-800">
+                <div className="relative z-10 flex items-center justify-between px-4 py-3 backdrop-blur-sm border-t" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
                     <a
                         href={googleMapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 flex-1 py-2.5 bg-gold-500 hover:bg-gold-600 text-slate-950 font-bold rounded-lg transition-all text-sm"
+                        className="inline-flex items-center justify-center gap-2 flex-1 py-2.5 bg-gold-500 hover:bg-gold-600 font-bold rounded-lg transition-all text-sm"
+                        style={{ color: 'var(--bg)' }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <MapPin className="w-4 h-4" />
