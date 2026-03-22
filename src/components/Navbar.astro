@@ -107,11 +107,11 @@ const hesaplamaAraclari = [
 
 <style is:global>
   /* Açık mod: logodark.png göster, logo.png gizle */
-  .nav-logo-dark { display: none; }
-  .nav-logo-light { display: block; }
+  .nav-logo-dark { display: none !important; }
+  .nav-logo-light { display: block !important; }
   /* Koyu mod: logo.png göster, logodark.png gizle */
-  [data-theme="dark"] .nav-logo-dark { display: block; }
-  [data-theme="dark"] .nav-logo-light { display: none; }
+  [data-theme="dark"] .nav-logo-dark { display: block !important; }
+  [data-theme="dark"] .nav-logo-light { display: none !important; }
 </style>
 
 <script>
