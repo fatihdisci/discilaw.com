@@ -2,64 +2,64 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t mt-auto transition-colors" style="background: var(--bg-3); border-color: var(--border);">
+<footer class="border-t border-[#2A3A4E] mt-auto bg-[#111B2A]">
     <div class="w-full max-w-7xl mx-auto p-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Brand Column -->
             <div class="flex flex-col justify-center">
                 <a href="/" class="inline-block">
-                    <img id="footer-logo" alt="Hukuki Danışmanlık" class="h-32 md:h-40 w-auto" />
+                    <img src="/logo.png" alt="Hukuki Danışmanlık" class="h-32 md:h-40 w-auto" />
                 </a>
             </div>
 
             <!-- Links Column -->
             <div>
-                <h3 class="text-xs font-medium tracking-widest uppercase mb-4" style="color: var(--text-3);">Hızlı Erişim</h3>
+                <h3 class="text-xs font-medium tracking-widest uppercase mb-4 text-gray-500">Hızlı Erişim</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="/calisma-alanlarimiz" class="hover:text-gold-500 transition-colors text-sm font-light" style="color: var(--text-2);">Çalışma Alanlarımız</a></li>
-                    <li><a href="/hesaplama-araclari" class="hover:text-gold-500 transition-colors text-sm font-light" style="color: var(--text-2);">Hesaplama Araçları</a></li>
-                    <li><a href="/blog" class="hover:text-gold-500 transition-colors text-sm font-light" style="color: var(--text-2);">Blog</a></li>
-                    <li><a href="/iletisim" class="hover:text-gold-500 transition-colors text-sm font-light" style="color: var(--text-2);">İletişim</a></li>
+                    <li><a href="/calisma-alanlarimiz" class="hover:text-gold-500 transition-colors text-sm font-light text-gray-300">Çalışma Alanlarımız</a></li>
+                    <li><a href="/hesaplama-araclari" class="hover:text-gold-500 transition-colors text-sm font-light text-gray-300">Hesaplama Araçları</a></li>
+                    <li><a href="/blog" class="hover:text-gold-500 transition-colors text-sm font-light text-gray-300">Blog</a></li>
+                    <li><a href="/iletisim" class="hover:text-gold-500 transition-colors text-sm font-light text-gray-300">İletişim</a></li>
                 </ul>
             </div>
 
             <!-- Contact Column -->
             <div>
-                <h3 class="text-xs font-medium tracking-widest uppercase mb-4" style="color: var(--text-3);">Adres ve İletişim Bilgileri</h3>
+                <h3 class="text-xs font-medium tracking-widest uppercase mb-4 text-gray-500">Adres ve İletişim Bilgileri</h3>
                 <ul class="space-y-3 text-sm">
                     <li class="flex items-start gap-2">
-                        <svg class="w-4 h-4 mt-0.5 shrink-0" style="color: var(--text-3);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 mt-0.5 shrink-0 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <span class="font-light" style="color: var(--text-2);">1690 Sk. Doktorlar İş Hanı No: 1<br/>Daire: 601 Karşıyaka / İzmir</span>
+                        <span class="font-light text-gray-300">1690 Sk. Doktorlar İş Hanı No: 1<br/>Daire: 601 Karşıyaka / İzmir</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 shrink-0" style="color: var(--text-3);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                         </svg>
-                        <a href="tel:+905077247735" class="hover:text-gold-500 transition-colors font-light" style="color: var(--text-2);">0 (507) 724 77 35</a>
+                        <a href="tel:+905077247735" class="hover:text-gold-500 transition-colors font-light text-gray-300">0 (507) 724 77 35</a>
                     </li>
                     <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 shrink-0" style="color: var(--text-3);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        <a href="mailto:info@discilaw.com" class="hover:text-gold-500 transition-colors font-light" style="color: var(--text-2);">info@discilaw.com</a>
+                        <a href="mailto:info@discilaw.com" class="hover:text-gold-500 transition-colors font-light text-gray-300">info@discilaw.com</a>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <hr class="my-6" style="border-color: var(--border);" />
+        <hr class="my-6 border-[#2A3A4E]" />
 
         <!-- Legal Links & Copyright -->
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex gap-4 text-sm" style="color: var(--text-3);">
+            <div class="flex gap-4 text-sm text-gray-500">
                 <a href="/yasal/gizlilik-politikasi" class="hover:text-gold-500 transition-colors">Gizlilik Politikası</a>
                 <span>|</span>
                 <a href="/yasal/aydinlatma-metni" class="hover:text-gold-500 transition-colors">Aydınlatma Metni</a>
             </div>
-            <div class="text-sm" style="color: var(--text-3);">
+            <div class="text-sm text-gray-500">
                 © {year} Dişçi Hukuk Bürosu. Tüm Hakları Saklıdır.
             </div>
         </div>
