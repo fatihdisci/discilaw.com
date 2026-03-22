@@ -128,8 +128,8 @@ const hesaplamaAraclari = [
     sun?.classList.toggle('hidden', !dark);
     if (label) label.textContent = dark ? 'Açık Mod' : 'Koyu Mod';
     // Koyu mod: logo.png, Açık mod: logodark.png
-    if (navLogo) navLogo.src = dark ? '/logo.png' : '/logodark.png';
-    if (footerLogo) footerLogo.src = dark ? '/logo.png' : '/logodark.png';
+    if (navLogo) navLogo.src = dark ? '/logo.png' : '/logodark.PNG';
+    if (footerLogo) footerLogo.src = dark ? '/logo.png' : '/logodark.PNG';
   }
   syncThemeUI();
   btn?.addEventListener('click', () => {
