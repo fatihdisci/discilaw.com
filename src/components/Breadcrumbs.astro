@@ -50,13 +50,13 @@ const schema = {
 <nav aria-label="Breadcrumb" class="container mx-auto px-4 py-4">
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <ol class="flex items-center space-x-2 text-sm">
-    <li><a href="/" class="text-slate-400 hover:text-gold-500 transition-colors">Anasayfa</a></li>
+    <li><a href="/" class="hover:text-gold-500 transition-colors" style="color: var(--text-3);">Anasayfa</a></li>
     {crumbs.map((crumb, index) => {
       const isLast = index === crumbs.length - 1;
       return (
         <li class="flex items-center space-x-2">
-          <span class="text-slate-600">›</span>
-          {isLast ? <span class="text-gold-500 font-medium" aria-current="page">{crumb.name}</span> : <a href={crumb.href} class="text-slate-400 hover:text-gold-500 transition-colors">{crumb.name}</a>}
+          <span style="color: var(--border);">›</span>
+          {isLast ? <span class="text-gold-500 font-medium" aria-current="page">{crumb.name}</span> : <a href={crumb.href} class="hover:text-gold-500 transition-colors" style="color: var(--text-3);">{crumb.name}</a>}
         </li>
       );
     })}

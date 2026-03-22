@@ -9,13 +9,13 @@ const desktopImage = "/ana-resim.jpg";
 
 // 2. Mobil (Telefon) için resim:
 // (Eğer mobilde farklı resim olsun isterseniz buraya o resmin yolunu yazın. Örnek: "/mobil-resim.jpg")
-const mobileImage = "/ana-resim.jpg"; 
+const mobileImage = "/ana-resim.jpg";
 ---
 
 <Layout title="İzmir Avukatlık ve Hukuki Danışmanlık" description="Dişçi Hukuk Bürosu, İzmir merkezli ceza, aile, iş, kira, gayrimenkul ve ticaret hukuku alanlarında dava takibi ve kurumsal hukuki danışmanlık hizmeti sunar." canonicalPath="/" enableAOS={true} showBreadcrumbs={false}>
-    
-    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
-        
+
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden" style="background: var(--bg);">
+
         <div class="absolute inset-0 z-0">
             <picture>
                 <!-- Mobil İçin -->
@@ -23,27 +23,27 @@ const mobileImage = "/ana-resim.jpg";
                 <!-- Masaüstü İçin -->
                 <source media="(min-width: 769px)" srcset={desktopImage} />
                 <!-- Varsayılan -->
-                <img 
+                <img
                     src={desktopImage}
-                    alt="Legal Architecture Background" 
+                    alt="Legal Architecture Background"
                     class="w-full h-full object-cover opacity-30 grayscale"
                 />
             </picture>
-            <div class="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-slate-950/80 to-slate-950"></div>
+            <div class="absolute inset-0 hero-overlay"></div>
         </div>
 
         <div class="relative z-10 container mx-auto px-4 text-center" data-aos="fade-up" data-aos-duration="1500">
-            
+
             <figure class="max-w-4xl mx-auto">
-                <blockquote class="text-4xl md:text-6xl lg:text-7xl font-bold text-white font-serif leading-tight tracking-tight">
+                <blockquote class="text-4xl md:text-6xl lg:text-7xl font-bold font-display leading-tight tracking-tight" style="color: var(--text);">
                     "Hukuk, <br />
                     <span class="text-gold-500 drop-shadow-sm">tutkudan arınmış</span> <br />
                     akıldır."
                 </blockquote>
-                <figcaption class="mt-8 text-lg md:text-xl text-slate-400 font-light tracking-widest uppercase flex items-center justify-center gap-4">
-                    <span class="w-8 h-px bg-slate-800"></span>
+                <figcaption class="mt-8 text-lg md:text-xl font-light tracking-widest uppercase flex items-center justify-center gap-4" style="color: var(--text-3);">
+                    <span class="w-8 h-px" style="background: var(--border);"></span>
                     Aristoteles
-                    <span class="w-8 h-px bg-slate-800"></span>
+                    <span class="w-8 h-px" style="background: var(--border);"></span>
                 </figcaption>
             </figure>
 
@@ -52,7 +52,7 @@ const mobileImage = "/ana-resim.jpg";
         </div>
 
         <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-            <span class="text-[10px] text-slate-500 tracking-widest uppercase">Keşfet</span>
+            <span class="text-[10px] tracking-widest uppercase" style="color: var(--text-3);">Keşfet</span>
             <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
@@ -66,6 +66,14 @@ const mobileImage = "/ana-resim.jpg";
 </Layout>
 
 <style>
+    .hero-overlay {
+        background: linear-gradient(to bottom,
+            color-mix(in srgb, var(--bg) 95%, transparent),
+            color-mix(in srgb, var(--bg) 80%, transparent),
+            var(--bg)
+        );
+    }
+
     @keyframes fade-in-up {
         from {
             opacity: 0;

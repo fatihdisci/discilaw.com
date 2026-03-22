@@ -8,17 +8,17 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
         <div class="container mx-auto px-4">
             <!-- Header -->
             <div class="text-center mb-16" data-aos="fade-up">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 font-serif">Hesaplama Araçları</h1>
-                <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-light mb-6 font-display" style="color: var(--text);">Hesaplama Araçları</h1>
+                <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-2);">
                     Hukuki süreçlerinizde size yardımcı olacak ücretsiz hesaplama araçlarımız
                 </p>
             </div>
 
             <!-- Tools Grid -->
             <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto list-none p-0 m-0">
-                
+
                 <!-- Kıdem Tazminatı Calculator Card -->
-                <li class="relative h-full rounded-[1.25rem] border-[0.75px] border-slate-700/50 p-2 md:rounded-[1.5rem] md:p-3" data-aos="fade-up" data-aos-delay="100">
+                <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay="100">
                     <GlowingEffect
                         client:load
                         spread={40}
@@ -29,17 +29,17 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
                         borderWidth={2}
                     />
                     <a href="/hesaplama-araclari/kidem-tazminati" class="group block h-full">
-                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] border-slate-700 bg-slate-900 p-6 md:p-8 shadow-sm">
+                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
                             <div>
                                 <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
                                     <svg class="w-7 h-7 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                     </svg>
                                 </div>
-                                <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-serif group-hover:text-gold-500 transition-colors">
+                                <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
                                     Kıdem Tazminatı Hesaplama
                                 </h2>
-                                <p class="text-slate-400 text-sm leading-relaxed">
+                                <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
                                     Geçmiş dönem tavan ücretleri dahil, en güncel verilerle tazminatınızı hesaplayın.
                                 </p>
                             </div>
@@ -54,7 +54,7 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
                 </li>
 
                 <!-- İhbar Tazminatı Calculator Card -->
-                <li class="relative h-full rounded-[1.25rem] border-[0.75px] border-slate-700/50 p-2 md:rounded-[1.5rem] md:p-3" data-aos="fade-up" data-aos-delay="200">
+                <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay="200">
                     <GlowingEffect
                         client:load
                         spread={40}
@@ -65,17 +65,17 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
                         borderWidth={2}
                     />
                     <a href="/hesaplama-araclari/ihbar-tazminati" class="group block h-full">
-                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] border-slate-700 bg-slate-900 p-6 md:p-8 shadow-sm">
+                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
                             <div>
                                 <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
                                     <svg class="w-7 h-7 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                 </div>
-                                <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-serif group-hover:text-gold-500 transition-colors">
+                                <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
                                     İhbar Tazminatı Hesaplama
                                 </h2>
-                                <p class="text-slate-400 text-sm leading-relaxed">
+                                <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
                                     İhbar sürelerinizi ve vergi diliminize göre net tazminat tutarını hesaplayın.
                                 </p>
                             </div>
@@ -90,7 +90,7 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
                 </li>
 
                 <!-- Avukatlık Ücreti Calculator Card -->
-                <li class="relative h-full rounded-[1.25rem] border-[0.75px] border-slate-700/50 p-2 md:rounded-[1.5rem] md:p-3" data-aos="fade-up" data-aos-delay="300">
+                <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay="300">
                     <GlowingEffect
                         client:load
                         spread={40}
@@ -101,17 +101,17 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
                         borderWidth={2}
                     />
                     <a href="/hesaplama-araclari/avukatlik-ucreti" class="group block h-full">
-                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] border-slate-700 bg-slate-900 p-6 md:p-8 shadow-sm">
+                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
                             <div>
                                 <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
                                     <svg class="w-7 h-7 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                     </svg>
                                 </div>
-                                <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-serif group-hover:text-gold-500 transition-colors">
+                                <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
                                     Avukatlık Ücreti Hesaplama
                                 </h2>
-                                <p class="text-slate-400 text-sm leading-relaxed">
+                                <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
                                     Dava türüne veya değerine göre asgari avukatlık ücretinizi güncel tarifeye göre öğrenin.
                                 </p>
                             </div>
@@ -128,8 +128,8 @@ import { GlowingEffect } from '../../components/ui/glowing-effect';
 
             <!-- Disclaimer -->
             <div class="mt-16 text-center" data-aos="fade-up">
-                <p class="text-slate-500 text-sm max-w-2xl mx-auto">
-                    <strong class="text-slate-400">Uyarı:</strong> Bu hesaplama araçları yalnızca bilgilendirme amaçlıdır. 
+                <p class="text-sm max-w-2xl mx-auto" style="color: var(--text-3);">
+                    <strong style="color: var(--text-2);">Uyarı:</strong> Bu hesaplama araçları yalnızca bilgilendirme amaçlıdır.
                     Kesin sonuçlar için mutlaka bir hukuk profesyoneline danışmanızı öneririz.
                 </p>
             </div>
