@@ -11,6 +11,7 @@ const blog = defineCollection({
     category: z.string(),
     author: z.string().optional(),
     tags: z.array(z.string()).min(2),
+    instagramUrl: z.string().url().optional(),
   }),
 });
 

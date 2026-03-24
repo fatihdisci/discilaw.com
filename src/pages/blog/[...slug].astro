@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ShareButton from '../../components/ShareButton';
+import InstagramEmbed from '../../components/InstagramEmbed.astro';
 import { toAbsoluteUrl } from '../../lib/seo';
 import { getRelatedPosts } from '../../lib/blog';
 
@@ -70,6 +71,12 @@ const articleSchema = {
     <div class="container mx-auto px-6 max-w-5xl">
       <div class="prose prose-invert prose-xl mx-auto max-w-5xl py-12 blog-content" data-aos="fade-up" data-aos-delay="200" lang="tr"><Content /></div>
     </div>
+
+    {entry.data.instagramUrl && (
+      <div class="container mx-auto px-4 max-w-5xl mt-12 pt-10 border-t" style="border-color: var(--border);">
+        <InstagramEmbed url={entry.data.instagramUrl} />
+      </div>
+    )}
 
     {relatedPosts.length > 0 && (
       <section class="container mx-auto px-4 max-w-5xl mt-16 pt-10 border-t" style="border-color: var(--border);">
