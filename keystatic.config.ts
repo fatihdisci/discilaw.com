@@ -84,6 +84,7 @@ export default config({
           defaultValue: ['yargitay-karari', 'dava-sureci'],
         }),
         image: fields.image({ label: 'Kapak Görseli', description: 'Zorunlu: 1200x630 önerilir.', directory: 'public/images/blog', publicPath: '/images/blog/' }),
+        instagramUrl: fields.url({ label: 'Instagram Post URL', description: 'Makale ile ilgili Instagram postunun bağlantısı. Görselli olarak sayfanın altında gömülür.' }),
         content: fields.mdx({
           label: 'Makale İçeriği',
           options: {
