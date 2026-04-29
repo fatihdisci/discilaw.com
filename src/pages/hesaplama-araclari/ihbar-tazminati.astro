@@ -1,9 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NoticePayCalculator from '../../components/calculators/NoticePayCalculator.jsx';
+import { toAbsoluteUrl, getSiteUrl, webApplicationSchema, howToSchema } from '../../lib/seo';
+
+const canonicalPath = '/hesaplama-araclari/ihbar-tazminati';
+const pageUrl = toAbsoluteUrl(canonicalPath, Astro.site);
+const origin = getSiteUrl(Astro.site).origin;
+
+const appLd = webApplicationSchema({
+  name: 'İhbar Tazminatı Hesaplama Aracı',
+  description: 'Hizmet süresi ve vergi dilimine göre güncel ihbar tazminatı hesaplama.',
+  url: pageUrl,
+  origin,
+});
+
+const howToLd = howToSchema({
+  name: 'İhbar Tazminatı Nasıl Hesaplanır?',
+  description: 'İhbar tazminatı hesaplama aracını kullanmak için izlenecek adımlar.',
+  url: pageUrl,
+  steps: [
+    { name: 'Hizmet sürenizi girin', text: 'Toplam çalışma sürenizi yıl/ay olarak yazın.' },
+    { name: 'Brüt ücretinizi girin', text: 'Aylık brüt ücretinizi yazın.' },
+    { name: 'Vergi dilimini seçin', text: 'Yıl içindeki kümülatif vergi dilimini belirleyin.' },
+    { name: 'Hesaplama yapın', text: 'İhbar süresine denk gelen ücret tutarı net olarak hesaplanır.' },
+  ],
+});
 ---
 
-<Layout title="İhbar Tazminatı Hesaplama" description="İhbar tazminatı hesaplama aracı. Hizmet sürenize ve vergi diliminize göre ihbar tazminatınızı hesaplayın.">
+<Layout
+  title="İhbar Tazminatı Hesaplama"
+  description="İhbar tazminatı hesaplama aracı. Hizmet sürenize ve vergi diliminize göre ihbar tazminatınızı hesaplayın."
+  canonicalPath={canonicalPath}
+  structuredData={[appLd, howToLd]}
+>
     <section class="py-20 md:py-32">
         <div class="container mx-auto px-4">
             <!-- Header -->

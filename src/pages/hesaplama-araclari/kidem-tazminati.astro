@@ -1,9 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import SeveranceCalculator from '../../components/calculators/SeveranceCalculator.jsx';
+import { toAbsoluteUrl, getSiteUrl, webApplicationSchema, howToSchema } from '../../lib/seo';
+
+const canonicalPath = '/hesaplama-araclari/kidem-tazminati';
+const pageUrl = toAbsoluteUrl(canonicalPath, Astro.site);
+const origin = getSiteUrl(Astro.site).origin;
+
+const appLd = webApplicationSchema({
+  name: 'Kıdem Tazminatı Hesaplama Aracı',
+  description: 'Geçmiş dönem kıdem tavanları dahil, güncel verilerle net kıdem tazminatı hesaplama.',
+  url: pageUrl,
+  origin,
+});
+
+const howToLd = howToSchema({
+  name: 'Kıdem Tazminatı Nasıl Hesaplanır?',
+  description: 'Kıdem tazminatı hesaplama aracını kullanmak için izlenecek adımlar.',
+  url: pageUrl,
+  steps: [
+    { name: 'İşe giriş tarihinizi girin', text: 'Çalışmaya başladığınız tarihi seçin.' },
+    { name: 'İşten çıkış tarihinizi girin', text: 'İş akdinizin sona erdiği tarihi seçin.' },
+    { name: 'Son brüt ücretinizi girin', text: 'Yol, yemek gibi sosyal yardımlar dahil giydirilmiş brüt aylık ücretinizi yazın.' },
+    { name: 'Hesaplama yapın', text: 'Hesapla butonuna basarak ilgili dönemin kıdem tavanına göre net tutarı görün.' },
+  ],
+});
 ---
 
-<Layout title="Kıdem Tazminatı Hesaplama" description="Doğru ve güncel kıdem tazminatı hesaplama aracı. Geçmiş dönem tavan ücretleri dahil, en güncel verilerle net tazminatınızı hesaplayın.">
+<Layout
+  title="Kıdem Tazminatı Hesaplama"
+  description="Doğru ve güncel kıdem tazminatı hesaplama aracı. Geçmiş dönem tavan ücretleri dahil, en güncel verilerle net tazminatınızı hesaplayın."
+  canonicalPath={canonicalPath}
+  structuredData={[appLd, howToLd]}
+>
     <section class="py-20 md:py-32">
         <div class="container mx-auto px-4">
             <!-- Header -->

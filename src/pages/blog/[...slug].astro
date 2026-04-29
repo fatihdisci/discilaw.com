@@ -3,8 +3,10 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ShareButton from '../../components/ShareButton';
 import InstagramEmbed from '../../components/InstagramEmbed.astro';
-import { toAbsoluteUrl } from '../../lib/seo';
+import { toAbsoluteUrl, getSiteUrl, legalArticleSchema, faqPageSchema } from '../../lib/seo';
 import { getRelatedPosts } from '../../lib/blog';
+import { blogMiniFaqs } from '../../content/blog-mini-faqs';
+import { FAQAccordion } from '../../components/FAQAccordion';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -21,28 +23,21 @@ const canonicalPath = `/blog/${entry.slug}`;
 const canonical = toAbsoluteUrl(canonicalPath, Astro.site);
 const imageUrl = toAbsoluteUrl(entry.data.image, Astro.site);
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: entry.data.title,
+const miniFaqs = blogMiniFaqs[entry.slug] || [];
+const miniFaqLd = miniFaqs.length ? faqPageSchema(miniFaqs, canonical) : null;
+
+const articleSchema = legalArticleSchema({
+  title: entry.data.title,
   description: entry.data.description,
-  image: [imageUrl],
-  author: {
-    '@type': 'Person',
-    name: entry.data.author || 'Av. Fatih Dişçi',
-    url: toAbsoluteUrl('/', Astro.site),
-  },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Dişçi Hukuk Bürosu',
-    logo: { '@type': 'ImageObject', url: toAbsoluteUrl('/logo.png', Astro.site) },
-  },
+  url: canonical,
+  origin: getSiteUrl(Astro.site).origin,
+  image: imageUrl,
   datePublished: entry.data.pubDate.toISOString(),
   dateModified: (entry.data.updatedDate || entry.data.pubDate).toISOString(),
-  articleSection: entry.data.category || 'Genel',
-  keywords: (entry.data.tags || []).join(', '),
-  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
-};
+  authorName: entry.data.author || 'Av. Fatih Dişçi',
+  section: entry.data.category || 'Genel',
+  keywords: entry.data.tags || [],
+});
 ---
 
 <Layout
@@ -53,7 +48,14 @@ const articleSchema = {
   pageType="article"
   enableAOS={true}
   breadcrumbItems={[{ name: 'Blog', href: '/blog' }, { name: entry.data.title, href: canonicalPath }]}
-  structuredData={articleSchema}
+  structuredData={miniFaqLd ? [articleSchema, miniFaqLd] : articleSchema}
+  article={{
+    publishedTime: entry.data.pubDate.toISOString(),
+    modifiedTime: (entry.data.updatedDate || entry.data.pubDate).toISOString(),
+    author: entry.data.author || 'Av. Fatih Dişçi',
+    section: entry.data.category || 'Genel',
+    tags: entry.data.tags || [],
+  }}
 >
   <article class="py-24 min-h-screen" style="background: var(--bg);">
     <div class="container mx-auto px-4 max-w-4xl mb-12 text-center" data-aos="fade-up">
@@ -76,6 +78,13 @@ const articleSchema = {
       <div class="container mx-auto px-4 max-w-5xl mt-12 pt-10 border-t" style="border-color: var(--border);">
         <InstagramEmbed url={entry.data.instagramUrl} />
       </div>
+    )}
+
+    {miniFaqs.length > 0 && (
+      <section class="container mx-auto px-4 max-w-4xl mt-16 pt-10 border-t" style="border-color: var(--border);" aria-labelledby="mini-faq-title">
+        <h2 id="mini-faq-title" class="text-2xl md:text-3xl font-display text-gold-500 mb-6">Sıkça Sorulan Sorular</h2>
+        <FAQAccordion client:visible faqs={miniFaqs} />
+      </section>
     )}
 
     {relatedPosts.length > 0 && (

@@ -16,6 +16,14 @@ interface Props {
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
   showBreadcrumbs?: boolean;
   enableAOS?: boolean;
+  article?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    author?: string;
+    section?: string;
+    tags?: string[];
+  };
+  noindex?: boolean;
 }
 
 const {
@@ -28,6 +36,8 @@ const {
   structuredData,
   showBreadcrumbs = true,
   enableAOS = false,
+  article,
+  noindex = false,
 } = Astro.props;
 
 const seo = buildSeoMeta({ title, description, image, canonicalPath, type: pageType }, Astro.url.pathname, Astro.site);
@@ -48,11 +58,31 @@ const pageSchemas = Array.isArray(structuredData) ? structuredData : structuredD
     <meta name="description" content={seo.description} />
     <link rel="canonical" href={seo.canonical} />
 
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
     <meta property="og:type" content={seo.type} />
     <meta property="og:url" content={seo.canonical} />
     <meta property="og:title" content={seo.title} />
     <meta property="og:description" content={seo.description} />
     <meta property="og:image" content={seo.image} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content="Dişçi Hukuk Bürosu" />
+
+    {seo.type === 'article' && article?.publishedTime && (
+      <meta property="article:published_time" content={article.publishedTime} />
+    )}
+    {seo.type === 'article' && article?.modifiedTime && (
+      <meta property="article:modified_time" content={article.modifiedTime} />
+    )}
+    {seo.type === 'article' && article?.author && (
+      <meta property="article:author" content={article.author} />
+    )}
+    {seo.type === 'article' && article?.section && (
+      <meta property="article:section" content={article.section} />
+    )}
+    {seo.type === 'article' && article?.tags?.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={seo.canonical} />

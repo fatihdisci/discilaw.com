@@ -1,11 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import AttorneyFeeCalculator from '../../components/calculators/AttorneyFeeCalculator';
+import { toAbsoluteUrl, getSiteUrl, webApplicationSchema, howToSchema } from '../../lib/seo';
 
+const canonicalPath = '/hesaplama-araclari/avukatlik-ucreti';
+const pageUrl = toAbsoluteUrl(canonicalPath, Astro.site);
+const origin = getSiteUrl(Astro.site).origin;
 
+const appLd = webApplicationSchema({
+  name: 'Avukatlık Asgari Ücret Hesaplama Aracı',
+  description: '2025-2026 dönemi AAÜT tarifesine göre dava ve icra takipleri için asgari avukatlık ücreti hesaplama.',
+  url: pageUrl,
+  origin,
+});
+
+const howToLd = howToSchema({
+  name: 'Avukatlık Asgari Ücreti Nasıl Hesaplanır?',
+  description: 'AAÜT tarifesi üzerinden avukatlık ücreti hesaplama adımları.',
+  url: pageUrl,
+  steps: [
+    { name: 'Dava türünü seçin', text: 'Hukuk, ceza, idari, icra dava ve takip türlerinden uygun olanı seçin.' },
+    { name: 'Dava değerini girin', text: 'Konusu para olan davalarda dava değerini yazın.' },
+    { name: 'Yargı yerini seçin', text: 'Görevli mahkeme veya icra dairesi türünü belirleyin.' },
+    { name: 'Hesaplama yapın', text: 'AAÜT 2025-2026 tarifesine göre asgari ücret hesaplanır.' },
+  ],
+});
 ---
 
-<Layout title="Avukatlık Asgari Ücret Hesaplama 2025-2026" description="En güncel AAÜT tarifesine göre dava ve icra takipleri için asgari avukatlık ücreti hesaplama robotu.">
+<Layout
+  title="Avukatlık Asgari Ücret Hesaplama 2025-2026"
+  description="En güncel AAÜT tarifesine göre dava ve icra takipleri için asgari avukatlık ücreti hesaplama robotu."
+  canonicalPath={canonicalPath}
+  structuredData={[appLd, howToLd]}
+>
     <section class="py-20 md:py-32">
         <div class="container mx-auto px-4">
             <!-- Header -->

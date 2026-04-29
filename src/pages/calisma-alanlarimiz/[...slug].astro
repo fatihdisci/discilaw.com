@@ -3,7 +3,9 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { FAQAccordion } from '../../components/FAQAccordion';
 import { ServiceIcon } from '../../components/ServiceIcon';
-import { toAbsoluteUrl } from '../../lib/seo';
+import QuickAnswer from '../../components/QuickAnswer.astro';
+import { toAbsoluteUrl, getSiteUrl, serviceSchema, faqPageSchema } from '../../lib/seo';
+import { quickAnswers } from '../../content/quick-answers';
 
 export async function getStaticPaths() {
   const serviceEntries = await getCollection('services');
@@ -24,29 +26,19 @@ const relatedPosts = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'LegalService',
-  name: `${entry.data.title} - Dişçi Hukuk Bürosu`,
-  description: entry.data.description,
-  url: toAbsoluteUrl(canonicalPath, Astro.site),
-  provider: {
-    '@id': `${toAbsoluteUrl('/', Astro.site)}#organization`,
-    '@type': 'LegalService',
-    name: 'Dişçi Hukuk Bürosu',
-    telephone: '+905077247735',
-    address: { '@type': 'PostalAddress', addressLocality: 'İzmir', addressCountry: 'TR' },
-  },
-  areaServed: 'İzmir, Türkiye',
-};
+const pageUrl = toAbsoluteUrl(canonicalPath, Astro.site);
+const origin = getSiteUrl(Astro.site).origin;
 
-const faqSchema = entry.data.faqs?.length
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: entry.data.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })),
-    }
-  : null;
+const serviceLd = serviceSchema({
+  title: entry.data.title,
+  description: entry.data.description,
+  url: pageUrl,
+  origin,
+});
+
+const faqLd = entry.data.faqs?.length ? faqPageSchema(entry.data.faqs, pageUrl) : null;
+
+const quickAnswer = quickAnswers[entry.slug];
 ---
 
 <Layout
@@ -55,7 +47,7 @@ const faqSchema = entry.data.faqs?.length
   canonicalPath={canonicalPath}
   enableAOS={true}
   breadcrumbItems={[{ name: 'Çalışma Alanlarımız', href: '/calisma-alanlarimiz' }, { name: entry.data.title, href: canonicalPath }]}
-  structuredData={faqSchema ? [serviceSchema, faqSchema] : serviceSchema}
+  structuredData={faqLd ? [serviceLd, faqLd] : serviceLd}
 >
   <article class="py-24 min-h-screen" style="background: var(--bg);">
     <div class="container mx-auto px-4 max-w-4xl mb-12 text-center" data-aos="fade-up">
@@ -63,6 +55,14 @@ const faqSchema = entry.data.faqs?.length
       <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight font-display" style="color: var(--text);">{entry.data.title}</h1>
       <p class="text-xl max-w-2xl mx-auto" style="color: var(--text-2);">{entry.data.description}</p>
     </div>
+    {quickAnswer && (
+      <div class="container mx-auto px-6 max-w-4xl" data-aos="fade-up" data-aos-delay="100">
+        <QuickAnswer highlights={quickAnswer.highlights}>
+          <p set:html={quickAnswer.intro} />
+        </QuickAnswer>
+      </div>
+    )}
+
     <div class="container mx-auto px-6 max-w-4xl">
       <div class="prose prose-invert prose-lg mx-auto max-w-4xl py-12 service-content" data-aos="fade-up" data-aos-delay="200" lang="tr">
         <Content />

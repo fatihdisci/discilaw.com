@@ -1,0 +1,164 @@
+---
+import { FAQAccordion } from './FAQAccordion';
+
+interface FormulaItem {
+  label: string;
+  expression: string;
+  note?: string;
+}
+
+interface ExampleStep {
+  label: string;
+  value: string;
+}
+
+interface Parameter {
+  label: string;
+  value: string;
+}
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  formulas: FormulaItem[];
+  steps: string[];
+  example: {
+    title: string;
+    inputs: ExampleStep[];
+    result: string;
+    explanation?: string;
+  };
+  parametersTitle?: string;
+  parameters: Parameter[];
+  faqs: FAQ[];
+}
+
+const {
+  formulas,
+  steps,
+  example,
+  parametersTitle = '2026 Yılı Parametre Tablosu',
+  parameters,
+  faqs,
+} = Astro.props;
+---
+
+<section class="max-w-3xl mx-auto mt-12 space-y-8" data-aos="fade-up" data-aos-delay="150">
+  <div
+    class="rounded-2xl p-6 md:p-8 border"
+    style="background: var(--bg-2); border-color: var(--border);"
+    aria-labelledby="formula-title"
+  >
+    <h2 id="formula-title" class="text-2xl font-bold mb-4 font-display" style="color: var(--text);">
+      Hesaplama Formülü
+    </h2>
+    <ul class="space-y-3 list-none p-0 m-0">
+      {formulas.map((f) => (
+        <li>
+          <p class="text-sm mb-1" style="color: var(--text-2);">{f.label}</p>
+          <code
+            class="block px-4 py-3 rounded-lg text-sm md:text-base font-mono"
+            style="background: var(--card-bg); color: var(--text); border: 1px solid var(--border);"
+          >
+            {f.expression}
+          </code>
+          {f.note && <p class="text-xs mt-1" style="color: var(--text-3);">{f.note}</p>}
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div
+    class="rounded-2xl p-6 md:p-8 border"
+    style="background: var(--bg-2); border-color: var(--border);"
+    aria-labelledby="steps-title"
+  >
+    <h2 id="steps-title" class="text-2xl font-bold mb-4 font-display" style="color: var(--text);">
+      Adım Adım Hesaplama
+    </h2>
+    <ol class="space-y-3 list-none p-0 m-0">
+      {steps.map((step, index) => (
+        <li class="flex gap-3 items-start">
+          <span
+            class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold"
+            style="background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.4);"
+          >
+            {index + 1}
+          </span>
+          <span style="color: var(--text-2);" set:html={step} />
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <div
+    class="rounded-2xl p-6 md:p-8 border"
+    style="background: var(--bg-2); border-color: var(--border);"
+    aria-labelledby="example-title"
+  >
+    <h2 id="example-title" class="text-2xl font-bold mb-4 font-display" style="color: var(--text);">
+      Örnek Hesaplama
+    </h2>
+    <p class="text-sm mb-4 italic" style="color: var(--text-3);">{example.title}</p>
+    <dl class="grid sm:grid-cols-2 gap-3 mb-5">
+      {example.inputs.map((inp) => (
+        <div
+          class="px-4 py-3 rounded-lg border"
+          style="background: var(--card-bg); border-color: var(--border);"
+        >
+          <dt class="text-xs uppercase tracking-wider mb-1" style="color: var(--text-3);">{inp.label}</dt>
+          <dd class="font-medium" style="color: var(--text);">{inp.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <div
+      class="px-5 py-4 rounded-lg"
+      style="background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.35);"
+    >
+      <p class="text-xs uppercase tracking-wider mb-1" style="color: #d4af37;">Sonuç</p>
+      <p class="text-lg md:text-xl font-bold" style="color: var(--text);" set:html={example.result} />
+      {example.explanation && (
+        <p class="text-sm mt-2" style="color: var(--text-2);" set:html={example.explanation} />
+      )}
+    </div>
+  </div>
+
+  <div
+    class="rounded-2xl p-6 md:p-8 border"
+    style="background: var(--bg-2); border-color: var(--border);"
+    aria-labelledby="params-title"
+  >
+    <h2 id="params-title" class="text-2xl font-bold mb-4 font-display" style="color: var(--text);">
+      {parametersTitle}
+    </h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm" style="color: var(--text-2);">
+        <tbody>
+          {parameters.map((p, idx) => (
+            <tr style={`border-bottom: 1px solid var(--border); ${idx === parameters.length - 1 ? 'border-bottom: none;' : ''}`}>
+              <th
+                scope="row"
+                class="text-left py-3 pr-4 font-medium align-top"
+                style="color: var(--text);"
+                set:html={p.label}
+              />
+              <td class="py-3 text-right" style="color: var(--text);" set:html={p.value} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {faqs.length > 0 && (
+    <div aria-labelledby="faq-title">
+      <h2 id="faq-title" class="text-2xl font-bold mb-4 font-display" style="color: var(--text);">
+        Sıkça Sorulan Sorular
+      </h2>
+      <FAQAccordion client:visible faqs={faqs} />
+    </div>
+  )}
+</section>

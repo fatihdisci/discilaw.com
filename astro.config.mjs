@@ -9,7 +9,7 @@ import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.discilaw.com',
+  site: 'https://discilaw.com',
   base: '/',
   output: 'static',
   adapter: vercel(),

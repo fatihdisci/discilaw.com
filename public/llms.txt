@@ -1,0 +1,43 @@
+# Dişçi Hukuk Bürosu
+
+> İzmir Karşıyaka merkezli hukuk bürosu. Av. Fatih Dişçi tarafından yönetilen Dişçi Hukuk Bürosu; aile, ceza, iş, gayrimenkul, ticaret, idare, icra, bilişim hukuku ve şirket danışmanlığı alanlarında dava takibi ve hukuki danışmanlık hizmeti sunmaktadır.
+
+## Çalışma Alanları
+- [Aile ve Boşanma Hukuku](https://discilaw.com/calisma-alanlarimiz/aile-ve-bosanma): Medeni Kanun çerçevesinde; anlaşmalı ve çekişmeli boşanma, velayet, nafaka ve mal rejimi uyuşmazlıklarında hukuki süreç yönetimi.
+- [Bilişim Hukuku](https://discilaw.com/calisma-alanlarimiz/bilisim-hukuku): Bilişim suçları, KVKK uyum süreçleri, internetten içerik kaldırma ve e-ticaret hukuku alanlarında danışmanlık hizmetleri.
+- [Ceza Hukuku](https://discilaw.com/calisma-alanlarimiz/ceza-hukuku): Türk Ceza Kanunu ve Ceza Muhakemesi Kanunu kapsamında; soruşturma ve kovuşturma aşamalarında hukuki destek ve müdafilik hizmetleri.
+- [Gayrimenkul Hukuku](https://discilaw.com/calisma-alanlarimiz/gayrimenkul-hukuku): Tapu iptal ve tescil davaları, kira uyuşmazlıkları, tahliye süreçleri ve gayrimenkul hukuku kapsamındaki diğer ihtilafların takibi.
+- [İcra Hukuku](https://discilaw.com/calisma-alanlarimiz/icra-hukuku): İcra ve İflas Kanunu kapsamında alacak takibi, haciz işlemleri, borca itiraz ve iflas süreçlerinin hukuki yönetimi.
+- [İdare Hukuku](https://discilaw.com/calisma-alanlarimiz/idare-hukuku): İdari işlemlerin iptali, tam yargı davaları ve idari para cezalarına itiraz süreçlerinde İdare Hukuku mevzuatı kapsamında hukuki destek.
+- [İş Hukuku](https://discilaw.com/calisma-alanlarimiz/is-hukuku): İşe iade davaları, kıdem ve ihbar tazminatı hesaplamaları, iş kazası ve meslek hastalıkları konusunda İş Kanunu kapsamında hukuki süreçler.
+- [Şirket Danışmanlığı](https://discilaw.com/calisma-alanlarimiz/sirket-danismanligi): Şirket kuruluş işlemleri, birleşme ve devralmalar, genel kurul süreçleri ve kurumsal sözleşme yönetimi alanlarında sürekli hukuki danışmanlık.
+- [Ticaret Hukuku](https://discilaw.com/calisma-alanlarimiz/ticaret-hukuku): Ticari işletme hukuku, şirketler hukuku, kıymetli evrak ve ticari sözleşmelerden doğan uyuşmazlıklarda hukuki danışmanlık.
+
+## Hesaplama Araçları
+- [Kıdem Tazminatı Hesaplama](https://discilaw.com/hesaplama-araclari/kidem-tazminati): Geçmiş dönem kıdem tavanı dahil, güncel verilerle net kıdem tazminatı hesaplama.
+- [İhbar Tazminatı Hesaplama](https://discilaw.com/hesaplama-araclari/ihbar-tazminati): Hizmet süresi ve vergi dilimine göre ihbar tazminatı hesaplama.
+- [Avukatlık Ücreti Hesaplama (AAÜT 2025-2026)](https://discilaw.com/hesaplama-araclari/avukatlik-ucreti): Avukatlık Asgari Ücret Tarifesi uyarınca dava ve icra takipleri için ücret hesaplama.
+
+## Son Blog Yazıları
+- [Yargıtay'dan Önemli Hakaret Kararı: Siyasi ve Ağır Eleştiri İfade Özgürlüğü Kapsamında Mıdır?](https://discilaw.com/blog/yargitay-ifade-ozgurlugu-hakaret-siyasi-elestiri): Yargıtay, sosyal medya paylaşımlarının hakaret suçunu oluşturup oluşturmadığına ilişkin kararıyla ifade özgürlüğünün sınırlarını yeniden çizdi.
+- [Radarda %10 Tolerans Dönemi Bitti: Yeni Trafik Cezası Sistemi Nasıl İşleyecek?](https://discilaw.com/blog/radarda-10-tolerans-donemi-bitti-yeni-trafik-cezasi-sistemi-nasil-isleyecek): Hız sınırlarında yıllardır sürücülerin esneklik payı olarak gördüğü "%10 tolerans" (hata payı) kuralı, Karayolları Trafik Kanunu'nda yapılan güncel değişiklikle kaldırıldı. Sabit tolerans sistemine geçildi.
+- [Paylı Mülkiyette Tapu İptali ve Tescil: Fiili Taksimin Önemi](https://discilaw.com/blog/tapu-iptali-ve-tescil-fiili-taksim-yargitay-karari-2025): Yargıtay 7. Hukuk Dairesi'nin 2025/4894 sayılı kararı ışığında, paylı mülkiyette fiili taksimin tapu iptali ve tescil davalarındaki rolü ve ispat koşulları.
+- [İmar Planına Giren Yerlerde Zilyetlik Süresi Nasıl Hesaplanır? Yargıtay'dan Önemli Karar](https://discilaw.com/blog/zilyetlik-imar-plani-yargitay-karari-2025): Yargıtay 1. Hukuk Dairesi'nin 06.11.2025 tarihli kararı uyarınca nazım imar planına alınma tarihinin zilyetlik süresine etkisi ve 20 yıllık kazandırıcı zamanaşımı hesabı.
+- [Çocuğun Cinsel İstismarı Suçunda Zincirleme Suç Hükümleri ve TCK 43 Uygulaması](https://discilaw.com/blog/cocugun-cinsel-istismari-ve-zincirleme-suc-hukumleri-yargitay-karari): Mağdurun 15 yaşını doldurması ve eylemlerin devam etmesi halinde zincirleme suç hükümlerinin nasıl uygulanacağına dair Yargıtay 9. Ceza Dairesi emsal kararı.
+- [Yargıtay'dan Kritik Kira Kararı: Sözleşme Süresi Dolmadan İhtiyaç Nedeniyle Tahliye Davası Açılamaz](https://discilaw.com/blog/yargitay-karari-belirli-sureli-tahliye-zamani): Yargıtay 3. Hukuk Dairesi'nin 2025/3930 sayılı ilamı uyarınca ihtiyaç nedeniyle tahliye davası açma süresi ve belirli süreli sözleşmelerde hak düşürücü süreler.
+- [Eczane ve SGK Arasındaki Reçete Uyuşmazlıklarında Emsal Karar: Sistem Müdahalesi ve Cezai Şart](https://discilaw.com/blog/sgk-recete-uyusmazligi-yargitay-karari-2025): Yargıtay 3. Hukuk Dairesi'nin 01.07.2025 tarihli kararı ışığında, reçete ve rapor uyumsuzluklarında yapılan sistem müdahalelerinin hukuki sonuçları ve cezai şart uygulaması.
+- [Kasten Öldürmeye Teşebbüste Ceza İndirimi Nasıl Hesaplanır? Yargıtay'dan Emsal Karar](https://discilaw.com/blog/kasten-oldurmeye-tesebbus-ceza-indirimi-yargitay-2025): Yargıtay 1. Ceza Dairesi'nin 29.05.2025 tarihli kararı uyarınca, mağdurun hayati tehlikesinin bulunmadığı hallerde teşebbüs nedeniyle yapılacak ceza indirimindeki alt sınır ilkesi.
+- [Hizmet Tespiti Davasında Yargıtay'dan Emsal Karar: Eksik İnceleme Bozma Nedenidir](https://discilaw.com/blog/hizmet-tespiti-davasi-yargitay-karari-2025): Yargıtay 10. Hukuk Dairesi'nin 19.02.2025 tarihli kararı ışığında hizmet tespiti davalarında ispat yükümlülüğü ve mahkemenin araştırma sorumluluğu.
+
+## İletişim
+- Telefon: +90 507 724 77 35
+- E-posta: info@discilaw.com
+- Adres: Tuna Mah. 1690. Sk. No:1 K:6 D:601, Karşıyaka, İzmir
+- Web: https://discilaw.com
+
+## Optional
+- [İletişim Sayfası](https://discilaw.com/iletisim)
+- [Tüm Blog](https://discilaw.com/blog)
+- [Tüm Çalışma Alanları](https://discilaw.com/calisma-alanlarimiz)
+- [Gizlilik Politikası](https://discilaw.com/yasal/gizlilik-politikasi)
+- [Aydınlatma Metni](https://discilaw.com/yasal/aydinlatma-metni)

@@ -31,7 +31,7 @@ const autoItems = path
 const crumbs = items && items.length > 0 ? items : autoItems;
 if (crumbs.length < 2) return null;
 
-const site = Astro.site?.origin || 'https://www.discilaw.com';
+const site = Astro.site?.origin || 'https://discilaw.com';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
