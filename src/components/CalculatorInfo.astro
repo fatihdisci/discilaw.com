@@ -84,7 +84,7 @@ const {
         <li class="flex gap-3 items-start">
           <span
             class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold"
-            style="background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.4);"
+            style="background: rgba(212,175,55,0.15); color: var(--gold-accent); border: 1px solid rgba(212,175,55,0.4);"
           >
             {index + 1}
           </span>
@@ -118,7 +118,7 @@ const {
       class="px-5 py-4 rounded-lg"
       style="background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.35);"
     >
-      <p class="text-xs uppercase tracking-wider mb-1" style="color: #d4af37;">Sonuç</p>
+      <p class="text-xs uppercase tracking-wider mb-1" style="color: var(--gold-accent);">Sonuç</p>
       <p class="text-lg md:text-xl font-bold" style="color: var(--text);" set:html={example.result} />
       {example.explanation && (
         <p class="text-sm mt-2" style="color: var(--text-2);" set:html={example.explanation} />

@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /portal/
+Disallow: /keystatic/
+Disallow: /api/
 
 # AI / Answer Engine crawlers — explicit allow
 User-agent: GPTBot
@@ -55,11 +58,5 @@ Allow: /
 
 User-agent: DuckAssistBot
 Allow: /
-
-# Disallow admin / portal areas (auth-protected)
-User-agent: *
-Disallow: /portal/
-Disallow: /keystatic/
-Disallow: /api/
 
 Sitemap: https://discilaw.com/sitemap-index.xml

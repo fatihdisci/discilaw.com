@@ -27,31 +27,33 @@
 /* CSS değişkenleri — light/dark tema */
 @layer base {
   :root {
-    --bg:        #FFFFFF;
-    --bg-2:      #F8F7F4;
-    --bg-3:      #F0EDE6;
-    --border:    #E4E0D8;
-    --text:      #0D0C0A;
-    --text-2:    #4A4845;
-    --text-3:    #8C8A86;
-    --navy:      #1B3550;
-    --card-bg:   #FFFFFF;
-    --nav-bg:    rgba(255,255,255,0.92);
-    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+    --bg:          #FFFFFF;
+    --bg-2:        #F8F7F4;
+    --bg-3:        #F0EDE6;
+    --border:      #E4E0D8;
+    --text:        #0D0C0A;
+    --text-2:      #4A4845;
+    --text-3:      #8C8A86;
+    --navy:        #1B3550;
+    --card-bg:     #FFFFFF;
+    --nav-bg:      rgba(255,255,255,0.92);
+    --shadow-md:   0 4px 20px rgba(0,0,0,0.08);
+    --gold-accent: #d4af37;
   }
 
   [data-theme="dark"] {
-    --bg:        #0C0B09;
-    --bg-2:      #131210;
-    --bg-3:      #1A1916;
-    --border:    #2A2925;
-    --text:      #F2EFE8;
-    --text-2:    #B0ADA6;
-    --text-3:    #6B6864;
-    --navy:      #4A90C4;
-    --card-bg:   #131210;
-    --nav-bg:    rgba(12,11,9,0.92);
-    --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+    --bg:          #0C0B09;
+    --bg-2:        #131210;
+    --bg-3:        #1A1916;
+    --border:      #2A2925;
+    --text:        #F2EFE8;
+    --text-2:      #B0ADA6;
+    --text-3:      #6B6864;
+    --navy:        #4A90C4;
+    --card-bg:     #131210;
+    --nav-bg:      rgba(12,11,9,0.92);
+    --shadow-md:   0 4px 20px rgba(0,0,0,0.4);
+    --gold-accent: #d4af37;
   }
 
   body {
