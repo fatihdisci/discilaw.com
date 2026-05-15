@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Info } from 'lucide-react';
 
 const FIXED_FEES = {
     "Danışmanlık": [
@@ -65,7 +66,23 @@ const COURT_MIN_FEES = {
     ]
 };
 
-const AttorneyFeeCalculator = () => {
+const inputStyle = {
+    background: 'var(--bg-base)',
+    border: '1px solid var(--border)',
+    color: 'var(--ink-strong)',
+    fontFamily: 'var(--font-sans)',
+    fontSize: '1rem',
+    height: '52px',
+    width: '100%',
+    padding: '0 16px',
+    borderRadius: 'var(--radius-md)',
+    transition: 'border-color 200ms ease, box-shadow 200ms ease',
+    outline: 'none',
+};
+const focusOn = (e) => { e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--brand-soft)'; };
+const focusOff = (e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; };
+
+export default function AttorneyFeeCalculator() {
     const [calcType, setCalcType] = useState('fixed');
     const [selectedFixed, setSelectedFixed] = useState('');
     const [amount, setAmount] = useState('');
@@ -100,96 +117,336 @@ const AttorneyFeeCalculator = () => {
     };
 
     const handleCourtTypeChange = (newType) => { setCourtType(newType); if (amount) calculateNispi(amount, newType); };
-    const inputStyle = { background: 'var(--bg)', borderColor: 'var(--border)', color: 'var(--text)' };
+
+    const tabBaseStyle = {
+        flex: 1,
+        padding: '12px 18px',
+        borderRadius: 'var(--radius-pill)',
+        fontFamily: 'var(--font-sans)',
+        fontWeight: 500,
+        fontSize: '0.9375rem',
+        cursor: 'pointer',
+        border: 'none',
+        transition: 'background 220ms ease, color 220ms ease',
+    };
 
     return (
         <div className="max-w-4xl mx-auto">
-            <div className="flex p-1 rounded-2xl border mb-8 max-w-md mx-auto" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
-                <button onClick={() => setCalcType('fixed')} className={`flex-1 py-3 px-4 sm:px-6 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${calcType === 'fixed' ? 'bg-gold-500 shadow-lg shadow-gold-500/20' : ''}`} style={calcType === 'fixed' ? { color: 'var(--bg)' } : { color: 'var(--text-2)' }}>Maktu Ücret</button>
-                <button onClick={() => setCalcType('nispi')} className={`flex-1 py-3 px-4 sm:px-6 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${calcType === 'nispi' ? 'bg-gold-500 shadow-lg shadow-gold-500/20' : ''}`} style={calcType === 'nispi' ? { color: 'var(--bg)' } : { color: 'var(--text-2)' }}>Nispi Ücret</button>
+            {/* Mode toggle (pill segment) */}
+            <div
+                className="flex p-1 mb-8 max-w-md mx-auto"
+                style={{
+                    background: 'var(--bg-elevated)',
+                    border: '1px solid var(--border-soft)',
+                    borderRadius: 'var(--radius-pill)',
+                }}
+            >
+                <button
+                    onClick={() => setCalcType('fixed')}
+                    style={{
+                        ...tabBaseStyle,
+                        background: calcType === 'fixed' ? 'var(--ink-strong)' : 'transparent',
+                        color: calcType === 'fixed' ? 'var(--bg-base)' : 'var(--ink-default)',
+                    }}
+                >
+                    Maktu Ücret
+                </button>
+                <button
+                    onClick={() => setCalcType('nispi')}
+                    style={{
+                        ...tabBaseStyle,
+                        background: calcType === 'nispi' ? 'var(--ink-strong)' : 'transparent',
+                        color: calcType === 'nispi' ? 'var(--bg-base)' : 'var(--ink-default)',
+                    }}
+                >
+                    Nispi Ücret
+                </button>
             </div>
 
-            <div className="border rounded-3xl p-5 sm:p-6 md:p-10 backdrop-blur-sm" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
+            <div
+                style={{
+                    background: 'var(--bg-elevated)',
+                    border: '1px solid var(--border-soft)',
+                    borderRadius: 'var(--radius-xl)',
+                    padding: 'clamp(1.25rem, 4vw, 2.5rem)',
+                }}
+            >
                 {calcType === 'fixed' ? (
-                    <div className="space-y-8 animate-fadeIn">
+                    <div className="space-y-7">
                         <div>
-                            <label className="block text-sm font-medium mb-4" style={{ color: 'var(--text-2)' }}>Dava Türü / İşlem Seçiniz</label>
-                            <select value={selectedFixed} onChange={(e) => setSelectedFixed(e.target.value)} className="w-full h-14 px-4 sm:px-6 rounded-xl border focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all font-medium" style={inputStyle}>
+                            <label
+                                style={{
+                                    display: 'block',
+                                    fontFamily: 'var(--font-sans)',
+                                    fontWeight: 500,
+                                    fontSize: '0.8125rem',
+                                    color: 'var(--ink-default)',
+                                    marginBottom: '0.625rem',
+                                }}
+                            >
+                                Dava Türü / İşlem Seçiniz
+                            </label>
+                            <select
+                                value={selectedFixed}
+                                onChange={(e) => setSelectedFixed(e.target.value)}
+                                style={inputStyle}
+                                onFocus={focusOn}
+                                onBlur={focusOff}
+                            >
                                 <option value="">Seçiniz...</option>
                                 {Object.entries(FIXED_FEES).map(([group, items]) => (
                                     <optgroup key={group} label={group}>
-                                        {items.map((item) => (<option key={item.label} value={item.value}>{item.label}</option>))}
+                                        {items.map((item) => (
+                                            <option key={item.label} value={item.value}>{item.label}</option>
+                                        ))}
                                     </optgroup>
                                 ))}
                             </select>
                         </div>
+
                         {selectedFixed && (
-                            <div className="space-y-6 animate-slideUp">
-                                <div className="rounded-2xl p-6 sm:p-8 border text-center" style={{ background: 'var(--bg-3)', borderColor: 'var(--border)' }}>
-                                    <h3 className="font-medium mb-3" style={{ color: 'var(--text-2)' }}>Asgari Avukatlık Ücreti (KDV Dahil)</h3>
-                                    <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-gold-500">{formatCurrency(parseFloat(selectedFixed))}</p>
+                            <div className="space-y-5">
+                                <div
+                                    style={{
+                                        background: 'var(--brand-soft)',
+                                        border: '1px solid var(--brand)',
+                                        borderRadius: 'var(--radius-lg)',
+                                        padding: '1.75rem 1.5rem',
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    <p
+                                        style={{
+                                            fontFamily: 'var(--font-sans)',
+                                            fontSize: '0.6875rem',
+                                            letterSpacing: '0.22em',
+                                            textTransform: 'uppercase',
+                                            color: 'var(--ink-muted)',
+                                            marginBottom: '0.65rem',
+                                        }}
+                                    >
+                                        Asgari Avukatlık Ücreti (KDV Dahil)
+                                    </p>
+                                    <p
+                                        style={{
+                                            fontFamily: 'var(--font-display)',
+                                            fontWeight: 500,
+                                            fontSize: 'clamp(2rem, 6vw, 3rem)',
+                                            letterSpacing: '-0.022em',
+                                            color: 'var(--brand-deep)',
+                                            lineHeight: 1.1,
+                                        }}
+                                    >
+                                        {formatCurrency(parseFloat(selectedFixed))}
+                                    </p>
                                 </div>
-                                <div className="flex items-start gap-4 rounded-xl p-5 sm:p-6 md:p-8 border" style={{ background: 'var(--bg-3)', borderColor: 'var(--border)' }}>
-                                    <svg className="w-6 h-6 text-gold-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)' }}>Bu tutar 2025-2026 yılı AAÜT uyarınca belirlenen resmi asgari tutardır. Davanın mahiyeti ve harcanacak mesaiye göre bu tutar üzerinde serbestçe ücret kararlaştırılabilir.</p>
+                                <div
+                                    className="flex items-start gap-3"
+                                    style={{
+                                        background: 'var(--bg-base)',
+                                        border: '1px solid var(--border-soft)',
+                                        borderRadius: 'var(--radius-md)',
+                                        padding: '1rem 1.25rem',
+                                    }}
+                                >
+                                    <Info size={18} strokeWidth={1.75} style={{ color: 'var(--brand-deep)', flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.875rem', lineHeight: 1.6, color: 'var(--ink-default)', margin: 0 }}>
+                                        Bu tutar 2025-2026 yılı AAÜT uyarınca belirlenen resmi asgari tutardır. Davanın mahiyeti ve harcanacak mesaiye göre bu tutar üzerinde serbestçe ücret kararlaştırılabilir.
+                                    </p>
                                 </div>
                             </div>
                         )}
                     </div>
                 ) : (
-                    <div className="space-y-8 animate-fadeIn">
+                    <div className="space-y-7">
                         <div className="flex flex-wrap gap-4 sm:gap-6 justify-center">
-                            {[{ value: 'davalar', label: 'Konusu Para Olan Davalar için' }, { value: 'icra', label: 'İcra Takipleri için' }].map(opt => (
-                                <label key={opt.value} className="flex items-center gap-3 cursor-pointer group">
-                                    <div className="relative">
-                                        <input type="radio" name="courtType" value={opt.value} checked={courtType === opt.value} onChange={(e) => handleCourtTypeChange(e.target.value)} className="sr-only peer" />
-                                        <div className="w-5 h-5 rounded-full border-2 peer-checked:border-gold-500 transition-colors" style={{ borderColor: 'var(--border)' }}></div>
-                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-gold-500 scale-0 peer-checked:scale-100 transition-transform"></div>
-                                    </div>
-                                    <span className="font-medium text-sm sm:text-base transition-colors" style={{ color: courtType === opt.value ? '#ab934d' : 'var(--text-2)' }}>{opt.label}</span>
-                                </label>
-                            ))}
+                            {[
+                                { value: 'davalar', label: 'Konusu Para Olan Davalar için' },
+                                { value: 'icra', label: 'İcra Takipleri için' },
+                            ].map((opt) => {
+                                const checked = courtType === opt.value;
+                                return (
+                                    <label
+                                        key={opt.value}
+                                        className="flex items-center gap-3 cursor-pointer"
+                                        style={{ fontFamily: 'var(--font-sans)' }}
+                                    >
+                                        <span style={{ position: 'relative', display: 'inline-block', width: 18, height: 18 }}>
+                                            <input
+                                                type="radio"
+                                                name="courtType"
+                                                value={opt.value}
+                                                checked={checked}
+                                                onChange={(e) => handleCourtTypeChange(e.target.value)}
+                                                style={{ position: 'absolute', opacity: 0, width: '100%', height: '100%', margin: 0, cursor: 'pointer' }}
+                                            />
+                                            <span
+                                                style={{
+                                                    position: 'absolute',
+                                                    inset: 0,
+                                                    borderRadius: '50%',
+                                                    border: `2px solid ${checked ? 'var(--brand-deep)' : 'var(--border)'}`,
+                                                    background: 'var(--bg-elevated)',
+                                                    transition: 'border-color 180ms ease',
+                                                }}
+                                                aria-hidden="true"
+                                            />
+                                            <span
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '50%',
+                                                    left: '50%',
+                                                    transform: `translate(-50%, -50%) scale(${checked ? 1 : 0})`,
+                                                    width: 9,
+                                                    height: 9,
+                                                    borderRadius: '50%',
+                                                    background: 'var(--brand-deep)',
+                                                    transition: 'transform 180ms ease',
+                                                }}
+                                                aria-hidden="true"
+                                            />
+                                        </span>
+                                        <span
+                                            style={{
+                                                fontWeight: 500,
+                                                fontSize: '0.9375rem',
+                                                color: checked ? 'var(--brand-deep)' : 'var(--ink-default)',
+                                                transition: 'color 180ms ease',
+                                            }}
+                                        >
+                                            {opt.label}
+                                        </span>
+                                    </label>
+                                );
+                            })}
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-3" style={{ color: 'var(--text-2)' }}>Harca Esas Değer (TL)</label>
-                            <input type="number" value={amount} onChange={(e) => { setAmount(e.target.value); calculateNispi(e.target.value); }} placeholder="Hesaplanacak tutarı giriniz..." className="w-full h-14 sm:h-16 px-4 sm:px-6 rounded-xl border focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all font-semibold text-base sm:text-lg" style={inputStyle} />
+                            <label
+                                style={{
+                                    display: 'block',
+                                    fontFamily: 'var(--font-sans)',
+                                    fontWeight: 500,
+                                    fontSize: '0.8125rem',
+                                    color: 'var(--ink-default)',
+                                    marginBottom: '0.625rem',
+                                }}
+                            >
+                                Harca Esas Değer (TL)
+                            </label>
+                            <input
+                                type="number"
+                                value={amount}
+                                onChange={(e) => { setAmount(e.target.value); calculateNispi(e.target.value); }}
+                                placeholder="Hesaplanacak tutarı giriniz..."
+                                style={{ ...inputStyle, height: '56px', fontSize: '1.0625rem', fontWeight: 500 }}
+                                onFocus={focusOn}
+                                onBlur={focusOff}
+                            />
                         </div>
+
                         {nispiResult && (
-                            <div className="space-y-6 animate-slideUp">
-                                <div className="rounded-2xl border overflow-hidden" style={{ background: 'var(--bg-3)', borderColor: 'var(--border)' }}>
-                                    <div className="px-5 sm:px-6 py-4 border-b" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
-                                        <h4 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{courtType === 'davalar' ? 'Mahkeme Türüne Göre Asgari Ücretler' : 'İcra Takipleri Asgari Ücreti'}</h4>
+                            <div className="space-y-5">
+                                <div
+                                    style={{
+                                        background: 'var(--bg-base)',
+                                        border: '1px solid var(--border-soft)',
+                                        borderRadius: 'var(--radius-lg)',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            padding: '0.95rem 1.25rem',
+                                            borderBottom: '1px solid var(--border-soft)',
+                                            background: 'var(--bg-elevated)',
+                                        }}
+                                    >
+                                        <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '1rem', color: 'var(--ink-strong)', letterSpacing: '-0.015em' }}>
+                                            {courtType === 'davalar' ? 'Mahkeme Türüne Göre Asgari Ücretler' : 'İcra Takipleri Asgari Ücreti'}
+                                        </h4>
                                     </div>
-                                    <div className="p-5 sm:p-6">
-                                        <div className="space-y-3">
-                                            {nispiResult.courtFees.map((court, idx) => (
-                                                <div key={idx} className="flex justify-between items-center py-2 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
-                                                    <span className="text-sm" style={{ color: 'var(--text-2)' }}>{court.name}</span>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className={`font-semibold ${court.isBelowMin ? 'text-gold-400' : 'text-green-400'}`}>{formatCurrency(court.calculatedFee)}</span>
-                                                        {court.isBelowMin && <span className="text-xs text-gold-500 bg-gold-500/10 px-2 py-0.5 rounded">Maktu</span>}
-                                                    </div>
+                                    <div style={{ padding: '0.5rem 1.25rem' }}>
+                                        {nispiResult.courtFees.map((court, idx) => (
+                                            <div
+                                                key={idx}
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    padding: '0.7rem 0',
+                                                    borderBottom: idx === nispiResult.courtFees.length - 1 ? 'none' : '1px solid var(--border-soft)',
+                                                    fontFamily: 'var(--font-sans)',
+                                                    fontSize: '0.875rem',
+                                                }}
+                                            >
+                                                <span style={{ color: 'var(--ink-default)' }}>{court.name}</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <span style={{ fontWeight: 600, color: court.isBelowMin ? 'var(--brand-deep)' : 'var(--ink-strong)' }}>
+                                                        {formatCurrency(court.calculatedFee)}
+                                                    </span>
+                                                    {court.isBelowMin && (
+                                                        <span
+                                                            style={{
+                                                                fontFamily: 'var(--font-sans)',
+                                                                fontSize: '0.6875rem',
+                                                                fontWeight: 500,
+                                                                letterSpacing: '0.06em',
+                                                                textTransform: 'uppercase',
+                                                                color: 'var(--brand-deep)',
+                                                                background: 'var(--brand-soft)',
+                                                                padding: '0.2rem 0.45rem',
+                                                                borderRadius: 'var(--radius-pill)',
+                                                            }}
+                                                        >
+                                                            Maktu
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            ))}
-                                        </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                                <div className="rounded-2xl border overflow-hidden" style={{ background: 'var(--bg-3)', borderColor: 'var(--border)' }}>
-                                    <div className="px-5 sm:px-6 py-4 border-b" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
-                                        <h4 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>Hesaplama Detayları (Kademeli)</h4>
-                                        <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>Nispi hesaplama sonucu: {formatCurrency(nispiResult.calculated)}</p>
+
+                                <div
+                                    style={{
+                                        background: 'var(--bg-base)',
+                                        border: '1px solid var(--border-soft)',
+                                        borderRadius: 'var(--radius-lg)',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            padding: '0.95rem 1.25rem',
+                                            borderBottom: '1px solid var(--border-soft)',
+                                            background: 'var(--bg-elevated)',
+                                        }}
+                                    >
+                                        <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '1rem', color: 'var(--ink-strong)', letterSpacing: '-0.015em' }}>
+                                            Hesaplama Detayları (Kademeli)
+                                        </h4>
+                                        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'var(--ink-muted)', marginTop: '0.25rem' }}>
+                                            Nispi hesaplama sonucu: {formatCurrency(nispiResult.calculated)}
+                                        </p>
                                     </div>
-                                    <div className="p-5 sm:p-6">
-                                        <div className="space-y-4">
-                                            {nispiResult.breakdown.map((item, idx) => (
-                                                <div key={idx} className="flex justify-between items-center text-sm">
-                                                    <span style={{ color: 'var(--text-3)' }}>{item.range} aralığı ({item.rate})</span>
-                                                    <span className="font-medium" style={{ color: 'var(--text-2)' }}>{formatCurrency(item.fee)}</span>
-                                                </div>
-                                            ))}
-                                        </div>
+                                    <div style={{ padding: '0.5rem 1.25rem' }}>
+                                        {nispiResult.breakdown.map((item, idx) => (
+                                            <div
+                                                key={idx}
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    padding: '0.6rem 0',
+                                                    borderBottom: idx === nispiResult.breakdown.length - 1 ? 'none' : '1px solid var(--border-soft)',
+                                                    fontFamily: 'var(--font-sans)',
+                                                    fontSize: '0.8125rem',
+                                                }}
+                                            >
+                                                <span style={{ color: 'var(--ink-muted)' }}>{item.range} aralığı ({item.rate})</span>
+                                                <span style={{ fontWeight: 500, color: 'var(--ink-strong)' }}>{formatCurrency(item.fee)}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -199,6 +456,4 @@ const AttorneyFeeCalculator = () => {
             </div>
         </div>
     );
-};
-
-export default AttorneyFeeCalculator;
+}

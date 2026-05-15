@@ -1,87 +1,289 @@
 @import "tailwindcss";
 
 @theme {
-  /* Mevcut gold — koru */
-  --color-gold-50:  #fbf7ef;
-  --color-gold-100: #f5edd8;
-  --color-gold-200: #ead9b0;
-  --color-gold-300: #dec084;
-  --color-gold-400: #cca762;
-  --color-gold-500: #ab934d;
-  --color-gold-600: #96793f;
-  --color-gold-700: #7a6034;
-  --color-gold-800: #654f2e;
-  --color-gold-900: #544129;
-  --color-gold-950: #2e2315;
+  /* ──────────────────────────────────────────────────────────────
+     Soft Sage — Renk Paleti
+     ────────────────────────────────────────────────────────────── */
+  --color-sage-50:  #f4f5f0;
+  --color-sage-100: #e8ebe0;
+  --color-sage-200: #d4d9c5;
+  --color-sage-300: #b8bfaa;
+  --color-sage-400: #9aa388;
+  --color-sage-500: #7a8758;
+  --color-sage-600: #5c6842;
+  --color-sage-700: #475033;
+  --color-sage-800: #3d4a3a;
+  --color-sage-900: #2a3128;
 
-  /* YENİ fontlar */
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body:    'Outfit', 'Inter', sans-serif;
-  --font-sans:    'Outfit', 'Inter', sans-serif;  /* Tailwind default override */
-  --font-serif:   'Cormorant Garamond', Georgia, serif;
+  --color-warm-50:  #f7f1e3;
+  --color-warm-100: #ede0c4;
+  --color-warm-200: #e1cfa6;
+
+  --color-terracotta-500: #c8623a;
+  --color-terracotta-600: #a8442a;
+
+  /* ──────────────────────────────────────────────────────────────
+     Fontlar — Fraunces (display) + IBM Plex Sans (body)
+     ────────────────────────────────────────────────────────────── */
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-sans:    "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-serif:   "Fraunces", "Times New Roman", serif;
+  --font-body:    "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+
+  /* Display ölçeği (Fraunces) */
+  --text-hero:     clamp(2.5rem, 6vw + 1rem, 4.5rem);
+  --text-h1:       clamp(2rem, 4vw + 1rem, 3.25rem);
+  --text-h2:       clamp(1.625rem, 2.5vw + 1rem, 2.25rem);
+  --text-h3:       1.375rem;
+
+  /* Body ölçeği (IBM Plex Sans) */
+  --text-body:     1rem;
+  --text-body-lg:  1.125rem;
+  --text-small:    0.875rem;
+  --text-xs:       0.75rem;
+
+  /* ──────────────────────────────────────────────────────────────
+     Radius — Soft Sage cesur, organik radius
+     ────────────────────────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   18px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  /* ──────────────────────────────────────────────────────────────
+     Shadow — sage tabanlı yumuşak gölgeler (asla sert siyah)
+     ────────────────────────────────────────────────────────────── */
+  --shadow-sm:   0 2px 6px -2px rgba(45, 55, 38, 0.08);
+  --shadow-md:   0 8px 20px -8px rgba(45, 55, 38, 0.14);
+  --shadow-lg:   0 18px 40px -16px rgba(45, 55, 38, 0.22);
+  --shadow-glow: 0 12px 30px -8px rgba(122, 135, 88, 0.32);
 }
 
-/* Dark mode variant — v4 syntax */
-@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-
-/* CSS değişkenleri — light/dark tema */
+/* ──────────────────────────────────────────────────────────────
+   Tema değişkenleri — yalnızca light mode (dark mode kaldırıldı)
+   ────────────────────────────────────────────────────────────── */
 @layer base {
   :root {
-    --bg:        #FFFFFF;
-    --bg-2:      #F8F7F4;
-    --bg-3:      #F0EDE6;
-    --border:    #E4E0D8;
-    --text:      #0D0C0A;
-    --text-2:    #4A4845;
-    --text-3:    #8C8A86;
-    --navy:      #1B3550;
-    --card-bg:   #FFFFFF;
-    --nav-bg:    rgba(255,255,255,0.92);
-    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+    /* Yüzeyler */
+    --bg-base:     #e8ebe0;
+    --bg-elevated: #f4f5f0;
+    --bg-overlay:  rgba(255, 255, 255, 0.5);
+    --bg-warm:     #ede0c4;
+
+    /* Metin */
+    --ink-strong:  #2a3128;
+    --ink-default: #3d4a3a;
+    --ink-muted:   #6b7560;
+    --ink-faint:   #8a9180;
+
+    /* Marka */
+    --brand:       #7a8758;
+    --brand-deep:  #5c6842;
+    --brand-soft:  rgba(122, 135, 88, 0.12);
+
+    /* Vurgu (terracotta — sayfada max 3 nokta) */
+    --accent:      #c8623a;
+    --accent-soft: rgba(200, 98, 58, 0.10);
+
+    /* Çizgi */
+    --border:      #b8bfaa;
+    --border-soft: rgba(122, 135, 88, 0.18);
+
+    /* Durum */
+    --success:     #6b8e4e;
+    --danger:      #a8442a;
+
+    /* Layout */
+    --section-py:    clamp(3rem, 8vw, 6rem);
+    --section-px:    clamp(1.25rem, 4vw, 3rem);
+    --container-max: 1180px;
+
+    /* Geriye dönük uyumluluk için eski değişken adları */
+    --bg:        var(--bg-base);
+    --bg-2:      var(--bg-elevated);
+    --bg-3:      var(--bg-warm);
+    --text:      var(--ink-strong);
+    --text-2:    var(--ink-default);
+    --text-3:    var(--ink-muted);
+    --navy:      var(--brand-deep);
+    --card-bg:   var(--bg-elevated);
+    --nav-bg:    rgba(244, 245, 240, 0.85);
   }
 
-  [data-theme="dark"] {
-    --bg:        #0C0B09;
-    --bg-2:      #131210;
-    --bg-3:      #1A1916;
-    --border:    #2A2925;
-    --text:      #F2EFE8;
-    --text-2:    #B0ADA6;
-    --text-3:    #6B6864;
-    --navy:      #4A90C4;
-    --card-bg:   #131210;
-    --nav-bg:    rgba(12,11,9,0.92);
-    --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+  html {
+    background: var(--bg-base);
+    color: var(--ink-strong);
   }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Outfit', 'Inter', sans-serif;
-    transition: background 0.3s, color 0.3s;
+    background: var(--bg-base);
+    color: var(--ink-default);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  ::selection {
+    background: var(--brand-soft);
+    color: var(--ink-strong);
+  }
+
+  /* Display tipografi varsayılanları */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--ink-strong);
+    line-height: 1.05;
+    letter-spacing: -0.018em;
+    font-weight: 500;
+  }
+
+  /* Form / input varsayılanları */
+  input, textarea, select, button {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  /* Focus halkası — sage soft ring */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--brand-soft);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
-      transition: none !important;
-      animation: none !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
     }
   }
 }
 
-/* Blog prose override — güncelle */
+/* ──────────────────────────────────────────────────────────────
+   Blog prose — Soft Sage
+   ────────────────────────────────────────────────────────────── */
 @layer components {
-  .prose h2 { @apply text-gold-500 font-bold mt-10 mb-6 text-2xl; font-family: var(--font-display); }
-  .prose h3 { @apply text-gold-500 font-bold mt-8 mb-4 text-xl; font-family: var(--font-display); }
-  .prose p  { @apply mb-6 leading-relaxed; }
-  .prose strong { @apply font-bold; color: var(--text); }
-  .prose a  { @apply text-gold-500 hover:text-gold-400 no-underline hover:underline; }
-  .prose blockquote { @apply border-l-4 border-gold-500 pl-4 italic my-6; color: var(--text-2); }
-  .prose ul { @apply mb-6 pl-5 list-disc marker:text-gold-500; }
-  .prose ol { @apply mb-6 pl-5 list-decimal marker:text-gold-500; }
-  .prose li { @apply mb-2 pl-2; }
+  .prose {
+    color: var(--ink-default);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  .prose h2 {
+    font-family: var(--font-display);
+    color: var(--ink-strong);
+    font-weight: 500;
+    font-style: italic;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.75rem;
+    letter-spacing: -0.018em;
+    line-height: 1.15;
+  }
+  .prose h3 {
+    font-family: var(--font-display);
+    color: var(--ink-strong);
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.375rem;
+    letter-spacing: -0.018em;
+  }
+  .prose p { margin-bottom: 1.25rem; }
+  .prose strong { color: var(--ink-strong); font-weight: 600; }
+  .prose a {
+    color: var(--brand-deep);
+    text-decoration: underline;
+    text-decoration-color: var(--border-soft);
+    text-underline-offset: 3px;
+    transition: color 200ms ease, text-decoration-color 200ms ease;
+  }
+  .prose a:hover {
+    color: var(--ink-strong);
+    text-decoration-color: currentColor;
+  }
+  .prose blockquote {
+    border-left: 2px solid var(--brand);
+    padding-left: 1.25rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.25em;
+    color: var(--ink-strong);
+    margin: 1.75rem 0;
+    line-height: 1.4;
+  }
+  .prose ul {
+    margin-bottom: 1.25rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .prose ul::marker,
+  .prose ul li::marker { color: var(--brand); }
+  .prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.25rem;
+    list-style: decimal;
+  }
+  .prose ol li::marker { color: var(--brand); }
+  .prose li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+  .prose code {
+    background: var(--brand-soft);
+    color: var(--ink-strong);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+    font-size: 0.9em;
+  }
+  .prose pre {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+  }
+  .prose img {
+    border-radius: var(--radius-lg);
+    margin: 1.75rem 0;
+  }
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--border-soft);
+    margin: 2.5rem 0;
+  }
+
+  /* Eyebrow / kicker yardımcı sınıfı */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Hero italic display vurgusu (Fraunces SOFT axis) */
+  .display-soft-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "SOFT" 100, "opsz" 144;
+    letter-spacing: -0.018em;
+    line-height: 1.05;
+  }
 }
 
 @layer utilities {
-  .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(45, 55, 38, 0.18);
+  }
 }

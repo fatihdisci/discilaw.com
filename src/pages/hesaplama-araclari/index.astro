@@ -1,138 +1,199 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { GlowingEffect } from '../../components/ui/glowing-effect';
+
+const tools = [
+    {
+        href: '/hesaplama-araclari/kidem-tazminati',
+        title: 'Kıdem Tazminatı Hesaplama',
+        desc: 'Geçmiş dönem tavan ücretleri dahil, en güncel verilerle tazminatınızı hesaplayın.',
+        iconPath: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
+    },
+    {
+        href: '/hesaplama-araclari/ihbar-tazminati',
+        title: 'İhbar Tazminatı Hesaplama',
+        desc: 'İhbar sürelerinizi ve vergi diliminize göre net tazminat tutarını hesaplayın.',
+        iconPath: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+    },
+    {
+        href: '/hesaplama-araclari/avukatlik-ucreti',
+        title: 'Avukatlık Ücreti Hesaplama',
+        desc: 'Dava türüne veya değerine göre asgari avukatlık ücretinizi güncel tarifeye göre öğrenin.',
+        iconPath: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+    },
+];
 ---
 
-<Layout title="Hesaplama Araçları | Dişçi Hukuk Bürosu" description="Hukuki hesaplama araçları: Kıdem tazminatı, ihbar tazminatı ve daha fazlası için ücretsiz online hesaplayıcılar.">
-    <section class="py-20 md:py-32">
+<Layout title="Hesaplama Araçları | Dişçi Hukuk Bürosu" description="Hukuki hesaplama araçları: Kıdem tazminatı, ihbar tazminatı ve daha fazlası için ücretsiz online hesaplayıcılar." enableAOS={true}>
+    <section class="calc-hero">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="calc-hero-title" data-aos="fade-up">
+                <span class="calc-hero-title-italic">Hesaplama</span> Araçları
+            </h1>
+            <p class="calc-hero-lede" data-aos="fade-up" data-aos-delay="100">
+                Hukuki süreçlerinizde size yardımcı olacak ücretsiz hesaplama araçlarımız.
+            </p>
+        </div>
+    </section>
+
+    <section class="calc-grid-section">
         <div class="container mx-auto px-4">
-            <!-- Header -->
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h1 class="text-4xl md:text-5xl font-light mb-6 font-display" style="color: var(--text);">Hesaplama Araçları</h1>
-                <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-2);">
-                    Hukuki süreçlerinizde size yardımcı olacak ücretsiz hesaplama araçlarımız
-                </p>
-            </div>
-
-            <!-- Tools Grid -->
-            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto list-none p-0 m-0">
-
-                <!-- Kıdem Tazminatı Calculator Card -->
-                <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay="100">
-                    <GlowingEffect
-                        client:load
-                        spread={40}
-                        glow={true}
-                        disabled={false}
-                        proximity={64}
-                        inactiveZone={0.01}
-                        borderWidth={2}
-                    />
-                    <a href="/hesaplama-araclari/kidem-tazminati" class="group block h-full">
-                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
-                            <div>
-                                <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
-                                    <svg class="w-7 h-7 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                    </svg>
-                                </div>
-                                <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
-                                    Kıdem Tazminatı Hesaplama
-                                </h2>
-                                <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
-                                    Geçmiş dönem tavan ücretleri dahil, en güncel verilerle tazminatınızı hesaplayın.
-                                </p>
+            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 max-w-6xl mx-auto list-none p-0 m-0">
+                {tools.map((tool, index) => (
+                    <li class="contents" data-aos="fade-up" data-aos-delay={100 + index * 80}>
+                        <a href={tool.href} class="calc-card group cursor-pointer">
+                            <div class="calc-icon-wrap">
+                                <svg class="calc-icon" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d={tool.iconPath}/>
+                                </svg>
                             </div>
-                            <span class="inline-flex items-center text-gold-500 font-semibold text-sm group-hover:translate-x-2 transition-transform mt-2">
+                            <h2 class="calc-card-title">{tool.title}</h2>
+                            <p class="calc-card-desc">{tool.desc}</p>
+                            <span class="calc-card-cta">
                                 Hesapla
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                 </svg>
                             </span>
-                        </div>
-                    </a>
-                </li>
-
-                <!-- İhbar Tazminatı Calculator Card -->
-                <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay="200">
-                    <GlowingEffect
-                        client:load
-                        spread={40}
-                        glow={true}
-                        disabled={false}
-                        proximity={64}
-                        inactiveZone={0.01}
-                        borderWidth={2}
-                    />
-                    <a href="/hesaplama-araclari/ihbar-tazminati" class="group block h-full">
-                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
-                            <div>
-                                <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
-                                    <svg class="w-7 h-7 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
-                                    İhbar Tazminatı Hesaplama
-                                </h2>
-                                <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
-                                    İhbar sürelerinizi ve vergi diliminize göre net tazminat tutarını hesaplayın.
-                                </p>
-                            </div>
-                            <span class="inline-flex items-center text-gold-500 font-semibold text-sm group-hover:translate-x-2 transition-transform mt-2">
-                                Hesapla
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                                </svg>
-                            </span>
-                        </div>
-                    </a>
-                </li>
-
-                <!-- Avukatlık Ücreti Calculator Card -->
-                <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay="300">
-                    <GlowingEffect
-                        client:load
-                        spread={40}
-                        glow={true}
-                        disabled={false}
-                        proximity={64}
-                        inactiveZone={0.01}
-                        borderWidth={2}
-                    />
-                    <a href="/hesaplama-araclari/avukatlik-ucreti" class="group block h-full">
-                        <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
-                            <div>
-                                <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
-                                    <svg class="w-7 h-7 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                    </svg>
-                                </div>
-                                <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
-                                    Avukatlık Ücreti Hesaplama
-                                </h2>
-                                <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
-                                    Dava türüne veya değerine göre asgari avukatlık ücretinizi güncel tarifeye göre öğrenin.
-                                </p>
-                            </div>
-                            <span class="inline-flex items-center text-gold-500 font-semibold text-sm group-hover:translate-x-2 transition-transform mt-2">
-                                Hesapla
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                                </svg>
-                            </span>
-                        </div>
-                    </a>
-                </li>
+                        </a>
+                    </li>
+                ))}
             </ul>
 
-            <!-- Disclaimer -->
-            <div class="mt-16 text-center" data-aos="fade-up">
-                <p class="text-sm max-w-2xl mx-auto" style="color: var(--text-3);">
-                    <strong style="color: var(--text-2);">Uyarı:</strong> Bu hesaplama araçları yalnızca bilgilendirme amaçlıdır.
+            <div class="calc-disclaimer" data-aos="fade-up">
+                <p>
+                    <strong>Uyarı:</strong> Bu hesaplama araçları yalnızca bilgilendirme amaçlıdır.
                     Kesin sonuçlar için mutlaka bir avukata danışmanızı öneririz.
                 </p>
             </div>
         </div>
     </section>
 </Layout>
+
+<style>
+    .calc-hero {
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border-soft);
+        padding: clamp(3.5rem, 8vw, 5.5rem) 0;
+    }
+    .calc-hero-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: var(--text-h1);
+        line-height: 1.05;
+        letter-spacing: -0.022em;
+        color: var(--ink-strong);
+        margin-bottom: 1.25rem;
+    }
+    .calc-hero-title-italic {
+        font-style: italic;
+        font-weight: 400;
+        font-variation-settings: "SOFT" 100, "opsz" 144;
+        color: var(--brand-deep);
+    }
+    .calc-hero-lede {
+        max-width: 36rem;
+        margin: 0 auto;
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: var(--ink-default);
+    }
+
+    .calc-grid-section {
+        background: var(--bg-base);
+        padding: clamp(4rem, 9vw, 6rem) 0;
+    }
+
+    .calc-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        padding: 1.75rem 1.75rem 1.5rem;
+        transition: transform 280ms cubic-bezier(.4,0,.2,1),
+                    box-shadow 280ms cubic-bezier(.4,0,.2,1),
+                    border-color 280ms ease;
+    }
+    .calc-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--brand);
+    }
+
+    .calc-icon-wrap {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        background: var(--brand-soft);
+        margin-bottom: 1.25rem;
+        transition: background 280ms ease;
+    }
+    .calc-card:hover .calc-icon-wrap {
+        background: rgba(122, 135, 88, 0.22);
+    }
+    .calc-icon {
+        width: 28px;
+        height: 28px;
+        color: var(--brand-deep);
+    }
+
+    .calc-card-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        letter-spacing: -0.018em;
+        color: var(--ink-strong);
+        margin-bottom: 0.6rem;
+    }
+
+    .calc-card-desc {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        color: var(--ink-default);
+        margin-bottom: 1.5rem;
+    }
+
+    .calc-card-cta {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--brand-deep);
+        border-bottom: 1px solid currentColor;
+        padding-bottom: 2px;
+        align-self: flex-start;
+        transition: color 200ms ease;
+    }
+    .calc-card-cta svg {
+        transition: transform 220ms ease;
+    }
+    .calc-card:hover .calc-card-cta { color: var(--ink-strong); }
+    .calc-card:hover .calc-card-cta svg { transform: translateX(4px); }
+
+    .calc-disclaimer {
+        margin-top: clamp(3rem, 6vw, 4rem);
+        text-align: center;
+        max-width: 36rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .calc-disclaimer p {
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: var(--ink-muted);
+    }
+    .calc-disclaimer strong { color: var(--ink-default); font-weight: 600; }
+</style>

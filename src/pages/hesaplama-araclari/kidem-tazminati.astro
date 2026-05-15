@@ -31,55 +31,51 @@ const howToLd = howToSchema({
   title="Kıdem Tazminatı Hesaplama"
   description="Doğru ve güncel kıdem tazminatı hesaplama aracı. Geçmiş dönem tavan ücretleri dahil, en güncel verilerle net tazminatınızı hesaplayın."
   canonicalPath={canonicalPath}
+  enableAOS={true}
   structuredData={[appLd, howToLd]}
 >
-    <section class="py-20 md:py-32">
+    <section class="calc-page">
         <div class="container mx-auto px-4">
-            <!-- Header -->
-            <div class="text-center mb-12" data-aos="fade-up">
-                <a href="/hesaplama-araclari" class="inline-flex items-center hover:text-gold-500 transition-colors mb-6" style="color: var(--text-2);">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            <div class="calc-page-header" data-aos="fade-up">
+                <a href="/hesaplama-araclari" class="calc-back-link cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                     </svg>
                     Tüm Hesaplama Araçları
                 </a>
-                <h1 class="text-4xl md:text-5xl font-light mb-6 font-display" style="color: var(--text);">Kıdem Tazminatı Hesaplama</h1>
-                <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-2);">
-                    İşten çıkış tarihinize göre doğru kıdem tavanı ile hesaplama yapın
+                <h1 class="calc-page-title">
+                    <span class="calc-page-title-italic">Kıdem</span> Tazminatı Hesaplama
+                </h1>
+                <p class="calc-page-lede">
+                    İşten çıkış tarihinize göre doğru kıdem tavanı ile hesaplama yapın.
                 </p>
             </div>
 
-            <!-- Calculator -->
             <div class="max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
                 <SeveranceCalculator client:load />
             </div>
 
-            <!-- Info Section -->
             <div class="max-w-3xl mx-auto mt-16" data-aos="fade-up" data-aos-delay="200">
-                <div class="rounded-2xl p-8 border" style="background: var(--bg-2); border-color: var(--border);">
-                    <h2 class="text-2xl font-bold mb-6 font-display" style="color: var(--text);">Kıdem Tazminatı Hakkında</h2>
-
-                    <div class="space-y-4" style="color: var(--text-2);">
+                <div class="calc-info-card">
+                    <h2 class="calc-info-title">Kıdem Tazminatı Hakkında</h2>
+                    <div class="calc-info-body">
                         <p>
-                            <strong style="color: var(--text);">Kıdem tazminatı</strong>, işverenin çalışanına belirli şartların gerçekleşmesi
+                            <strong>Kıdem tazminatı</strong>, işverenin çalışanına belirli şartların gerçekleşmesi
                             durumunda, işyerinde geçirdiği hizmet süresine karşılık olarak ödemekle yükümlü olduğu bir tazminat türüdür.
                             İşçi, yıllar boyunca emeğini ortaya koyarak işverenin ticari faaliyetlerinin sürdürülmesine önemli katkılar sağlamaktadır.
                         </p>
-
                         <p>
                             Bu sürekli ve düzenli çalışmanın bir karşılığı olarak, işçinin işyerinde geçirdiği toplam süre
                             dikkate alınarak kıdem tazminatı hesaplanmaktadır.
                         </p>
-
-                        <h3 class="text-lg font-semibold pt-4" style="color: var(--text);">Hesaplamada Esas Alınan Ücret:</h3>
+                        <h3 class="calc-info-h3">Hesaplamada Esas Alınan Ücret:</h3>
                         <p>
                             Kıdem tazminatı, işçinin son brüt ücreti üzerinden hesaplanır. Bu hesaplamaya yol, yemek,
                             barınma, eğitim yardımı gibi düzenli olarak sağlanan sosyal haklar ve yan ödemeler de dahil edilmektedir.
                             Ancak hesaplamada kullanılacak tutar, yasal olarak belirlenen kıdem tazminatı tavanını aşamaz.
                         </p>
-
-                        <div class="bg-gold-500/10 border border-gold-500/30 rounded-lg p-4 mt-6">
-                            <p class="text-gold-400 text-sm">
+                        <div class="calc-info-callout">
+                            <p>
                                 <strong>Önemli:</strong> Bu hesaplama aracı yalnızca bilgilendirme amaçlıdır.
                                 Kesin sonuçlar ve hukuki değerlendirme için mutlaka bir avukata danışmanızı öneririz.
                             </p>
@@ -90,3 +86,113 @@ const howToLd = howToSchema({
         </div>
     </section>
 </Layout>
+
+<style>
+    .calc-page {
+        background: var(--bg-base);
+        padding: clamp(3rem, 7vw, 5rem) 0 clamp(4rem, 9vw, 6rem);
+    }
+
+    .calc-page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .calc-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--ink-muted);
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid transparent;
+        padding-bottom: 1px;
+        transition: color 200ms ease, border-color 200ms ease;
+    }
+    .calc-back-link:hover {
+        color: var(--brand-deep);
+        border-bottom-color: currentColor;
+    }
+    .calc-back-link svg { transition: transform 220ms ease; }
+    .calc-back-link:hover svg { transform: translateX(-3px); }
+
+    .calc-page-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: var(--text-h1);
+        line-height: 1.05;
+        letter-spacing: -0.022em;
+        color: var(--ink-strong);
+        margin-bottom: 1.25rem;
+    }
+    .calc-page-title-italic {
+        font-style: italic;
+        font-weight: 400;
+        font-variation-settings: "SOFT" 100, "opsz" 144;
+        color: var(--brand-deep);
+    }
+    .calc-page-lede {
+        max-width: 36rem;
+        margin: 0 auto;
+        font-family: var(--font-sans);
+        font-weight: 300;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: var(--ink-default);
+    }
+
+    .calc-info-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-xl);
+        padding: 2rem;
+    }
+    @media (min-width: 768px) {
+        .calc-info-card { padding: 2.5rem; }
+    }
+    .calc-info-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 1.625rem;
+        line-height: 1.15;
+        letter-spacing: -0.018em;
+        color: var(--ink-strong);
+        margin-bottom: 1.25rem;
+    }
+    .calc-info-body {
+        font-family: var(--font-sans);
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--ink-default);
+    }
+    .calc-info-body p { margin-bottom: 1rem; }
+    .calc-info-body strong { color: var(--ink-strong); font-weight: 600; }
+    .calc-info-h3 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 1.0625rem;
+        color: var(--ink-strong);
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.015em;
+    }
+
+    .calc-info-callout {
+        margin-top: 1.5rem;
+        background: var(--accent-soft);
+        border: 1px solid rgba(200, 98, 58, 0.22);
+        border-left: 3px solid var(--accent);
+        border-radius: var(--radius-md);
+        padding: 1rem 1.25rem;
+    }
+    .calc-info-callout p {
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: var(--ink-strong);
+        margin: 0;
+    }
+    .calc-info-callout strong { color: var(--accent); }
+</style>

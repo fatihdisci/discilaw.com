@@ -49,16 +49,26 @@ const schema = {
 
 <nav aria-label="Breadcrumb" class="container mx-auto px-4 py-4">
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  <ol class="flex items-center space-x-2 text-sm">
-    <li><a href="/" class="hover:text-gold-500 transition-colors" style="color: var(--text-3);">Anasayfa</a></li>
+  <ol class="flex items-center flex-wrap gap-x-2 gap-y-1 text-sm" style="font-family: var(--font-sans);">
+    <li><a href="/" class="crumb-link" style="color: var(--ink-muted);">Anasayfa</a></li>
     {crumbs.map((crumb, index) => {
       const isLast = index === crumbs.length - 1;
       return (
-        <li class="flex items-center space-x-2">
-          <span style="color: var(--border);">›</span>
-          {isLast ? <span class="text-gold-500 font-medium" aria-current="page">{crumb.name}</span> : <a href={crumb.href} class="hover:text-gold-500 transition-colors" style="color: var(--text-3);">{crumb.name}</a>}
+        <li class="flex items-center gap-2">
+          <span aria-hidden="true" style="color: var(--ink-faint);">›</span>
+          {isLast
+            ? <span aria-current="page" style="color: var(--brand-deep); font-weight: 500;">{crumb.name}</span>
+            : <a href={crumb.href} class="crumb-link" style="color: var(--ink-muted);">{crumb.name}</a>}
         </li>
       );
     })}
   </ol>
 </nav>
+
+<style>
+  .crumb-link {
+    cursor: pointer;
+    transition: color 200ms ease;
+  }
+  .crumb-link:hover { color: var(--brand-deep); }
+</style>

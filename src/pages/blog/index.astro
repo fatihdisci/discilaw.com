@@ -9,15 +9,51 @@ const serializedPosts = posts.map((post) => ({ slug: post.slug, data: { ...post.
 ---
 
 <Layout title="Blog" description="Dişçi Hukuk Bürosu blogunda güncel Yargıtay kararları, mevzuat değişiklikleri ve hukuki değerlendirmeleri takip edin." canonicalPath="/blog" enableAOS={true}>
-  <section class="py-20 border-b" style="background: var(--bg-2); border-color: var(--border);">
+  <section class="blog-hero">
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-light mb-4 font-display" style="color: var(--text);" data-aos="fade-up">Blog</h1>
-      <p class="max-w-2xl mx-auto" style="color: var(--text-2);" data-aos="fade-up" data-aos-delay="100">Hukuki gelişmeler, güncel Yargıtay kararları ve mevzuat değişiklikleri üzerine incelemelerimiz.</p>
+      <h1 class="blog-hero-title" data-aos="fade-up"><span class="blog-hero-title-italic">Blog</span></h1>
+      <p class="blog-hero-lede" data-aos="fade-up" data-aos-delay="100">Hukuki gelişmeler, güncel Yargıtay kararları ve mevzuat değişiklikleri üzerine incelemelerimiz.</p>
     </div>
   </section>
-  <section class="py-24" style="background: var(--bg);">
+  <section class="blog-list-section">
     <div class="container mx-auto px-4">
       <BlogSearch client:visible posts={serializedPosts} categories={categories} />
     </div>
   </section>
 </Layout>
+
+<style>
+  .blog-hero {
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-soft);
+    padding: clamp(3.5rem, 8vw, 5.5rem) 0;
+  }
+  .blog-hero-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h1);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: var(--ink-strong);
+    margin-bottom: 1.25rem;
+  }
+  .blog-hero-title-italic {
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "SOFT" 100, "opsz" 144;
+    color: var(--brand-deep);
+  }
+  .blog-hero-lede {
+    max-width: 36rem;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink-default);
+  }
+  .blog-list-section {
+    background: var(--bg-base);
+    padding: clamp(3.5rem, 8vw, 5.5rem) 0;
+  }
+</style>

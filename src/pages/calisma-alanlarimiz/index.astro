@@ -2,60 +2,41 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { ServiceIcon } from '../../components/ServiceIcon';
-import { GlowingEffect } from '../../components/ui/glowing-effect';
 
 const services = await getCollection('services');
 ---
 
 <Layout title="Çalışma Alanlarımız" description="Dişçi Hukuk Bürosu'nun ceza, aile, iş, gayrimenkul ve ticaret hukuku başta olmak üzere sunduğu çalışma alanlarını inceleyin." canonicalPath="/calisma-alanlarimiz" enableAOS={true}>
   <!-- Header -->
-  <section class="py-20 border-b" style="background: var(--bg-2); border-color: var(--border);">
+  <section class="services-hero">
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-light mb-4 font-display" style="color: var(--text);" data-aos="fade-up">Çalışma Alanlarımız</h1>
-      <p class="max-w-2xl mx-auto" style="color: var(--text-2);" data-aos="fade-up" data-aos-delay="100">
+      <h1 class="services-hero-title" data-aos="fade-up">
+        <span class="services-hero-title-italic">Çalışma</span> Alanlarımız
+      </h1>
+      <p class="services-hero-lede" data-aos="fade-up" data-aos-delay="100">
         Büromuz bünyesinde takip edilen temel hukuk dalları ve faaliyet alanları.
       </p>
     </div>
   </section>
 
   <!-- Services Grid -->
-  <section class="py-24" style="background: var(--bg);">
+  <section class="services-grid-section">
     <div class="container mx-auto px-4">
-      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 list-none p-0 m-0">
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 list-none p-0 m-0">
         {services.map((service, index) => (
-          <li class="relative h-full rounded-[1.25rem] border-[0.75px] p-2 md:rounded-[1.5rem] md:p-3" style="border-color: var(--border);" data-aos="fade-up" data-aos-delay={index * 100}>
-            <GlowingEffect
-              client:visible
-              spread={40}
-              glow={true}
-              disabled={false}
-              proximity={64}
-              inactiveZone={0.01}
-              borderWidth={2}
-            />
-            <a
-              href={`/calisma-alanlarimiz/${service.slug}`}
-              class="group block h-full"
-            >
-              <div class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-xl border-[0.75px] p-6 md:p-8 shadow-sm" style="background: var(--card-bg); border-color: var(--border);">
-                <div>
-                  <div class="w-14 h-14 bg-gold-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-gold-500/20 transition-colors">
-                    <ServiceIcon client:visible slug={service.slug} size={28} className="text-gold-500" />
-                  </div>
-                  <h2 class="text-xl md:text-2xl font-bold mb-3 font-display group-hover:text-gold-500 transition-colors" style="color: var(--text);">
-                    {service.data.title}
-                  </h2>
-                  <p class="text-sm leading-relaxed font-light" style="color: var(--text-2);">
-                    {service.data.description}
-                  </p>
-                </div>
-                <span class="inline-flex items-center text-gold-500 font-semibold text-sm group-hover:translate-x-2 transition-transform mt-2">
-                  Detaylı Bilgi
-                  <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                  </svg>
-                </span>
+          <li class="contents" data-aos="fade-up" data-aos-delay={index * 80}>
+            <a href={`/calisma-alanlarimiz/${service.slug}`} class="service-card-full group cursor-pointer">
+              <div class="service-icon-wrap">
+                <ServiceIcon client:visible slug={service.slug} size={28} className="service-icon-svg" />
               </div>
+              <h2 class="service-card-title">{service.data.title}</h2>
+              <p class="service-card-desc">{service.data.description}</p>
+              <span class="service-card-cta">
+                Detaylı Bilgi
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </span>
             </a>
           </li>
         ))}
@@ -63,3 +44,121 @@ const services = await getCollection('services');
     </div>
   </section>
 </Layout>
+
+<style>
+  .services-hero {
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-soft);
+    padding: clamp(3.5rem, 8vw, 5.5rem) 0;
+  }
+  .services-hero-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h1);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink-strong);
+    margin-bottom: 1.25rem;
+  }
+  .services-hero-title-italic {
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "SOFT" 100, "opsz" 144;
+    color: var(--brand-deep);
+  }
+  .services-hero-lede {
+    max-width: 36rem;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink-default);
+  }
+
+  .services-grid-section {
+    background: var(--bg-base);
+    padding: clamp(4rem, 9vw, 6rem) 0;
+  }
+
+  .service-card-full {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 1.75rem 1.5rem;
+    transition: transform 280ms cubic-bezier(.4,0,.2,1),
+                box-shadow 280ms cubic-bezier(.4,0,.2,1),
+                border-color 280ms ease;
+  }
+  .service-card-full:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--brand);
+  }
+
+  .service-icon-wrap {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: var(--brand-soft);
+    margin-bottom: 1.25rem;
+    transition: background 280ms ease;
+  }
+  .service-card-full:hover .service-icon-wrap {
+    background: rgba(122, 135, 88, 0.22);
+  }
+
+  :global(.service-icon-svg) {
+    color: var(--brand-deep);
+    stroke-width: 1.6;
+  }
+
+  .service-card-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    color: var(--ink-strong);
+    margin-bottom: 0.6rem;
+  }
+
+  .service-card-desc {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--ink-default);
+    margin-bottom: 1.5rem;
+  }
+
+  .service-card-cta {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--brand-deep);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    align-self: flex-start;
+    transition: color 200ms ease;
+  }
+  .service-card-cta svg {
+    transition: transform 220ms ease;
+  }
+  .service-card-full:hover .service-card-cta {
+    color: var(--ink-strong);
+  }
+  .service-card-full:hover .service-card-cta svg {
+    transform: translateX(4px);
+  }
+</style>

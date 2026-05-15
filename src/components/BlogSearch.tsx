@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
+import { Search, X } from 'lucide-react';
 import PaginationButton from './ui/PaginationButton';
 
 type BlogPost = {
@@ -62,95 +63,312 @@ export default function BlogSearch({ posts, categories, postsPerPage = 6 }: Blog
     setSelectedCategory('');
   };
 
+  const inputStyle = {
+    background: 'var(--bg-elevated)',
+    borderColor: 'var(--border)',
+    color: 'var(--ink-strong)',
+    fontFamily: 'var(--font-sans)',
+  };
+
   return (
     <div className="w-full">
       <div className="max-w-2xl mx-auto mb-8">
         <div className="relative">
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+            size={18}
+            style={{ color: 'var(--ink-muted)' }}
+            aria-hidden="true"
+          />
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Makale ara..."
-            className="w-full pl-4 pr-10 py-3 rounded-xl border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all"
-            style={{ background: 'var(--bg-2)', borderColor: 'var(--border)', color: 'var(--text)' }}
+            className="w-full pl-11 pr-10 py-3 border focus:outline-none transition-colors"
+            style={{
+              ...inputStyle,
+              borderRadius: 'var(--radius-md)',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--brand)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px var(--brand-soft)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
           {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'var(--text-3)' }} aria-label="Aramayı temizle">
-              ✕
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer p-1 rounded transition-colors"
+              style={{ color: 'var(--ink-muted)' }}
+              aria-label="Aramayı temizle"
+            >
+              <X size={16} />
             </button>
           )}
         </div>
 
         {(searchQuery || selectedCategory) && (
-          <p className="text-sm mt-3 text-center" style={{ color: 'var(--text-3)' }}>
-            {filteredPosts.length} sonuç bulundu {selectedCategory && <span className="text-gold-500">({selectedCategory})</span>}
+          <p
+            className="mt-3 text-center"
+            style={{ color: 'var(--ink-muted)', fontFamily: 'var(--font-sans)', fontSize: '0.875rem' }}
+          >
+            {filteredPosts.length} sonuç bulundu{' '}
+            {selectedCategory && (
+              <span style={{ color: 'var(--brand-deep)', fontWeight: 500 }}>({selectedCategory})</span>
+            )}
           </p>
         )}
       </div>
 
-      <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
-        <button
+      <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5 mb-10">
+        <CategoryChip
+          active={selectedCategory === ''}
           onClick={() => setSelectedCategory('')}
-          className={`px-3 sm:px-4 py-2 border rounded-full text-sm transition-colors ${selectedCategory === '' ? 'border-gold-500 bg-gold-500/20 text-gold-500' : ''}`}
-          style={selectedCategory === '' ? {} : { borderColor: 'var(--border)', color: 'var(--text-2)' }}
-        >
-          Tümü <span className="text-xs">({posts.length})</span>
-        </button>
+          label="Tümü"
+          count={posts.length}
+        />
         {categories.map((category) => (
-          <button
+          <CategoryChip
             key={category}
+            active={selectedCategory === category}
             onClick={() => setSelectedCategory((prev) => (prev === category ? '' : category))}
-            className={`px-3 sm:px-4 py-2 border rounded-full text-sm transition-colors ${selectedCategory === category ? 'border-gold-500 bg-gold-500/20 text-gold-500' : ''}`}
-            style={selectedCategory === category ? {} : { borderColor: 'var(--border)', color: 'var(--text-2)' }}
-          >
-            {category} <span className="text-xs">({categoryCounts[category] || 0})</span>
-          </button>
+            label={category}
+            count={categoryCounts[category] || 0}
+          />
         ))}
       </div>
 
-      {selectedCategory && (
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-500/10 border border-gold-500/30 rounded-full text-sm text-gold-500">
-            Aktif filtre: {selectedCategory}
-            <button onClick={() => setSelectedCategory('')} className="hover:text-gold-300" aria-label="Kategori filtresini kaldır">✕</button>
-          </div>
-        </div>
-      )}
-
       {currentPosts.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {currentPosts.map((post) => (
-              <article key={post.slug} className="rounded-2xl overflow-hidden border transition-colors hover:border-gold-500/30 h-full flex flex-col" style={{ background: 'var(--card-bg)', borderColor: 'var(--border)' }}>
-                {post.data.image ? <img src={post.data.image} alt={post.data.title} width={800} height={450} loading="lazy" decoding="async" className="w-full h-48 object-cover" /> : <div className="h-48" style={{ background: 'var(--bg-3)' }} />}
-                <div className="p-5 sm:p-6 flex flex-col gap-3">
-                  <div className="flex items-center justify-between text-xs" style={{ color: 'var(--text-3)' }}>
-                    <time>{new Date(post.data.pubDate).toLocaleDateString('tr-TR')}</time>
-                    <span>{post.data.category || 'Genel'}</span>
-                  </div>
-                  <h2 className="text-lg sm:text-xl font-bold font-display line-clamp-2" style={{ color: 'var(--text)' }}><a href={`/blog/${post.slug}`} className="hover:text-gold-500 transition-colors">{post.data.title}</a></h2>
-                  <p className="text-sm line-clamp-3" style={{ color: 'var(--text-2)' }}>{post.data.description}</p>
-                </div>
-              </article>
+              <SearchBlogCard key={post.slug} post={post} />
             ))}
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 mt-10">
-              <PaginationButton onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1} className="transition-colors" style={{ borderColor: 'var(--border)', color: 'var(--text-2)' }}>Önceki</PaginationButton>
-              <span className="text-sm" style={{ color: 'var(--text-3)' }}>{currentPage} / {totalPages}</span>
-              <PaginationButton onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="transition-colors" style={{ borderColor: 'var(--border)', color: 'var(--text-2)' }}>Sonraki</PaginationButton>
+            <div
+              className="flex items-center justify-center gap-3 mt-12"
+              style={{ fontFamily: 'var(--font-sans)' }}
+            >
+              <PaginationButton
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                Önceki
+              </PaginationButton>
+              <span style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>
+                {currentPage} / {totalPages}
+              </span>
+              <PaginationButton
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Sonraki
+              </PaginationButton>
             </div>
           )}
         </>
       ) : (
-        <div className="text-center py-14 border rounded-2xl" style={{ borderColor: 'var(--border)', background: 'var(--bg-2)' }}>
-          <h3 className="text-xl font-display mb-2" style={{ color: 'var(--text)' }}>Sonuç bulunamadı</h3>
-          <p className="mb-4" style={{ color: 'var(--text-3)' }}>Farklı bir arama terimi veya kategori deneyebilirsiniz.</p>
+        <div
+          className="text-center py-14 px-6"
+          style={{
+            background: 'var(--bg-elevated)',
+            border: '1px dashed var(--border)',
+            borderRadius: 'var(--radius-lg)',
+          }}
+        >
+          <h3
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 500,
+              fontSize: '1.375rem',
+              color: 'var(--ink-strong)',
+              marginBottom: '0.5rem',
+              letterSpacing: '-0.018em',
+            }}
+          >
+            Sonuç bulunamadı
+          </h3>
+          <p
+            style={{
+              color: 'var(--ink-muted)',
+              fontFamily: 'var(--font-sans)',
+              marginBottom: '1.25rem',
+            }}
+          >
+            Farklı bir arama terimi veya kategori deneyebilirsiniz.
+          </p>
           {(searchQuery || selectedCategory) && (
-            <button onClick={clearFilters} className="px-4 py-2 rounded-lg bg-gold-500 font-semibold hover:bg-gold-400 transition-colors" style={{ color: 'var(--bg)' }}>Filtreleri Temizle</button>
+            <button
+              onClick={clearFilters}
+              className="cursor-pointer transition-all"
+              style={{
+                background: 'var(--ink-strong)',
+                color: 'var(--bg-base)',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 500,
+                fontSize: '0.875rem',
+                padding: '12px 22px',
+                borderRadius: 'var(--radius-pill)',
+                border: 'none',
+              }}
+            >
+              Filtreleri Temizle
+            </button>
           )}
         </div>
       )}
     </div>
+  );
+}
+
+function CategoryChip({
+  active,
+  onClick,
+  label,
+  count,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+  count: number;
+}) {
+  const base = {
+    fontFamily: 'var(--font-sans)',
+    fontWeight: 500,
+    fontSize: '0.8125rem',
+    padding: '0.5rem 0.95rem',
+    borderRadius: 'var(--radius-pill)',
+    border: '1px solid',
+    cursor: 'pointer',
+    transition: 'background 200ms ease, color 200ms ease, border-color 200ms ease',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.35rem',
+  } as const;
+
+  const activeStyle = {
+    background: 'var(--brand-deep)',
+    color: 'var(--bg-base)',
+    borderColor: 'var(--brand-deep)',
+  };
+
+  const inactiveStyle = {
+    background: 'transparent',
+    color: 'var(--ink-default)',
+    borderColor: 'var(--border)',
+  };
+
+  return (
+    <button onClick={onClick} style={{ ...base, ...(active ? activeStyle : inactiveStyle) }}>
+      {label}
+      <span
+        style={{
+          fontSize: '0.6875rem',
+          opacity: 0.75,
+          fontWeight: 400,
+        }}
+      >
+        ({count})
+      </span>
+    </button>
+  );
+}
+
+function SearchBlogCard({ post }: { post: BlogPost & { normalizedCategory: string } }) {
+  return (
+    <article
+      className="flex flex-col h-full overflow-hidden transition-all duration-300"
+      style={{
+        background: 'var(--bg-elevated)',
+        border: '1px solid var(--border-soft)',
+        borderRadius: 'var(--radius-lg)',
+      }}
+    >
+      <a href={`/blog/${post.slug}`} className="block overflow-hidden cursor-pointer" style={{ height: '12rem' }}>
+        {post.data.image ? (
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            width={800}
+            height={450}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.04]"
+            style={{ opacity: 0.94 }}
+          />
+        ) : (
+          <div
+            className="w-full h-full flex items-center justify-center"
+            style={{ background: 'var(--brand-soft)', color: 'var(--brand-deep)' }}
+          >
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" />
+              <path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" />
+              <path d="M7 21h10" />
+              <path d="M12 3v18" />
+              <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+            </svg>
+          </div>
+        )}
+      </a>
+      <div className="p-5 sm:p-6 flex flex-col gap-3 flex-grow">
+        <div
+          className="flex items-center justify-between"
+          style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'var(--ink-muted)' }}
+        >
+          <time>{new Date(post.data.pubDate).toLocaleDateString('tr-TR')}</time>
+          <span style={{ color: 'var(--brand-deep)', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            {post.data.category || 'Genel'}
+          </span>
+        </div>
+        <h2
+          className="line-clamp-2"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 500,
+            fontSize: '1.25rem',
+            lineHeight: 1.25,
+            letterSpacing: '-0.018em',
+            color: 'var(--ink-strong)',
+          }}
+        >
+          <a
+            href={`/blog/${post.slug}`}
+            className="cursor-pointer transition-colors"
+            style={{ color: 'inherit' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--brand-deep)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'inherit')}
+          >
+            {post.data.title}
+          </a>
+        </h2>
+        <p
+          className="line-clamp-3"
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.9rem',
+            lineHeight: 1.55,
+            color: 'var(--ink-default)',
+          }}
+        >
+          {post.data.description}
+        </p>
+      </div>
+    </article>
   );
 }

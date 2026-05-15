@@ -50,6 +50,81 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 2 }).format(amount);
 }
 
+const cardStyle = {
+    background: 'var(--bg-elevated)',
+    border: '1px solid var(--border-soft)',
+    borderRadius: 'var(--radius-xl)',
+    padding: '1.5rem',
+};
+
+const inputStyle = {
+    background: 'var(--bg-base)',
+    border: '1px solid var(--border)',
+    color: 'var(--ink-strong)',
+    fontFamily: 'var(--font-sans)',
+    fontSize: '0.9375rem',
+    height: '48px',
+    width: '100%',
+    padding: '0 14px',
+    borderRadius: 'var(--radius-md)',
+    transition: 'border-color 200ms ease, box-shadow 200ms ease',
+    outline: 'none',
+};
+
+const labelStyle = {
+    display: 'block',
+    fontFamily: 'var(--font-sans)',
+    fontWeight: 500,
+    fontSize: '0.8125rem',
+    color: 'var(--ink-default)',
+    marginBottom: '0.5rem',
+};
+
+const buttonStyle = {
+    width: '100%',
+    padding: '14px 26px',
+    background: 'var(--ink-strong)',
+    color: 'var(--bg-base)',
+    border: 'none',
+    borderRadius: 'var(--radius-pill)',
+    fontFamily: 'var(--font-sans)',
+    fontWeight: 500,
+    fontSize: '0.9375rem',
+    letterSpacing: '0.04em',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    transition: 'background 200ms ease, transform 200ms ease, box-shadow 200ms ease',
+};
+
+const errorStyle = {
+    background: 'var(--accent-soft)',
+    border: '1px solid rgba(200, 98, 58, 0.30)',
+    borderLeft: '3px solid var(--accent)',
+    borderRadius: 'var(--radius-md)',
+    padding: '0.85rem 1rem',
+    color: 'var(--ink-strong)',
+    fontFamily: 'var(--font-sans)',
+    fontSize: '0.875rem',
+};
+
+const resultRowStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '0.6rem 0',
+    borderBottom: '1px solid var(--border-soft)',
+    fontFamily: 'var(--font-sans)',
+    fontSize: '0.9375rem',
+};
+
+const summaryBoxStyle = {
+    background: 'var(--bg-base)',
+    border: '1px solid var(--border-soft)',
+    borderRadius: 'var(--radius-md)',
+    padding: '0.95rem 1.1rem',
+    marginBottom: '0.85rem',
+};
+
 export default function SeveranceCalculator() {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -79,68 +154,149 @@ export default function SeveranceCalculator() {
         setResult({ tenure, ceiling, ceilingPeriod: ceilingInfo.period, baseSalary, isCeilingApplied, grossSeverance, stampTax, netSeverance });
     };
 
-    const inputStyle = { background: 'var(--bg)', borderColor: 'var(--border)', color: 'var(--text)' };
-    const labelStyle = { color: 'var(--text-2)' };
-
     return (
-        <div className="rounded-2xl p-5 sm:p-6 md:p-10 border" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
+        <div style={{ ...cardStyle, padding: 'clamp(1.25rem, 4vw, 2.5rem)' }}>
             <form onSubmit={handleCalculate} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                     <div>
-                        <label htmlFor="startDate" className="block text-sm font-medium mb-2" style={labelStyle}>İşe Giriş Tarihi</label>
-                        <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle} required />
+                        <label htmlFor="startDate" style={labelStyle}>İşe Giriş Tarihi</label>
+                        <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)}
+                            style={inputStyle}
+                            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--brand-soft)'; }}
+                            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
+                            required />
                     </div>
                     <div>
-                        <label htmlFor="endDate" className="block text-sm font-medium mb-2" style={labelStyle}>İşten Çıkış Tarihi</label>
-                        <input type="date" id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle} required />
+                        <label htmlFor="endDate" style={labelStyle}>İşten Çıkış Tarihi</label>
+                        <input type="date" id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)}
+                            style={inputStyle}
+                            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--brand-soft)'; }}
+                            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
+                            required />
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="grossSalary" className="block text-sm font-medium mb-2" style={labelStyle}>Brüt Ücret (TL)</label>
-                    <input type="number" id="grossSalary" value={grossSalary} onChange={(e) => setGrossSalary(e.target.value)} placeholder="Örn: 50000" min="0" step="0.01" className="w-full h-12 px-4 rounded-lg border focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all" style={inputStyle} required />
+                    <label htmlFor="grossSalary" style={labelStyle}>Brüt Ücret (TL)</label>
+                    <input type="number" id="grossSalary" value={grossSalary} onChange={(e) => setGrossSalary(e.target.value)}
+                        placeholder="Örn: 50000" min="0" step="0.01"
+                        style={inputStyle}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--brand-soft)'; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
+                        required />
                 </div>
-                {error && <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-400 text-sm">{error}</div>}
-                <button type="submit" className="w-full py-4 bg-gold-500 hover:bg-gold-600 font-bold rounded-lg transition-all shadow-lg shadow-gold-500/20 active:scale-[0.98]" style={{ color: 'var(--bg)' }}>HESAPLA</button>
+                {error && <div style={errorStyle}>{error}</div>}
+                <button type="submit"
+                    style={buttonStyle}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--brand-deep)'; e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--ink-strong)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                >
+                    Hesapla
+                </button>
             </form>
 
             {result && (
-                <div className="mt-8 space-y-6">
-                    <div className="border-t pt-8" style={{ borderColor: 'var(--border)' }}>
-                        <h3 className="text-xl font-bold mb-6 font-display" style={{ color: 'var(--text)' }}>Hesaplama Sonucu</h3>
-                        <div className="rounded-lg p-4 mb-4" style={{ background: 'var(--bg-3)' }}>
-                            <p className="text-sm mb-1" style={{ color: 'var(--text-3)' }}>Hizmet Süresi</p>
-                            <p className="text-lg font-semibold" style={{ color: 'var(--text)' }}>{result.tenure.years} Yıl, {result.tenure.months} Ay, {result.tenure.days} Gün</p>
+                <div className="mt-8">
+                    <div style={{ borderTop: '1px solid var(--border-soft)', paddingTop: '2rem' }}>
+                        <h3 style={{
+                            fontFamily: 'var(--font-display)',
+                            fontWeight: 500,
+                            fontStyle: 'italic',
+                            fontSize: '1.5rem',
+                            letterSpacing: '-0.018em',
+                            color: 'var(--ink-strong)',
+                            marginBottom: '1.5rem',
+                        }}>
+                            Hesaplama Sonucu
+                        </h3>
+                        <div style={summaryBoxStyle}>
+                            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: '0.3rem' }}>Hizmet Süresi</p>
+                            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1.0625rem', fontWeight: 600, color: 'var(--ink-strong)' }}>
+                                {result.tenure.years} Yıl, {result.tenure.months} Ay, {result.tenure.days} Gün
+                            </p>
                         </div>
-                        <div className="rounded-lg p-4 mb-4" style={{ background: 'var(--bg-3)' }}>
-                            <p className="text-sm mb-1" style={{ color: 'var(--text-3)' }}>Kullanılan Kıdem Tavanı ({result.ceilingPeriod})</p>
-                            <p className="text-gold-500 text-lg font-semibold">{formatCurrency(result.ceiling)}</p>
+                        <div style={summaryBoxStyle}>
+                            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: '0.3rem' }}>
+                                Kullanılan Kıdem Tavanı ({result.ceilingPeriod})
+                            </p>
+                            <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 500, color: 'var(--brand-deep)', letterSpacing: '-0.015em' }}>
+                                {formatCurrency(result.ceiling)}
+                            </p>
                         </div>
                         {result.isCeilingApplied && (
-                            <div className="bg-gold-500/10 border border-gold-500/30 rounded-lg p-4 mb-4">
-                                <p className="text-gold-400 text-sm"><strong>Bilgi:</strong> Brüt ücretiniz kıdem tavanını aştığı için, hesaplama <strong>{formatCurrency(result.ceiling)}</strong> üzerinden yapılmıştır.</p>
+                            <div style={{
+                                background: 'var(--brand-soft)',
+                                border: '1px solid var(--border-soft)',
+                                borderLeft: '3px solid var(--brand)',
+                                borderRadius: 'var(--radius-md)',
+                                padding: '0.85rem 1rem',
+                                marginBottom: '1rem',
+                                fontFamily: 'var(--font-sans)',
+                                fontSize: '0.875rem',
+                                color: 'var(--ink-strong)',
+                            }}>
+                                <strong>Bilgi:</strong> Brüt ücretiniz kıdem tavanını aştığı için, hesaplama <strong>{formatCurrency(result.ceiling)}</strong> üzerinden yapılmıştır.
                             </div>
                         )}
-                        <div className="space-y-3 mb-6">
+                        <div className="mb-6">
                             {[
-                                ['Hesaba Esas Ücret', formatCurrency(result.baseSalary), 'var(--text)'],
-                                ['Brüt Kıdem Tazminatı', formatCurrency(result.grossSeverance), 'var(--text)'],
-                            ].map(([label, value, color]) => (
-                                <div key={label} className="flex justify-between items-center py-2 border-b" style={{ borderColor: 'var(--border)' }}>
-                                    <span style={{ color: 'var(--text-2)' }}>{label}</span>
-                                    <span className="font-medium" style={{ color }}>{value}</span>
+                                ['Hesaba Esas Ücret', formatCurrency(result.baseSalary)],
+                                ['Brüt Kıdem Tazminatı', formatCurrency(result.grossSeverance)],
+                            ].map(([label, value]) => (
+                                <div key={label} style={resultRowStyle}>
+                                    <span style={{ color: 'var(--ink-default)' }}>{label}</span>
+                                    <span style={{ fontWeight: 500, color: 'var(--ink-strong)' }}>{value}</span>
                                 </div>
                             ))}
-                            <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: 'var(--border)' }}>
-                                <span style={{ color: 'var(--text-2)' }}>Damga Vergisi (%0,759)</span>
-                                <span className="text-red-400 font-medium">- {formatCurrency(result.stampTax)}</span>
+                            <div style={resultRowStyle}>
+                                <span style={{ color: 'var(--ink-default)' }}>Damga Vergisi (%0,759)</span>
+                                <span style={{ fontWeight: 500, color: 'var(--accent)' }}>− {formatCurrency(result.stampTax)}</span>
                             </div>
                         </div>
-                        <div className="bg-gradient-to-r from-gold-500/20 to-gold-600/10 border border-gold-500/30 rounded-xl p-6 text-center">
-                            <p className="text-sm mb-2" style={{ color: 'var(--text-2)' }}>NET KIDEM TAZMİNATI</p>
-                            <p className="text-3xl md:text-4xl font-bold text-gold-500">{formatCurrency(result.netSeverance)}</p>
+                        <div style={{
+                            background: 'var(--brand-soft)',
+                            border: '1px solid var(--brand)',
+                            borderRadius: 'var(--radius-lg)',
+                            padding: '1.5rem 1.25rem',
+                            textAlign: 'center',
+                        }}>
+                            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.6875rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: '0.5rem' }}>
+                                Net Kıdem Tazminatı
+                            </p>
+                            <p style={{
+                                fontFamily: 'var(--font-display)',
+                                fontWeight: 500,
+                                fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+                                letterSpacing: '-0.022em',
+                                color: 'var(--brand-deep)',
+                                lineHeight: 1.1,
+                            }}>
+                                {formatCurrency(result.netSeverance)}
+                            </p>
                         </div>
-                        <div className="mt-6 text-center">
-                            <a href="/hesaplama-araclari/ihbar-tazminati" className="inline-flex items-center px-6 py-3 border border-gold-500/50 text-gold-500 hover:bg-gold-500/10 rounded-lg transition-all font-medium">Sırada İhbar Tazminatı Var →</a>
+                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                            <a href="/hesaplama-araclari/ihbar-tazminati" className="cursor-pointer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    padding: '12px 22px',
+                                    border: '1px solid var(--border)',
+                                    borderRadius: 'var(--radius-pill)',
+                                    fontFamily: 'var(--font-sans)',
+                                    fontWeight: 500,
+                                    fontSize: '0.875rem',
+                                    color: 'var(--ink-strong)',
+                                    background: 'transparent',
+                                    transition: 'background 200ms ease, border-color 200ms ease, color 200ms ease',
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--brand-soft)'; e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.color = 'var(--brand-deep)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--ink-strong)'; }}
+                            >
+                                Sırada İhbar Tazminatı Var
+                                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>

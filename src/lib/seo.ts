@@ -87,8 +87,8 @@ export function organizationSchema(site?: URL | string) {
         },
         geo: {
           '@type': 'GeoCoordinates',
-          latitude: 38.4622,
-          longitude: 27.1117,
+          latitude: 38.456222,
+          longitude: 27.118806,
         },
         areaServed: [
           { '@type': 'City', name: 'İzmir' },

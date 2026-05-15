@@ -21,35 +21,174 @@ const featuredServices = [
 ];
 ---
 
-<section class="py-24 relative" style="background: var(--bg);">
+<section class="services-section">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl md:text-5xl font-light mb-4 font-display" style="color: var(--text);">Çalışma Alanlarımız</h2>
+        <div class="services-header" data-aos="fade-up">
+            <h2 class="services-title">
+                <span class="services-title-italic">Çalışma</span> Alanlarımız
+            </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
             {featuredServices.map((service, index) => (
                 <a
                     href={`/calisma-alanlarimiz/${service.slug}`}
-                    class="group p-8 rounded-2xl border hover:border-gold-500/50 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
-                    style="background: var(--card-bg); border-color: var(--border);"
+                    class="service-card group cursor-pointer"
                     data-aos="fade-up"
                     data-aos-delay={index * 100}
                 >
-                    <div class="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300" style="background: var(--bg-2);">
-                        <ServiceIcon client:load slug={service.slug} size={40} className="text-gold-500" />
+                    <div class="service-icon-wrap">
+                        <ServiceIcon client:load slug={service.slug} size={28} className="service-icon" />
                     </div>
-                    <h3 class="text-2xl font-bold group-hover:text-gold-500 transition-colors font-display" style="color: var(--text);">{service.title}</h3>
-                    <p class="transition-colors text-sm font-light mt-4" style="color: var(--text-2);">{service.description}</p>
+                    <h3 class="service-title">{service.title}</h3>
+                    <p class="service-desc">{service.description}</p>
                 </a>
             ))}
         </div>
 
-        <div class="text-center mt-12" data-aos="fade-up">
-            <a href="/calisma-alanlarimiz" class="inline-flex items-center gap-2 px-6 py-3 border hover:border-gold-500/50 rounded-lg font-semibold transition-all" style="color: var(--text); border-color: var(--border);">
+        <div class="services-footer" data-aos="fade-up">
+            <a href="/calisma-alanlarimiz" class="services-all-link cursor-pointer">
                 Tüm Çalışma Alanlarını Görüntüle
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
             </a>
         </div>
     </div>
 </section>
+
+<style>
+    .services-section {
+        background: var(--bg-base);
+        padding-top: clamp(4rem, 9vw, 6rem);
+        padding-bottom: clamp(4rem, 9vw, 6rem);
+    }
+
+    .services-header {
+        text-align: center;
+        margin-bottom: clamp(3rem, 6vw, 4.5rem);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+    }
+
+    .services-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: var(--text-h2);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: var(--ink-strong);
+        max-width: 28ch;
+    }
+    .services-title-italic {
+        font-style: italic;
+        font-weight: 400;
+        font-variation-settings: "SOFT" 100, "opsz" 144;
+        color: var(--brand-deep);
+    }
+
+    .service-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        padding: 1.75rem 1.75rem 1.5rem;
+        transition: transform 280ms cubic-bezier(.4,0,.2,1),
+                    box-shadow 280ms cubic-bezier(.4,0,.2,1),
+                    border-color 280ms ease;
+    }
+    .service-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--brand);
+    }
+
+    .service-icon-wrap {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        background: var(--brand-soft);
+        margin-bottom: 1.25rem;
+        transition: background 280ms ease;
+    }
+    .service-card:hover .service-icon-wrap {
+        background: rgba(122, 135, 88, 0.22);
+    }
+
+    :global(.service-icon) {
+        color: var(--brand-deep);
+        stroke-width: 1.6;
+    }
+
+    .service-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        letter-spacing: -0.015em;
+        color: var(--ink-strong);
+        margin-bottom: 0.6rem;
+    }
+
+    .service-desc {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        color: var(--ink-default);
+        margin-bottom: 1.5rem;
+    }
+
+    .service-cta {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--brand-deep);
+        border-bottom: 1px solid currentColor;
+        padding-bottom: 2px;
+        align-self: flex-start;
+        transition: color 200ms ease;
+    }
+    .service-card:hover .service-cta { color: var(--ink-strong); }
+    .service-cta-arrow {
+        transition: transform 220ms ease;
+    }
+    .service-card:hover .service-cta-arrow {
+        transform: translateX(4px);
+    }
+
+    .services-footer {
+        text-align: center;
+        margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    }
+
+    .services-all-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 0.9375rem;
+        color: var(--ink-strong);
+        background: transparent;
+        border: 1px solid var(--border);
+        padding: 13px 24px;
+        border-radius: var(--radius-pill);
+        transition: background 220ms ease, border-color 220ms ease, color 220ms ease;
+    }
+    .services-all-link:hover {
+        background: var(--brand-soft);
+        border-color: var(--brand);
+        color: var(--brand-deep);
+    }
+</style>

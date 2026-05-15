@@ -7,43 +7,109 @@ interface Props {
 const { title = 'Hızlı Cevap', highlights = [] } = Astro.props;
 ---
 
-<aside
-  class="quick-answer not-prose my-8 rounded-2xl border p-6 md:p-7"
-  style="background: var(--bg-2); border-color: var(--border); border-left: 4px solid #d4af37;"
-  role="note"
-  aria-label={title}
->
-  <div class="flex items-center gap-2 mb-3">
-    <svg
-      class="w-5 h-5 text-gold-500 shrink-0"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+<aside class="quick-answer not-prose my-8" role="note" aria-label={title}>
+  <div class="quick-answer-head">
+    <svg class="quick-answer-icon" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
     </svg>
-    <h2 class="text-sm font-semibold uppercase tracking-wider m-0" style="color: #d4af37;">
-      {title}
-    </h2>
+    <h2 class="quick-answer-title">{title}</h2>
   </div>
 
-  <div class="text-base md:text-lg leading-relaxed" style="color: var(--text);">
+  <div class="quick-answer-body">
     <slot />
   </div>
 
   {highlights.length > 0 && (
-    <ul class="mt-4 grid gap-2 sm:grid-cols-2 text-sm list-none p-0 m-0">
+    <ul class="quick-answer-highlights">
       {highlights.map((item) => (
-        <li
-          class="flex items-start gap-2 px-3 py-2 rounded-lg border"
-          style="background: var(--card-bg); border-color: var(--border); color: var(--text-2);"
-        >
-          <span class="text-gold-500 mt-0.5" aria-hidden="true">▸</span>
+        <li class="quick-answer-item">
+          <svg class="quick-answer-bullet" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 4l5 4-5 4"/>
+          </svg>
           <span set:html={item} />
         </li>
       ))}
     </ul>
   )}
 </aside>
+
+<style>
+  .quick-answer {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+  }
+  @media (min-width: 768px) {
+    .quick-answer { padding: 1.75rem 2rem; }
+  }
+
+  .quick-answer-head {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.875rem;
+  }
+  .quick-answer-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .quick-answer-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .quick-answer-body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-strong);
+  }
+  @media (min-width: 768px) {
+    .quick-answer-body { font-size: 1.0625rem; }
+  }
+  .quick-answer-body :global(p) { margin: 0; }
+
+  .quick-answer-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  @media (min-width: 640px) {
+    .quick-answer-highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .quick-answer-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--bg-base);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 0.625rem 0.875rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--ink-default);
+  }
+
+  .quick-answer-bullet {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+    color: var(--brand);
+  }
+</style>

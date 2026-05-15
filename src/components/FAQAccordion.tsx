@@ -17,54 +17,82 @@ export function FAQAccordion({ faqs }: FAQAccordionProps) {
     };
 
     return (
-        <div className="max-w-4xl mx-auto mt-12 mb-16">
-            <div className="space-y-4">
-                {faqs.map((faq, index) => (
-                    <div
-                        key={index}
-                        className="border rounded-lg overflow-hidden backdrop-blur-sm hover:border-gold-500/50 transition-all duration-300"
-                        style={{ borderColor: 'var(--border)', background: 'var(--bg-2)' }}
-                    >
-                        <button
-                            onClick={() => toggleFAQ(index)}
-                            className="w-full px-5 sm:px-6 py-4 flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-gold-500/50 group"
-                            aria-expanded={openIndex === index}
-                            aria-controls={`faq-answer-${index}`}
-                        >
-                            <span
-                                className="text-base sm:text-lg font-semibold group-hover:text-gold-400 transition-colors pr-4"
-                                style={{ color: 'var(--text)' }}
-                            >
-                                {faq.question}
-                            </span>
-                            <svg
-                                className={`w-5 h-5 text-gold-500 flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 9l-7 7-7-7"
-                                />
-                            </svg>
-                        </button>
-
+        <div className="max-w-4xl mx-auto mt-8 mb-12">
+            <div className="space-y-3">
+                {faqs.map((faq, index) => {
+                    const isOpen = openIndex === index;
+                    return (
                         <div
-                            id={`faq-answer-${index}`}
-                            className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                            key={index}
+                            className="overflow-hidden transition-all duration-300"
+                            style={{
+                                background: 'var(--bg-elevated)',
+                                border: '1px solid var(--border-soft)',
+                                borderRadius: 'var(--radius-lg)',
+                            }}
                         >
-                            <div
-                                className="px-5 sm:px-6 pb-4 leading-relaxed border-t pt-4"
-                                style={{ color: 'var(--text-2)', borderColor: 'var(--border)' }}
+                            <button
+                                onClick={() => toggleFAQ(index)}
+                                className="w-full px-5 sm:px-6 py-4 flex items-center justify-between text-left cursor-pointer"
+                                style={{
+                                    fontFamily: 'var(--font-sans)',
+                                    background: 'transparent',
+                                    border: 'none',
+                                }}
+                                aria-expanded={isOpen}
+                                aria-controls={`faq-answer-${index}`}
                             >
-                                {faq.answer}
+                                <span
+                                    style={{
+                                        color: 'var(--ink-strong)',
+                                        fontFamily: 'var(--font-display)',
+                                        fontWeight: 500,
+                                        fontSize: '1.0625rem',
+                                        letterSpacing: '-0.015em',
+                                        lineHeight: 1.3,
+                                        paddingRight: '1rem',
+                                    }}
+                                >
+                                    {faq.question}
+                                </span>
+                                <svg
+                                    className={`flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                                    width="18"
+                                    height="18"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={1.75}
+                                    style={{ color: 'var(--brand-deep)' }}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+                                </svg>
+                            </button>
+
+                            <div
+                                id={`faq-answer-${index}`}
+                                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
+                            >
+                                <div
+                                    className="px-5 sm:px-6 pb-5 pt-3"
+                                    style={{
+                                        color: 'var(--ink-default)',
+                                        borderTop: '1px solid var(--border-soft)',
+                                        fontFamily: 'var(--font-sans)',
+                                        fontSize: '0.9375rem',
+                                        lineHeight: 1.65,
+                                    }}
+                                >
+                                    {faq.answer}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

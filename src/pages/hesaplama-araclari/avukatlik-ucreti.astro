@@ -31,56 +31,150 @@ const howToLd = howToSchema({
   title="Avukatlık Asgari Ücret Hesaplama 2025-2026"
   description="En güncel AAÜT tarifesine göre dava ve icra takipleri için asgari avukatlık ücreti hesaplama robotu."
   canonicalPath={canonicalPath}
+  enableAOS={true}
   structuredData={[appLd, howToLd]}
 >
-    <section class="py-20 md:py-32">
+    <section class="calc-page">
         <div class="container mx-auto px-4">
-            <!-- Header -->
-            <div class="text-center mb-12" data-aos="fade-up">
-                <a href="/hesaplama-araclari" class="inline-flex items-center hover:text-gold-500 transition-colors mb-6" style="color: var(--text-2);">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            <div class="calc-page-header" data-aos="fade-up">
+                <a href="/hesaplama-araclari" class="calc-back-link cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                     </svg>
                     Tüm Hesaplama Araçları
                 </a>
-                <h1 class="text-4xl md:text-5xl font-light mb-6 font-display" style="color: var(--text);">Avukatlık Asgari Ücret Hesaplama</h1>
-                <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-2);">
+                <h1 class="calc-page-title">
+                    <span class="calc-page-title-italic">Avukatlık</span> Asgari Ücret Hesaplama
+                </h1>
+                <p class="calc-page-lede">
                     2025-2026 dönemi Resmi Gazete'de yayımlanan Avukatlık Asgari Ücret Tarifesi (AAÜT) uyarınca güncel hesaplama yapın.
                 </p>
             </div>
 
-            <!-- Calculator Component -->
             <div class="max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
                 <AttorneyFeeCalculator client:load />
             </div>
 
-            <!-- Info Sections -->
             <div class="max-w-3xl mx-auto mt-16" data-aos="fade-up" data-aos-delay="200">
-                <div class="rounded-2xl p-8 border" style="background: var(--bg-2); border-color: var(--border);">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 font-display" style="color: var(--text);">AAÜT Hakkında</h3>
-                    <p class="leading-relaxed mb-10 text-lg" style="color: var(--text-2);">
-                        Avukatlık Asgari Ücret Tarifesi (AAÜT), avukatların sundukları hukuki hizmetler karşılığında alabilecekleri en alt ücret sınırını belirleyen resmi bir belgedir. Her yıl Türkiye Barolar Birliği tarafından hazırlanır ve Adalet Bakanlığı onayıyla Resmi Gazete'de yayımlanır.
-                    </p>
-
-                    <div class="grid md:grid-cols-2 gap-6 text-left mb-10">
-                        <div class="p-6 rounded-2xl border hover:border-gold-500/30 transition-colors" style="background: var(--bg-3); border-color: var(--border);">
-                            <h4 class="font-bold mb-3 text-lg" style="color: var(--text);">Maktu Ücretler</h4>
-                            <p class="leading-relaxed" style="color: var(--text-2);">Mahkeme türüne göre belirlenmiş, dava değerinden bağımsız sabit tutarlardır.</p>
-                        </div>
-                        <div class="p-6 rounded-2xl border hover:border-gold-500/30 transition-colors" style="background: var(--bg-3); border-color: var(--border);">
-                            <h4 class="font-bold mb-3 text-lg" style="color: var(--text);">Nispi Oranlar</h4>
-                            <p class="leading-relaxed" style="color: var(--text-2);">Konusu para olan davalarda, dava değeri üzerinden kademeli olarak hesaplanan oranlardır.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gold-500/5 border border-gold-500/20 rounded-2xl p-6 md:p-8">
-                        <p class="text-gold-500/90 leading-relaxed">
-                            <strong class="text-gold-500 block mb-2">Önemli Bilgi</strong>
-                            Belirlenen bu tutarlar yasal asgari sınırlardır. Avukat ile müvekkil arasındaki ücret sözleşmesi, davanın zorluğu ve harcanacak mesaiye göre bu tutarların üzerinde kararlaştırılabilir.
+                <div class="calc-info-card">
+                    <h2 class="calc-info-title">AAÜT Hakkında</h2>
+                    <div class="calc-info-body">
+                        <p>
+                            Avukatlık Asgari Ücret Tarifesi (AAÜT), avukatların sundukları hukuki hizmetler karşılığında alabilecekleri en alt ücret sınırını belirleyen resmi bir belgedir. Her yıl Türkiye Barolar Birliği tarafından hazırlanır ve Adalet Bakanlığı onayıyla Resmi Gazete'de yayımlanır.
                         </p>
+
+                        <div class="calc-subgrid">
+                            <div class="calc-subcard">
+                                <h4>Maktu Ücretler</h4>
+                                <p>Mahkeme türüne göre belirlenmiş, dava değerinden bağımsız sabit tutarlardır.</p>
+                            </div>
+                            <div class="calc-subcard">
+                                <h4>Nispi Oranlar</h4>
+                                <p>Konusu para olan davalarda, dava değeri üzerinden kademeli olarak hesaplanan oranlardır.</p>
+                            </div>
+                        </div>
+
+                        <div class="calc-info-callout">
+                            <p>
+                                <strong>Önemli Bilgi.</strong> Belirlenen bu tutarlar yasal asgari sınırlardır. Avukat ile müvekkil arasındaki ücret sözleşmesi, davanın zorluğu ve harcanacak mesaiye göre bu tutarların üzerinde kararlaştırılabilir.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </Layout>
+
+<style>
+    .calc-page {
+        background: var(--bg-base);
+        padding: clamp(3rem, 7vw, 5rem) 0 clamp(4rem, 9vw, 6rem);
+    }
+    .calc-page-header { text-align: center; margin-bottom: 3rem; }
+
+    .calc-back-link {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        font-family: var(--font-sans); font-weight: 500; font-size: 0.875rem;
+        color: var(--ink-muted); margin-bottom: 1.5rem;
+        border-bottom: 1px solid transparent; padding-bottom: 1px;
+        transition: color 200ms ease, border-color 200ms ease;
+    }
+    .calc-back-link:hover { color: var(--brand-deep); border-bottom-color: currentColor; }
+    .calc-back-link svg { transition: transform 220ms ease; }
+    .calc-back-link:hover svg { transform: translateX(-3px); }
+
+    .calc-page-title {
+        font-family: var(--font-display); font-weight: 500;
+        font-size: var(--text-h1); line-height: 1.05; letter-spacing: -0.022em;
+        color: var(--ink-strong); margin-bottom: 1.25rem;
+    }
+    .calc-page-title-italic {
+        font-style: italic; font-weight: 400;
+        font-variation-settings: "SOFT" 100, "opsz" 144;
+        color: var(--brand-deep);
+    }
+    .calc-page-lede {
+        max-width: 40rem; margin: 0 auto;
+        font-family: var(--font-sans); font-weight: 300;
+        font-size: 1.125rem; line-height: 1.6; color: var(--ink-default);
+    }
+
+    .calc-info-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-xl);
+        padding: 2rem;
+    }
+    @media (min-width: 768px) { .calc-info-card { padding: 2.5rem; } }
+    .calc-info-title {
+        font-family: var(--font-display); font-weight: 500;
+        font-size: 1.625rem; line-height: 1.15; letter-spacing: -0.018em;
+        color: var(--ink-strong); margin-bottom: 1.25rem;
+    }
+    .calc-info-body {
+        font-family: var(--font-sans); font-size: 0.9375rem;
+        line-height: 1.65; color: var(--ink-default);
+    }
+    .calc-info-body p { margin-bottom: 1rem; }
+
+    .calc-subgrid {
+        display: grid; gap: 1rem;
+        grid-template-columns: 1fr;
+        margin: 1.5rem 0;
+    }
+    @media (min-width: 640px) {
+        .calc-subgrid { grid-template-columns: 1fr 1fr; }
+    }
+    .calc-subcard {
+        background: var(--bg-base);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.25rem 1.4rem;
+        transition: border-color 220ms ease;
+    }
+    .calc-subcard:hover { border-color: var(--brand); }
+    .calc-subcard h4 {
+        font-family: var(--font-display); font-weight: 500; font-size: 1.0625rem;
+        color: var(--ink-strong); margin-bottom: 0.4rem;
+        letter-spacing: -0.015em;
+    }
+    .calc-subcard p {
+        font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.55;
+        color: var(--ink-default); margin: 0;
+    }
+
+    .calc-info-callout {
+        margin-top: 1.5rem;
+        background: var(--accent-soft);
+        border: 1px solid rgba(200, 98, 58, 0.22);
+        border-left: 3px solid var(--accent);
+        border-radius: var(--radius-md);
+        padding: 1rem 1.25rem;
+    }
+    .calc-info-callout p {
+        font-family: var(--font-sans); font-size: 0.875rem;
+        line-height: 1.6; color: var(--ink-strong); margin: 0;
+    }
+    .calc-info-callout strong { color: var(--accent); font-weight: 600; }
+</style>

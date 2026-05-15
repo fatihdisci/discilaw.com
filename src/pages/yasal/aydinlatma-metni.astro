@@ -3,31 +3,19 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="Aydınlatma Metni | Dişçi Hukuk Bürosu" description="6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında Dişçi Hukuk Bürosu aydınlatma metni.">
-  <!-- Header -->
-  <section class="py-20 border-b" style="background: var(--bg-2); border-color: var(--border);">
-    <div class="container mx-auto px-4 text-center" data-aos="fade-up">
-      <span class="text-gold-500 font-bold px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-sm mb-6 inline-block">
-        KVKK
-      </span>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-light mb-6 leading-tight font-display" style="color: var(--text);">
-        Aydınlatma Metni
-      </h1>
-      <p class="max-w-2xl mx-auto" style="color: var(--text-2);">
+  <article class="post-article">
+    <header class="container mx-auto px-4 max-w-3xl text-center post-header" data-aos="fade-up">
+      <div class="post-meta">
+        <span class="post-category">KVKK</span>
+      </div>
+      <h1 class="post-h1">Aydınlatma Metni</h1>
+      <p class="mt-4 max-w-2xl mx-auto text-[var(--ink-muted)] font-sans font-light">
         6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında bilgilendirme
       </p>
-    </div>
-  </section>
+    </header>
 
-  <article class="py-24" style="background: var(--bg);">
-    <div class="container mx-auto px-6 max-w-4xl">
-      <div class="prose prose-invert prose-lg mx-auto max-w-4xl legal-content
-        text-justify hyphens-auto prose-p:text-justify
-        prose-p:leading-relaxed prose-p:mb-6
-        prose-headings:text-gold-500 prose-headings:mb-4 prose-headings:mt-10
-        prose-h2:text-2xl prose-h3:text-xl
-        prose-li:my-2
-        prose-ul:list-disc prose-ul:pl-6 prose-ul:my-4
-        prose-ol:list-decimal prose-ol:pl-6 prose-ol:my-4" data-aos="fade-up" data-aos-delay="200" lang="tr">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <div class="prose prose-lg mx-auto py-6 blog-content legal-content" data-aos="fade-up" data-aos-delay="200" lang="tr">
 
         <p>
           <strong>Dişçi Hukuk Bürosu</strong> olarak, kişisel verilerinizin güvenliği ve gizliliği hususuna azami önem vermekteyiz. Bu kapsamda, <strong>6698 sayılı Kişisel Verilerin Korunması Kanunu</strong> ("KVKK") uyarınca veri sorumlusu sıfatıyla, kişisel verilerinizin işlenme amaçları, yöntemleri, hukuki sebepleri ve haklarınız konusunda sizleri bilgilendirmek isteriz.
@@ -79,26 +67,90 @@ import Layout from '../../layouts/Layout.astro';
 
       </div>
 
-      <!-- Footer Navigation -->
-      <div class="mt-16 pt-8 border-t flex justify-between items-center" style="border-color: var(--border);">
-        <a href="/" class="inline-flex items-center gap-2 hover:text-gold-500 transition-colors group" style="color: var(--text-2);">
-          <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      <div class="mt-16 pt-8 border-t border-[var(--border-soft)] flex justify-between items-center flex-wrap gap-4">
+        <a href="/" class="post-back-link cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+          </svg>
           Anasayfa
         </a>
-        <span class="text-sm" style="color: var(--text-3);">Son Güncelleme: 19 Ocak 2026</span>
+        <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-[var(--ink-faint)]">Son Güncelleme: 19 Ocak 2026</span>
       </div>
     </div>
   </article>
-
-  <style>
-    .legal-content,
-    .legal-content p,
-    .legal-content li {
-      text-align: justify !important;
-      -webkit-hyphens: auto !important;
-      -moz-hyphens: auto !important;
-      -ms-hyphens: auto !important;
-      hyphens: auto !important;
-    }
-  </style>
 </Layout>
+
+<style>
+  .post-article {
+    background: var(--bg-base);
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(4rem, 9vw, 6rem);
+    min-height: 100vh;
+  }
+
+  .post-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+  }
+
+  .post-category {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--brand-soft);
+    color: var(--brand-deep);
+    border: 1px solid var(--border-soft);
+    line-height: 1;
+  }
+
+  .post-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-variation-settings: "SOFT" 100, "opsz" 144;
+    font-size: var(--text-hero);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: var(--ink-strong);
+    margin: 0;
+  }
+
+  .legal-content {
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .post-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--brand-deep);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .post-back-link:hover {
+    color: var(--ink-strong);
+    border-bottom-color: currentColor;
+  }
+  .post-back-link svg {
+    transition: transform 220ms ease;
+  }
+  .post-back-link:hover svg {
+    transform: translateX(-3px);
+  }
+</style>

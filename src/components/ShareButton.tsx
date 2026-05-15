@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Share2, Link2, Twitter, Facebook, Linkedin, X, Check, Instagram } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Share2, Link2, Linkedin, Facebook, X, Check, Instagram } from "lucide-react";
 
 interface ShareButtonProps {
     title: string;
@@ -73,106 +73,181 @@ export default function ShareButton({ title, url }: ShareButtonProps) {
         }
     };
 
-    const btnStyle = { color: 'var(--text-2)' };
-    const menuItemStyle = { color: 'var(--text-2)' };
+    const triggerStyle = isOpen
+        ? {
+              background: 'var(--ink-strong)',
+              color: 'var(--bg-base)',
+              borderColor: 'var(--ink-strong)',
+          }
+        : {
+              background: 'transparent',
+              color: 'var(--ink-strong)',
+              borderColor: 'var(--border)',
+          };
+
+    const menuItemStyle = {
+        color: 'var(--ink-default)',
+        fontFamily: 'var(--font-sans)',
+    };
 
     return (
         <div className="relative" ref={menuRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 group ${isOpen ? "bg-gold-500 text-white" : "hover:text-gold-500"}`}
-                style={isOpen ? {} : btnStyle}
+                className="flex items-center gap-2 cursor-pointer transition-all duration-200"
+                style={{
+                    ...triggerStyle,
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 500,
+                    fontSize: '0.9375rem',
+                    padding: '11px 22px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1px solid',
+                }}
                 title="Paylaş"
+                aria-label="Paylaş"
             >
-                <Share2 className="w-5 h-5" />
-                <span className="font-medium">Paylaş</span>
+                <Share2 className="w-4 h-4" strokeWidth={1.75} />
+                <span>Paylaş</span>
             </button>
 
             {isOpen && (
                 <div
-                    className="absolute bottom-full right-0 mb-3 w-64 border rounded-xl shadow-2xl overflow-hidden z-50 share-popup-animation origin-bottom-right"
-                    style={{ background: 'var(--bg-2)', borderColor: 'var(--border)', boxShadow: 'var(--shadow-md)' }}
+                    className="absolute bottom-full right-0 mb-3 w-64 overflow-hidden z-50 share-popup-animation origin-bottom-right"
+                    style={{
+                        background: 'var(--bg-elevated)',
+                        border: '1px solid var(--border-soft)',
+                        borderRadius: 'var(--radius-lg)',
+                        boxShadow: 'var(--shadow-lg)',
+                    }}
                 >
-                    <div className="p-1">
-                        <button
+                    <div className="p-2">
+                        <ShareMenuItem
                             onClick={() => handleShare("whatsapp")}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gold-500/10 rounded-lg transition-colors text-left text-sm"
-                            style={menuItemStyle}
-                        >
-                            <div className="w-8 h-8 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366] shrink-0">
-                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
-                            </div>
-                            WhatsApp
-                        </button>
-
-                        <button
+                            icon={
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                                </svg>
+                            }
+                            iconBg="rgba(37, 211, 102, 0.16)"
+                            iconColor="#1ea456"
+                            label="WhatsApp"
+                            menuItemStyle={menuItemStyle}
+                        />
+                        <ShareMenuItem
                             onClick={() => handleShare("instagram")}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gold-500/10 rounded-lg transition-colors text-left text-sm"
-                            style={menuItemStyle}
-                        >
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center text-white shrink-0">
-                                <Instagram className="w-4 h-4" />
-                            </div>
-                            Instagram
-                        </button>
-
-                        <button
+                            icon={<Instagram className="w-4 h-4" strokeWidth={1.75} />}
+                            iconBg="linear-gradient(135deg, #f9ce34, #ee2a7b 50%, #6228d7)"
+                            iconColor="#ffffff"
+                            label="Instagram"
+                            menuItemStyle={menuItemStyle}
+                        />
+                        <ShareMenuItem
                             onClick={() => handleShare("twitter")}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gold-500/10 rounded-lg transition-colors text-left text-sm"
-                            style={menuItemStyle}
-                        >
-                            <div className="w-8 h-8 rounded-full flex items-center justify-center border shrink-0" style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text)' }}>
-                                <X className="w-4 h-4" />
-                            </div>
-                            X (Twitter)
-                        </button>
-
-                        <button
+                            icon={<X className="w-4 h-4" strokeWidth={1.75} />}
+                            iconBg="var(--bg-base)"
+                            iconColor="var(--ink-strong)"
+                            iconBorder="1px solid var(--border)"
+                            label="X (Twitter)"
+                            menuItemStyle={menuItemStyle}
+                        />
+                        <ShareMenuItem
                             onClick={() => handleShare("linkedin")}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gold-500/10 rounded-lg transition-colors text-left text-sm"
-                            style={menuItemStyle}
-                        >
-                            <div className="w-8 h-8 rounded-full bg-[#0077b5]/20 flex items-center justify-center text-[#0077b5] shrink-0">
-                                <Linkedin className="w-4 h-4" />
-                            </div>
-                            LinkedIn
-                        </button>
-
-                        <button
+                            icon={<Linkedin className="w-4 h-4" strokeWidth={1.75} />}
+                            iconBg="rgba(0, 119, 181, 0.16)"
+                            iconColor="#0077b5"
+                            label="LinkedIn"
+                            menuItemStyle={menuItemStyle}
+                        />
+                        <ShareMenuItem
                             onClick={() => handleShare("facebook")}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gold-500/10 rounded-lg transition-colors text-left text-sm"
-                            style={menuItemStyle}
-                        >
-                            <div className="w-8 h-8 rounded-full bg-[#1877F2]/20 flex items-center justify-center text-[#1877F2] shrink-0">
-                                <Facebook className="w-4 h-4" />
-                            </div>
-                            Facebook
-                        </button>
+                            icon={<Facebook className="w-4 h-4" strokeWidth={1.75} />}
+                            iconBg="rgba(24, 119, 242, 0.16)"
+                            iconColor="#1877F2"
+                            label="Facebook"
+                            menuItemStyle={menuItemStyle}
+                        />
 
-                        <div className="h-px my-1 mx-2" style={{ background: 'var(--border)' }}></div>
+                        <div
+                            className="h-px my-1.5 mx-2"
+                            style={{ background: 'var(--border-soft)' }}
+                        ></div>
 
-                        <button
+                        <ShareMenuItem
                             onClick={() => handleShare("copy")}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gold-500/10 rounded-lg transition-colors text-left text-sm"
-                            style={menuItemStyle}
-                        >
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${copied ? 'bg-green-500/20 text-green-500' : 'border'}`} style={copied ? {} : { background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-3)' }}>
-                                {copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
-                            </div>
-                            {copyMessage}
-                        </button>
+                            icon={copied ? <Check className="w-4 h-4" strokeWidth={2} /> : <Link2 className="w-4 h-4" strokeWidth={1.75} />}
+                            iconBg={copied ? 'rgba(107, 142, 78, 0.18)' : 'var(--brand-soft)'}
+                            iconColor={copied ? 'var(--success)' : 'var(--brand-deep)'}
+                            label={copyMessage}
+                            menuItemStyle={menuItemStyle}
+                        />
                     </div>
                     <style>{`
-            @keyframes sharePopupEntry {
-              0% { opacity: 0; transform: scale(0.95) translateY(10px); }
-              100% { opacity: 1; transform: scale(1) translateY(0); }
-            }
-            .share-popup-animation {
-              animation: sharePopupEntry 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            }
-          `}</style>
+                        @keyframes sharePopupEntry {
+                            0% { opacity: 0; transform: scale(0.96) translateY(8px); }
+                            100% { opacity: 1; transform: scale(1) translateY(0); }
+                        }
+                        .share-popup-animation {
+                            animation: sharePopupEntry 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                        }
+                        @media (prefers-reduced-motion: reduce) {
+                            .share-popup-animation { animation: none; }
+                        }
+                    `}</style>
                 </div>
             )}
         </div>
+    );
+}
+
+function ShareMenuItem({
+    onClick,
+    icon,
+    iconBg,
+    iconColor,
+    iconBorder,
+    label,
+    menuItemStyle,
+}: {
+    onClick: () => void;
+    icon: React.ReactNode;
+    iconBg: string;
+    iconColor: string;
+    iconBorder?: string;
+    label: string;
+    menuItemStyle: React.CSSProperties;
+}) {
+    return (
+        <button
+            onClick={onClick}
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm cursor-pointer share-menu-item"
+            style={{
+                ...menuItemStyle,
+                background: 'transparent',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                transition: 'background 180ms ease, color 180ms ease',
+            }}
+            onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--brand-soft)';
+                e.currentTarget.style.color = 'var(--ink-strong)';
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = (menuItemStyle.color as string) || 'var(--ink-default)';
+            }}
+        >
+            <span
+                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                style={{
+                    background: iconBg,
+                    color: iconColor,
+                    border: iconBorder,
+                }}
+            >
+                {icon}
+            </span>
+            {label}
+        </button>
     );
 }
