@@ -47,7 +47,7 @@ const mobileImage = "/ana-resim.jpg";
 
         </div>
 
-        <div class="hero-scroll absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+        <div class="hero-scroll flex flex-col items-center gap-2">
             <span class="hero-scroll-label">Keşfet</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -137,9 +137,14 @@ const mobileImage = "/ana-resim.jpg";
     }
 
     .hero-scroll {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
         opacity: 0.55;
         animation: hero-scroll-bounce 2.4s ease-in-out infinite;
         color: var(--ink-muted);
+        will-change: transform;
     }
     .hero-scroll-label {
         font-family: var(--font-sans);

@@ -115,12 +115,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             >
                 {/* Header */}
                 <div
-                    className="relative z-10 flex items-center justify-between px-4 py-3"
+                    className="relative z-10 flex items-center justify-between gap-3 px-4 py-3"
                     style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border-soft)' }}
                 >
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
                         <div
-                            className="w-8 h-8 flex items-center justify-center"
+                            className="w-8 h-8 flex items-center justify-center flex-shrink-0"
                             style={{
                                 borderRadius: 'var(--radius-md)',
                                 background: 'var(--brand-soft)',
@@ -128,8 +128,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                         >
                             <MapPin size={16} strokeWidth={1.75} style={{ color: 'var(--brand-deep)' }} />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                             <p
+                                className="truncate"
                                 style={{
                                     fontFamily: 'var(--font-sans)',
                                     fontWeight: 500,

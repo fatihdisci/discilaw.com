@@ -372,15 +372,16 @@ export default function AttorneyFeeCalculator() {
                                                 style={{
                                                     display: 'flex',
                                                     justifyContent: 'space-between',
-                                                    alignItems: 'center',
+                                                    alignItems: 'flex-start',
+                                                    gap: '0.75rem',
                                                     padding: '0.7rem 0',
                                                     borderBottom: idx === nispiResult.courtFees.length - 1 ? 'none' : '1px solid var(--border-soft)',
                                                     fontFamily: 'var(--font-sans)',
                                                     fontSize: '0.875rem',
                                                 }}
                                             >
-                                                <span style={{ color: 'var(--ink-default)' }}>{court.name}</span>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <span style={{ color: 'var(--ink-default)', flex: '1 1 auto', minWidth: 0, lineHeight: 1.4 }}>{court.name}</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                                                     <span style={{ fontWeight: 600, color: court.isBelowMin ? 'var(--brand-deep)' : 'var(--ink-strong)' }}>
                                                         {formatCurrency(court.calculatedFee)}
                                                     </span>

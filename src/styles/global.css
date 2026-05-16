@@ -114,6 +114,7 @@
   html {
     background: var(--bg-base);
     color: var(--ink-strong);
+    overflow-x: hidden;
   }
 
   body {
@@ -125,6 +126,7 @@
     letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   ::selection {
