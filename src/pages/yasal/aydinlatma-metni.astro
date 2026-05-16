@@ -2,20 +2,22 @@
 import Layout from '../../layouts/Layout.astro';
 ---
 
-<Layout title="Aydınlatma Metni | Dişçi Hukuk Bürosu" description="6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında Dişçi Hukuk Bürosu aydınlatma metni.">
-  <article class="post-article">
-    <header class="container mx-auto px-4 max-w-3xl text-center post-header" data-aos="fade-up">
-      <div class="post-meta">
-        <span class="post-category">KVKK</span>
-      </div>
-      <h1 class="post-h1">Aydınlatma Metni</h1>
-      <p class="mt-4 max-w-2xl mx-auto text-[var(--ink-muted)] font-sans font-light">
-        6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında bilgilendirme
+<Layout title="Aydınlatma Metni | Dişçi Hukuk Bürosu" description="6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında Dişçi Hukuk Bürosu aydınlatma metni." enableAOS={true} showBreadcrumbs={false}>
+  <section class="legal-hero">
+    <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+      <span class="legal-eyebrow">KVKK</span>
+      <h1 class="legal-hero-title">
+        <span class="legal-hero-title-italic">Aydınlatma</span> Metni
+      </h1>
+      <p class="legal-hero-lede">
+        6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında bilgilendirme.
       </p>
-    </header>
+    </div>
+  </section>
 
+  <article class="legal-article">
     <div class="container mx-auto px-6 max-w-3xl">
-      <div class="prose prose-lg mx-auto py-6 blog-content legal-content" data-aos="fade-up" data-aos-delay="200" lang="tr">
+      <div class="prose mx-auto legal-content" data-aos="fade-up" data-aos-delay="100" lang="tr">
 
         <p>
           <strong>Dişçi Hukuk Bürosu</strong> olarak, kişisel verilerinizin güvenliği ve gizliliği hususuna azami önem vermekteyiz. Bu kapsamda, <strong>6698 sayılı Kişisel Verilerin Korunması Kanunu</strong> ("KVKK") uyarınca veri sorumlusu sıfatıyla, kişisel verilerinizin işlenme amaçları, yöntemleri, hukuki sebepleri ve haklarınız konusunda sizleri bilgilendirmek isteriz.
@@ -67,71 +69,95 @@ import Layout from '../../layouts/Layout.astro';
 
       </div>
 
-      <div class="mt-16 pt-8 border-t border-[var(--border-soft)] flex justify-between items-center flex-wrap gap-4">
-        <a href="/" class="post-back-link cursor-pointer">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+      <div class="legal-footer">
+        <a href="/" class="legal-back-link cursor-pointer">
+          <svg fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
           Anasayfa
         </a>
-        <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-[var(--ink-faint)]">Son Güncelleme: 19 Ocak 2026</span>
+        <span class="legal-updated">Son Güncelleme: 19 Ocak 2026</span>
       </div>
     </div>
   </article>
 </Layout>
 
 <style>
-  .post-article {
-    background: var(--bg-base);
-    padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(4rem, 9vw, 6rem);
-    min-height: 100vh;
+  .legal-hero {
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-soft);
+    padding: clamp(3.5rem, 8vw, 5.5rem) 0;
   }
-
-  .post-header {
-    margin-bottom: 2.5rem;
-  }
-
-  .post-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.75rem;
-  }
-
-  .post-category {
-    display: inline-flex;
-    align-items: center;
+  .legal-eyebrow {
+    display: inline-block;
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 0.6875rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    padding: 0.3rem 0.75rem;
+    padding: 0.35rem 0.85rem;
     border-radius: var(--radius-pill);
     background: var(--brand-soft);
     color: var(--brand-deep);
     border: 1px solid var(--border-soft);
-    line-height: 1;
+    margin-bottom: 1.5rem;
   }
-
-  .post-h1 {
+  .legal-hero-title {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-style: italic;
-    font-variation-settings: "SOFT" 100, "opsz" 144;
-    font-size: var(--text-hero);
+    font-weight: 500;
+    font-size: var(--text-h1);
     line-height: 1.05;
     letter-spacing: -0.022em;
     color: var(--ink-strong);
-    margin: 0;
+    margin-bottom: 1.25rem;
+  }
+  .legal-hero-title-italic {
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "SOFT" 100, "opsz" 144;
+    color: var(--brand-deep);
+  }
+  .legal-hero-lede {
+    max-width: 36rem;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink-default);
+  }
+
+  .legal-article {
+    background: var(--bg-base);
+    padding: clamp(3rem, 7vw, 5rem) 0 clamp(4rem, 9vw, 6rem);
   }
 
   .legal-content {
     text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+  }
+  .legal-content :global(p),
+  .legal-content :global(li) {
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
     hyphens: auto;
   }
 
-  .post-back-link {
+  .legal-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .legal-back-link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -143,14 +169,20 @@ import Layout from '../../layouts/Layout.astro';
     padding-bottom: 1px;
     transition: color 200ms ease, border-color 200ms ease;
   }
-  .post-back-link:hover {
+  .legal-back-link:hover {
     color: var(--ink-strong);
     border-bottom-color: currentColor;
   }
-  .post-back-link svg {
+  .legal-back-link svg {
+    width: 16px;
+    height: 16px;
     transition: transform 220ms ease;
   }
-  .post-back-link:hover svg {
-    transform: translateX(-3px);
+  .legal-back-link:hover svg { transform: translateX(-3px); }
+
+  .legal-updated {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--ink-muted);
   }
 </style>

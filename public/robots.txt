@@ -56,9 +56,8 @@ Allow: /
 User-agent: DuckAssistBot
 Allow: /
 
-# Disallow admin / portal areas (auth-protected)
+# Disallow admin areas (auth-protected)
 User-agent: *
-Disallow: /portal/
 Disallow: /keystatic/
 Disallow: /api/
 
