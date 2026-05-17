@@ -1,0 +1,211 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { FAQAccordion } from '../components/FAQAccordion';
+import { faqCategories, getAllFaqsFlat } from '../content/sss';
+import { faqPageSchema, toAbsoluteUrl } from '../lib/seo';
+
+const canonicalPath = '/sss';
+const canonical = toAbsoluteUrl(canonicalPath, Astro.site);
+const allFaqs = getAllFaqsFlat();
+const faqLd = faqPageSchema(allFaqs, canonical);
+---
+
+<Layout
+  title="Sıkça Sorulan Sorular"
+  description="Avukatlık ücreti, kıdem tazminatı, kira artışı, boşanma, ceza davası, icra takibi ve trafik cezası gibi konularda mevzuata dayalı yanıtlar. Dişçi Hukuk Bürosu — İzmir."
+  canonicalPath={canonicalPath}
+  enableAOS={true}
+  breadcrumbItems={[{ name: 'Sıkça Sorulan Sorular', href: canonicalPath }]}
+  structuredData={faqLd}
+>
+  <article class="faq-page">
+    <!-- HERO -->
+    <section class="container mx-auto px-4 max-w-3xl text-center faq-hero" data-aos="fade-up">
+      <span class="faq-eyebrow">SSS</span>
+      <h1 class="faq-h1">
+        Sıkça Sorulan <span class="faq-h1-italic">Sorular</span>
+      </h1>
+      <p class="faq-lede">
+        Avukatlık süreci, iş hukuku, aile hukuku, kira hukuku, ceza hukuku, icra takibi ve trafik
+        cezaları gibi alanlarda en sık karşılaşılan sorulara mevzuata dayalı yanıtlar.
+        Bilgiler genel niteliktedir; somut bir uyuşmazlık için hukuki destek alınması önerilir.
+      </p>
+    </section>
+
+    <!-- KATEGORİ NAVİGASYONU -->
+    <nav class="container mx-auto px-4 max-w-5xl faq-toc" aria-label="Kategoriler" data-aos="fade-up">
+      <ul class="faq-toc-list">
+        {faqCategories.map((cat) => (
+          <li>
+            <a href={`#${cat.slug}`} class="faq-toc-link cursor-pointer">{cat.title}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- KATEGORİLER -->
+    {faqCategories.map((cat) => (
+      <section id={cat.slug} class="container mx-auto px-4 max-w-4xl faq-category" data-aos="fade-up">
+        <header class="faq-category-head">
+          <h2 class="faq-category-title">{cat.title}</h2>
+          <p class="faq-category-desc">{cat.description}</p>
+        </header>
+        <FAQAccordion client:visible faqs={cat.faqs} />
+      </section>
+    ))}
+
+    <!-- CTA -->
+    <section class="container mx-auto px-4 max-w-3xl faq-cta-section" data-aos="fade-up">
+      <h2 class="faq-cta-title">
+        Sorunuzun yanıtı yoksa <span class="faq-h1-italic">iletişime</span> geçebilirsiniz
+      </h2>
+      <p class="faq-cta-text">
+        Dosyanıza özel görüşme talepleri için iletişim formu üzerinden ulaşabilirsiniz.
+      </p>
+      <a href="/iletisim" class="faq-cta-button cursor-pointer">İletişime Geç</a>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .faq-page {
+    background: var(--bg-base);
+    padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(4rem, 9vw, 6rem);
+  }
+
+  .faq-hero {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .faq-eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand-deep);
+    margin-bottom: 0.875rem;
+  }
+  .faq-h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h1);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: var(--ink-strong);
+    margin: 0 0 1rem 0;
+  }
+  .faq-h1-italic {
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "SOFT" 100, "opsz" 144;
+    color: var(--brand-deep);
+  }
+  .faq-lede {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--ink-default);
+    margin: 0 auto;
+    max-width: 36rem;
+  }
+
+  /* TOC */
+  .faq-toc {
+    margin: 0 auto clamp(2rem, 5vw, 3.5rem);
+  }
+  .faq-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  .faq-toc-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-default);
+    transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .faq-toc-link:hover {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+    color: var(--brand-deep);
+  }
+
+  /* CATEGORIES */
+  .faq-category {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    scroll-margin-top: 160px;
+  }
+  .faq-category-head {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .faq-category-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h2);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    color: var(--ink-strong);
+    margin: 0 0 0.5rem 0;
+  }
+  .faq-category-desc {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--ink-muted);
+    max-width: 36rem;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+
+  /* CTA */
+  .faq-cta-section {
+    text-align: center;
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-top: 1px solid var(--border-soft);
+  }
+  .faq-cta-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-h2);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    color: var(--ink-strong);
+    margin: 0 0 0.875rem 0;
+  }
+  .faq-cta-text {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    color: var(--ink-muted);
+    margin: 0 0 1.75rem 0;
+  }
+  .faq-cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    background: var(--ink-strong);
+    color: var(--bg-base);
+    padding: 14px 28px;
+    border-radius: var(--radius-pill);
+    transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+  .faq-cta-button:hover {
+    background: var(--brand-deep);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+</style>

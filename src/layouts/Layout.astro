@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import { buildSeoMeta, organizationSchema } from '../lib/seo';
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
 
 interface Props {
@@ -41,7 +42,17 @@ const {
 } = Astro.props;
 
 const seo = buildSeoMeta({ title, description, image, canonicalPath, type: pageType }, Astro.url.pathname, Astro.site);
-const baseSchema = organizationSchema(Astro.site);
+
+const attorneyWorks = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map((entry) => ({
+    slug: entry.slug,
+    title: entry.data.title,
+    description: entry.data.description,
+    datePublished: entry.data.pubDate.toISOString(),
+  }));
+
+const baseSchema = organizationSchema(Astro.site, attorneyWorks);
 const pageSchemas = Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : [];
 ---
 

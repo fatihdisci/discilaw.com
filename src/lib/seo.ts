@@ -1,7 +1,7 @@
 const SITE_URL = 'https://discilaw.com';
 const SITE_NAME = 'Dişçi Hukuk Bürosu';
 const DEFAULT_DESCRIPTION = "İzmir Barosu'na kayıtlı Av. Fatih Dişçi tarafından kurulan Dişçi Hukuk Bürosu; Ceza, Aile ve İş Hukuku alanlarında hukuki danışmanlık hizmeti sunmaktadır.";
-const DEFAULT_IMAGE = '/social-share.jpg';
+const DEFAULT_IMAGE = '/ana-resim.jpg';
 
 export type SeoInput = {
   title?: string;
@@ -61,8 +61,25 @@ const SERVICE_TYPES = [
 
 const SAME_AS = ['https://www.instagram.com/discihukukburosu/'];
 
-export function organizationSchema(site?: URL | string) {
+export type AttorneyWork = {
+  slug: string;
+  title: string;
+  description: string;
+  datePublished: string;
+};
+
+export function organizationSchema(site?: URL | string, attorneyWorks: AttorneyWork[] = []) {
   const origin = getSiteUrl(site).origin;
+  const subjectOf = attorneyWorks.map((w) => ({
+    '@type': 'Article',
+    '@id': `${origin}/blog/${w.slug}#article`,
+    headline: w.title,
+    description: w.description,
+    url: `${origin}/blog/${w.slug}`,
+    datePublished: w.datePublished,
+    author: { '@id': `${origin}/#attorney` },
+  }));
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -102,16 +119,43 @@ export function organizationSchema(site?: URL | string) {
         '@type': ['Person', 'Attorney'],
         '@id': `${origin}/#attorney`,
         name: 'Av. Fatih Dişçi',
+        givenName: 'Fatih',
+        familyName: 'Dişçi',
+        honorificPrefix: 'Av.',
         jobTitle: 'Avukat',
-        worksFor: { '@id': `${origin}/#organization` },
-        memberOf: { '@id': `${origin}/#organization` },
-        description: "İzmir Barosu'na kayıtlı avukat Fatih Dişçi tarafından yönetilen hukuk bürosu.",
+        description:
+          "Yalova Üniversitesi Hukuk Fakültesi 2020 mezunu, İzmir Barosu'na 17695 sicil numarası ile kayıtlı; 2021 yılından bu yana İzmir Karşıyaka'da avukatlık faaliyeti yürüten Av. Fatih Dişçi.",
         url: `${origin}/hakkimizda`,
-        image: `${origin}/logo.png`,
+        mainEntityOfPage: `${origin}/hakkimizda`,
+        image: `${origin}/profile.png`,
+        worksFor: { '@id': `${origin}/#organization` },
+        alumniOf: {
+          '@type': 'CollegeOrUniversity',
+          name: 'Yalova Üniversitesi Hukuk Fakültesi',
+          sameAs: 'https://www.yalova.edu.tr/hukuk',
+        },
+        memberOf: {
+          '@type': 'Organization',
+          name: 'İzmir Barosu',
+          url: 'https://www.izmirbarosu.org.tr/',
+          identifier: '17695',
+        },
+        hasOccupation: {
+          '@type': 'Occupation',
+          name: 'Avukat',
+          occupationLocation: { '@type': 'City', name: 'İzmir' },
+          occupationalCategory: 'Lawyer',
+        },
+        knowsAbout: SERVICE_TYPES,
+        knowsLanguage: ['tr', 'en'],
+        nationality: { '@type': 'Country', name: 'Türkiye' },
+        ...(subjectOf.length ? { subjectOf } : {}),
         address: {
           '@type': 'PostalAddress',
+          streetAddress: 'Tuna Mah. 1690. Sk. No:1 K:6 D:601',
           addressLocality: 'Karşıyaka',
           addressRegion: 'İzmir',
+          postalCode: '35500',
           addressCountry: 'TR',
         },
         sameAs: SAME_AS,

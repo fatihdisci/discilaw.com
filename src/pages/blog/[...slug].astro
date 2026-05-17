@@ -3,8 +3,10 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ShareButton from '../../components/ShareButton';
 import InstagramEmbed from '../../components/InstagramEmbed.astro';
+import QuickAnswer from '../../components/QuickAnswer.astro';
+import AuthorBio from '../../components/AuthorBio.astro';
 import { toAbsoluteUrl, getSiteUrl, legalArticleSchema, faqPageSchema } from '../../lib/seo';
-import { getRelatedPosts } from '../../lib/blog';
+import { getRelatedPosts, getServiceForCategory } from '../../lib/blog';
 import { blogMiniFaqs } from '../../content/blog-mini-faqs';
 import { FAQAccordion } from '../../components/FAQAccordion';
 
@@ -24,6 +26,7 @@ const canonical = toAbsoluteUrl(canonicalPath, Astro.site);
 const imageUrl = toAbsoluteUrl(entry.data.image, Astro.site);
 
 const miniFaqs = blogMiniFaqs[entry.slug] || [];
+const relatedService = getServiceForCategory(entry.data.category);
 const miniFaqLd = miniFaqs.length ? faqPageSchema(miniFaqs, canonical) : null;
 
 const articleSchema = legalArticleSchema({
@@ -73,7 +76,7 @@ const articleSchema = legalArticleSchema({
       <div class="container mx-auto px-4 max-w-4xl mb-12" data-aos="fade-up" data-aos-delay="100">
         <img
           src={entry.data.image}
-          alt={entry.data.title}
+          alt={entry.data.imageAlt || entry.data.title}
           width="1280"
           height="720"
           loading="eager"
@@ -81,6 +84,14 @@ const articleSchema = legalArticleSchema({
           decoding="async"
           class="post-hero-image"
         />
+      </div>
+    )}
+
+    {entry.data.quickAnswer && (
+      <div class="container mx-auto px-6 max-w-3xl" data-aos="fade-up" data-aos-delay="150">
+        <QuickAnswer highlights={entry.data.quickAnswer.highlights}>
+          <p set:html={entry.data.quickAnswer.intro} />
+        </QuickAnswer>
       </div>
     )}
 
@@ -95,6 +106,29 @@ const articleSchema = legalArticleSchema({
         <InstagramEmbed url={entry.data.instagramUrl} />
       </div>
     )}
+
+    {relatedService && (
+      <aside class="container mx-auto px-4 max-w-3xl mt-12 not-prose" aria-label="İlgili Çalışma Alanı">
+        <a href={`/calisma-alanlarimiz/${relatedService.slug}`} class="related-service-cta cursor-pointer">
+          <div class="related-service-cta-body">
+            <span class="related-service-cta-eyebrow">İlgili Çalışma Alanı</span>
+            <span class="related-service-cta-title">{relatedService.title}</span>
+            <span class="related-service-cta-text">
+              Bu konuda detaylı bilgi ve hukuki süreç adımları için ilgili çalışma alanı sayfasını inceleyebilirsiniz.
+            </span>
+          </div>
+          <span class="related-service-cta-arrow" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </span>
+        </a>
+      </aside>
+    )}
+
+    <div class="container mx-auto px-4 max-w-3xl mt-16 pt-10 post-divider">
+      <AuthorBio />
+    </div>
 
     {miniFaqs.length > 0 && (
       <section class="container mx-auto px-4 max-w-3xl mt-16 pt-10 post-divider" aria-labelledby="mini-faq-title">
@@ -291,5 +325,67 @@ const articleSchema = legalArticleSchema({
   }
   .post-back-link:hover svg {
     transform: translateX(-3px);
+  }
+
+  .related-service-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--brand);
+    border-radius: var(--radius-lg);
+    transition: border-color 240ms ease, transform 240ms ease, box-shadow 240ms ease;
+  }
+  .related-service-cta:hover {
+    border-color: var(--brand-deep);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .related-service-cta-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .related-service-cta-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand-deep);
+  }
+  .related-service-cta-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: var(--ink-strong);
+  }
+  .related-service-cta-text {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ink-default);
+  }
+  .related-service-cta-arrow {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--brand-soft);
+    color: var(--brand-deep);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 240ms ease, transform 240ms ease;
+  }
+  .related-service-cta:hover .related-service-cta-arrow {
+    background: var(--brand);
+    color: var(--bg-elevated);
+    transform: translateX(3px);
   }
 </style>

@@ -1,0 +1,147 @@
+---
+interface Props {
+  variant?: 'card' | 'inline';
+}
+
+const { variant = 'card' } = Astro.props;
+---
+
+<aside class={`author-bio author-bio--${variant} not-prose`} aria-label="Yazar Hakkında">
+  <a href="/hakkimizda" class="author-bio-photo-link cursor-pointer" aria-label="Av. Fatih Dişçi hakkında">
+    <img
+      src="/profile.png"
+      alt="Av. Fatih Dişçi"
+      width="96"
+      height="96"
+      loading="lazy"
+      decoding="async"
+      class="author-bio-photo"
+    />
+  </a>
+
+  <div class="author-bio-body">
+    <span class="author-bio-eyebrow">Yazar</span>
+    <h3 class="author-bio-name">
+      <a href="/hakkimizda" class="author-bio-name-link cursor-pointer">Av. Fatih Dişçi</a>
+    </h3>
+    <p class="author-bio-meta">İzmir Barosu — Sicil No 17695</p>
+    <p class="author-bio-text">
+      Yalova Üniversitesi Hukuk Fakültesi 2020 mezunu; 2021 yılından bu yana İzmir Karşıyaka'da
+      avukatlık faaliyetini sürdürmektedir. Yazılar; yürürlükteki mevzuat ile Yargıtay ve Anayasa
+      Mahkemesi içtihatları çerçevesinde bilgilendirme amacıyla hazırlanmaktadır.
+    </p>
+    <a href="/hakkimizda" class="author-bio-link cursor-pointer">
+      Hakkımızda
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+      </svg>
+    </a>
+  </div>
+</aside>
+
+<style>
+  .author-bio {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+    grid-template-columns: 96px 1fr;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.5rem;
+  }
+  @media (max-width: 520px) {
+    .author-bio {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+  }
+
+  .author-bio-photo-link {
+    display: block;
+    width: 96px;
+    height: 96px;
+  }
+  .author-bio-photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-soft);
+    background: var(--bg-base);
+    display: block;
+    transition: transform 240ms ease, border-color 240ms ease;
+  }
+  .author-bio-photo-link:hover .author-bio-photo {
+    transform: scale(1.03);
+    border-color: var(--brand);
+  }
+
+  .author-bio-body {
+    min-width: 0;
+  }
+
+  .author-bio-eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand-deep);
+    margin-bottom: 0.4rem;
+  }
+
+  .author-bio-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: var(--ink-strong);
+    margin: 0 0 0.2rem 0;
+  }
+  .author-bio-name-link {
+    color: inherit;
+    transition: color 200ms ease;
+  }
+  .author-bio-name-link:hover { color: var(--brand-deep); }
+
+  .author-bio-meta {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--ink-muted);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .author-bio-text {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink-default);
+    margin: 0 0 0.875rem 0;
+  }
+
+  .author-bio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--brand-deep);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .author-bio-link:hover {
+    color: var(--ink-strong);
+    border-bottom-color: currentColor;
+  }
+  .author-bio-link svg {
+    transition: transform 220ms ease;
+  }
+  .author-bio-link:hover svg {
+    transform: translateX(3px);
+  }
+</style>
