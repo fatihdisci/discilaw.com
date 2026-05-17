@@ -87,9 +87,9 @@ const articleSchema = legalArticleSchema({
       </div>
     )}
 
-    {entry.data.quickAnswer && (
+    {entry.data.quickAnswer?.intro && (
       <div class="container mx-auto px-6 max-w-3xl" data-aos="fade-up" data-aos-delay="150">
-        <QuickAnswer highlights={entry.data.quickAnswer.highlights}>
+        <QuickAnswer highlights={entry.data.quickAnswer.highlights || []}>
           <p set:html={entry.data.quickAnswer.intro} />
         </QuickAnswer>
       </div>

@@ -89,38 +89,37 @@ export default config({
           description: 'Görseli açıklayıcı kısa metin. Boş bırakılırsa başlık kullanılır.',
         }),
         instagramUrl: fields.url({ label: 'Instagram Post URL', description: 'Makale ile ilgili Instagram postunun bağlantısı. Görselli olarak sayfanın altında gömülür.' }),
-        quickAnswer: fields.conditional(
-          fields.checkbox({ label: 'Hızlı Cevap (TL;DR) bloğu ekle', defaultValue: false }),
+        quickAnswer: fields.object(
           {
-            true: fields.object(
+            intro: fields.text({
+              label: 'Giriş Metni',
+              description:
+                '2-3 cümle özet. Karar künyesi + temel ilke + mevzuat numarası. Boş bırakırsanız Hızlı Cevap bloğu gösterilmez.',
+              multiline: true,
+            }),
+            highlights: fields.array(
+              fields.text({
+                label: 'Madde',
+                description:
+                  'HTML işaretleme destekler. Örn: <strong>Karar:</strong> Yargıtay 1. HD ...',
+              }),
               {
-                intro: fields.text({
-                  label: 'Giriş Metni',
-                  description: '2-3 cümle özet. Karar künyesi + temel ilke + mevzuat numarası.',
-                  multiline: true,
-                  validation: { length: { min: 80 } },
-                }),
-                highlights: fields.array(
-                  fields.text({
-                    label: 'Madde',
-                    description: 'HTML işaretleme destekler. Örn: <strong>Karar:</strong> Yargıtay 1. HD ...',
-                  }),
-                  {
-                    label: 'Vurgulanan Maddeler',
-                    description: '3-5 madde önerilir. Her madde somut bir sayı/süre/oran içermelidir.',
-                    itemLabel: (props) => props.value || 'Yeni Madde',
-                  }
-                ),
-              },
-              { label: 'Hızlı Cevap İçeriği' }
+                label: 'Vurgulanan Maddeler',
+                description: '3-5 madde önerilir. Her madde somut bir sayı/süre/oran içermelidir.',
+                itemLabel: (props) => props.value || 'Yeni Madde',
+              }
             ),
-            false: fields.empty(),
+          },
+          {
+            label: 'Hızlı Cevap (TL;DR)',
+            description:
+              'Makalenin başında kutu olarak gösterilir. AI Overviews ve sesli arama bu bloğu doğrudan alıntılayabilir.',
           }
         ),
         miniFaqs: fields.array(
           fields.object({
             question: fields.text({ label: 'Soru' }),
-            answer: fields.text({ label: 'Cevap', multiline: true, validation: { length: { min: 40 } } }),
+            answer: fields.text({ label: 'Cevap', multiline: true }),
           }),
           {
             label: 'Sıkça Sorulan Sorular (SSS)',

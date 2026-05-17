@@ -18,8 +18,8 @@ const blog = defineCollection({
       .optional(),
     quickAnswer: z
       .object({
-        intro: z.string(),
-        highlights: z.array(z.string()).min(2).max(6),
+        intro: z.string().optional(),
+        highlights: z.array(z.string()).optional(),
       })
       .optional(),
   }),
