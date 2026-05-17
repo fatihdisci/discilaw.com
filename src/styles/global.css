@@ -288,4 +288,32 @@
   .text-shadow {
     text-shadow: 0 2px 4px rgba(45, 55, 38, 0.18);
   }
+
+  /*
+   * Başlık vurgu sadeleştirmesi
+   * İtalic + farklı renk pattern'i ("Çalışma Alanlarımız" gibi başlıklarda
+   * tek kelimenin yeşil/eğik gösterilmesi) sayfa genelinde nötrleştirilir.
+   * Tüm başlıklar tek font ve tek renk olarak görünür.
+   */
+  .hero-accent,
+  .latest-title-italic,
+  .services-title-italic,
+  .faq-h1-italic,
+  .service-section-title-italic,
+  .post-section-title-italic,
+  .blog-hero-title-italic,
+  .about-h1-italic,
+  .about-h2-italic,
+  .calc-page-title-italic,
+  .calc-hero-title-italic,
+  .services-hero-title-italic,
+  .contact-hero-title-italic,
+  .contact-form-title-italic,
+  .legal-hero-title-italic {
+    font-style: normal !important;
+    font-variation-settings: normal !important;
+    color: inherit !important;
+    font-weight: inherit !important;
+    font-family: inherit !important;
+  }
 }
