@@ -84,7 +84,50 @@ export default config({
           defaultValue: ['yargitay-karari', 'dava-sureci'],
         }),
         image: fields.image({ label: 'Kapak Görseli', description: 'Zorunlu: 1200x630 önerilir.', directory: 'public/images/blog', publicPath: '/images/blog/' }),
+        imageAlt: fields.text({
+          label: 'Kapak Görseli Alt Metni (SEO)',
+          description: 'Görseli açıklayıcı kısa metin. Boş bırakılırsa başlık kullanılır.',
+        }),
         instagramUrl: fields.url({ label: 'Instagram Post URL', description: 'Makale ile ilgili Instagram postunun bağlantısı. Görselli olarak sayfanın altında gömülür.' }),
+        quickAnswer: fields.conditional(
+          fields.checkbox({ label: 'Hızlı Cevap (TL;DR) bloğu ekle', defaultValue: false }),
+          {
+            true: fields.object(
+              {
+                intro: fields.text({
+                  label: 'Giriş Metni',
+                  description: '2-3 cümle özet. Karar künyesi + temel ilke + mevzuat numarası.',
+                  multiline: true,
+                  validation: { length: { min: 80 } },
+                }),
+                highlights: fields.array(
+                  fields.text({
+                    label: 'Madde',
+                    description: 'HTML işaretleme destekler. Örn: <strong>Karar:</strong> Yargıtay 1. HD ...',
+                  }),
+                  {
+                    label: 'Vurgulanan Maddeler',
+                    description: '3-5 madde önerilir. Her madde somut bir sayı/süre/oran içermelidir.',
+                    itemLabel: (props) => props.value || 'Yeni Madde',
+                  }
+                ),
+              },
+              { label: 'Hızlı Cevap İçeriği' }
+            ),
+            false: fields.empty(),
+          }
+        ),
+        miniFaqs: fields.array(
+          fields.object({
+            question: fields.text({ label: 'Soru' }),
+            answer: fields.text({ label: 'Cevap', multiline: true, validation: { length: { min: 40 } } }),
+          }),
+          {
+            label: 'Sıkça Sorulan Sorular (SSS)',
+            description: 'Makale sonunda akordion olarak gösterilir, FAQPage şeması ile yayınlanır.',
+            itemLabel: (props) => props.fields.question.value || 'Yeni Soru',
+          }
+        ),
         content: fields.mdx({
           label: 'Makale İçeriği',
           options: {

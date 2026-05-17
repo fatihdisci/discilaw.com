@@ -25,7 +25,7 @@ const canonicalPath = `/blog/${entry.slug}`;
 const canonical = toAbsoluteUrl(canonicalPath, Astro.site);
 const imageUrl = toAbsoluteUrl(entry.data.image, Astro.site);
 
-const miniFaqs = blogMiniFaqs[entry.slug] || [];
+const miniFaqs = entry.data.miniFaqs?.length ? entry.data.miniFaqs : (blogMiniFaqs[entry.slug] || []);
 const relatedService = getServiceForCategory(entry.data.category);
 const miniFaqLd = miniFaqs.length ? faqPageSchema(miniFaqs, canonical) : null;
 
