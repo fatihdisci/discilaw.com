@@ -5,9 +5,10 @@ interface Props {
 
 const { url } = Astro.props;
 
+// Query string'i temizle (igsh, utm ve diğer tracking parametreleri embed'de çalışmaz)
+const cleanedUrl = url.split('?')[0].replace(/\/$/, '');
 // Instagram URL'sinden /embed/ versiyonunu oluştur
-const cleanUrl = url.replace(/\/$/, '');
-const embedUrl = cleanUrl.includes('/embed') ? cleanUrl : `${cleanUrl}/embed`;
+const embedUrl = cleanedUrl.includes('/embed') ? cleanedUrl : `${cleanedUrl}/embed`;
 ---
 
 <div class="instagram-embed-wrapper my-8">
