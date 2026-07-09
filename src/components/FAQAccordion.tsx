@@ -1,5 +1,28 @@
 import { useState } from 'react';
 
+/**
+ * Minimal inline-markdown to HTML converter for FAQ answers.
+ * Supports: **bold**, *italic*, `code`. Everything else is HTML-escaped.
+ * No headers, no links, no images — only safe inline formatting.
+ */
+function renderInlineMd(input: string): string {
+    if (!input) return '';
+    // 1. Escape HTML
+    let html = input
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    // 2. **bold** -> <strong>
+    html = html.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+    // 3. *italic* -> <em>  (avoid colliding with **)
+    html = html.replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
+    // 4. `code` -> <code>
+    html = html.replace(/`([^`\n]+?)`/g, '<code>$1</code>');
+    return html;
+}
+
 interface FAQ {
     question: string;
     answer: string;
@@ -86,9 +109,8 @@ export function FAQAccordion({ faqs }: FAQAccordionProps) {
                                         fontSize: '0.9375rem',
                                         lineHeight: 1.65,
                                     }}
-                                >
-                                    {faq.answer}
-                                </div>
+                                    dangerouslySetInnerHTML={{ __html: renderInlineMd(faq.answer) }}
+                                />
                             </div>
                         </div>
                     );
