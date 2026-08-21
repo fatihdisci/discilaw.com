@@ -530,8 +530,6 @@ function SubmissionForm({ client, userId, onCreated }: { client: SupabaseClient;
       }
       completed += 1;
     }
-    const { error: notificationError } = await client.functions.invoke('submission-notification', { body: { submissionId: submission.id } });
-    if (notificationError) console.error('Yönetici e-posta bildirimi gönderilemedi.', notificationError);
     setNotice({ kind: 'success', message: 'Evraklarınız güvenli biçimde gönderildi.' });
     setBusy(false); setProgress('');
     await onCreated();
