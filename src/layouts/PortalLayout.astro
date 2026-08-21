@@ -29,9 +29,11 @@ const {
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,0..100;1,9..144,300..500,0..100&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,0..100;1,9..144,300..500,0..100&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,0..100;1,9..144,300..500,0..100&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" /></noscript>
+    <style is:global>
+      html { scrollbar-gutter: stable; }
+    </style>
   </head>
   <body class="min-h-screen bg-[var(--bg-base)] text-[var(--ink-default)] antialiased">
     <slot />
   </body>
 </html>
-
